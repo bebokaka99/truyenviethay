@@ -806,7 +806,6 @@
 .cai-dat-gender-options label {
     display: flex;
     align-items: center;
-    gap: 8px;
     color: #34495e;
     font-weight: 500;
 }
@@ -1160,6 +1159,6 @@
     }
     .cai-dat-modal-content .cai-dat-info-item input[type="password"] {
         width: 100%;
-        max-width: 300px; /* Tăng width lên 300px */
+        max-width: 300px;
     }
 }
