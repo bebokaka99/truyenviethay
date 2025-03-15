@@ -1,0 +1,356 @@
+.noi-dung-chinh {
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+}
+
+.filter-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.filter-section h2 {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    text-align: left;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filter-category {
+    width: 100%;
+}
+
+.filter-category h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.filter-options.theloai-grid {
+    gap: 10px;
+    padding: 10px;
+}
+
+.filter-option {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.filter-option input {
+    display: none;
+}
+
+.filter-option span {
+    font-size: 14px;
+    color: #333333;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.filter-option:hover span {
+    color: #4CAF50;
+    transform: scale(1.1);
+}
+
+.filter-option input:checked + span {
+    color: #4CAF50;
+    transform: scale(1.1);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.filter-submit, .filter-reset {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-submit {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+
+.filter-submit:hover {
+    background-color: #45a049;
+}
+
+.filter-reset {
+    background-color: #f5f5f5;
+    color: #333333;
+    border: 1px solid #ddd;
+}
+
+.filter-reset:hover {
+    background-color: #e0e0e0;
+}
+
+/* Danh sách truyện (tương tự index.css) */
+.hien-thi-truyen {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tieu-de-truyen {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tieu-de-truyen i {
+    color: #4CAF50;
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+.tieu-de-truyen h2 {
+    font-size: 20px;
+    color: #333333;
+    font-weight: bold;
+}
+
+.luoi-truyen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.khoi-truyen {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.khoi-truyen:hover {
+    transform: translateY(-5px);
+}
+
+.anh-truyen {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.thong-tin-truyen {
+    padding: 8px;
+}
+
+.thoi-gian-danh-gia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.thoi-gian {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.danh-gia {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #555555;
+}
+
+.danh-gia i {
+    color: #f1c40f;
+    margin-right: 3px;
+}
+
+.thong-tin-truyen h3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 3px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.thong-tin-truyen a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.thong-tin-truyen a:not(.chuong-moi) {
+    color: inherit;
+}
+
+.thong-tin-truyen a:hover h3 {
+    color: #4CAF50;
+}
+
+.thong-tin-truyen p {
+    font-size: 12px;
+    color: #777777;
+}
+
+.thong-tin-truyen a:hover p {
+    color: #4CAF50;
+}
+
+.thong-tin-truyen .chuong-moi {
+    font-size: 12px;
+    color: #777777;
+    display: block;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.thong-tin-truyen .chuong-moi:hover {
+    color: #4CAF50;
+}
+
+/* Nhãn "Hot" */
+.hot-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: #f44336;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+}
+
+/* Phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.page-link {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link:hover {
+    background-color: #4CAF50;
+    color: #fff;
+    border-color: #4CAF50;
+}
+
+.page-link.active {
+    background-color: #4CAF50;
+    color: #fff;
+    border-color: #4CAF50;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .filter-options.theloai-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .luoi-truyen {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .anh-truyen {
+        height: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-section h2 {
+        font-size: 24px;
+    }
+
+    .filter-options.theloai-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+    }
+
+    .luoi-truyen {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+    }
+
+    .anh-truyen {
+        height: 160px;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+
+    .filter-submit, .filter-reset {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .luoi-truyen {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* Style cho ảnh lỗi */
+.error-image {
+    font-size: 12px;
+    color: #f44336;
+    margin-top: 5px;
+    text-align: center;
+}

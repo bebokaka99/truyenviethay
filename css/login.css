@@ -1,0 +1,226 @@
+body {
+    background: #f5f5f5; 
+    color: #333; 
+}
+
+.khuVucForm {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff; 
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.nhomForm {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #666; 
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    border: 2px solid #ddd; 
+    border-radius: 5px;
+    background-color: transparent;
+    color: #333; 
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* Khi input được focus: label di chuyển lên viền trên */
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -5px;
+    left: 12px;
+    transform: translateY(0);
+    font-size: 12px;
+    color: #4CAF50;
+    padding: 0 5px;
+    background-color: #fff; 
+}
+
+.input-group input:not(:placeholder-shown) + label {
+    opacity: 1;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666; 
+    cursor: pointer;
+}
+
+.toggle-password i {
+    font-size: 16px;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-password .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.forgot-password input[type="checkbox"] {
+    margin: 0;
+    accent-color: #4CAF50;
+}
+
+.forgot-password label {
+    color: #333;
+    font-size: 14px;
+}
+
+.forgot-password a {
+    font-size: 14px;
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.khuVucForm p {
+    margin-top: 10px;
+}
+
+.khuVucForm a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.khuVucForm a:hover {
+    text-decoration: underline;
+}
+
+.loi {
+    color: red;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #45a049, #3d8b40);
+    transform: scale(1.02);
+}
+
+.social-login {
+    margin: 20px 0;
+}
+
+.social-login p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.social-btn:hover {
+    background-color: #e8f5e9;
+    transform: scale(1.1);
+}
+
+.facebook-btn {
+    color: #3b5998;
+}
+
+.google-btn {
+    color: #db4437;
+}
+
+.social-btn i {
+    font-size: 18px;
+}
+
+/* Footer sáng */
+.footer {
+    background: #f5f5f5; 
+    color: #333; 
+}
+
+.footer a {
+    color: #4CAF50;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer h3 {
+    color: #333; 
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Lọc Truyện - Truyenviethay</title>
+    <link rel="icon" href="../anh/logo.png">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/the-loai.css">
+    <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="phan-trai">
+            <div class="logo">
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+            </div>
+            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <nav class="thanh-dieu-huong">
+                <ul class="danh-sach-menu">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown" id="theloai-dropdown"><div class="theloai-grid" id="theloai-container"></div></div>
+                    </li>
+                    <li class="dropdown dropdown-xep-hang">
+                        <a href="#" class="nut-dropdown">Xếp hạng <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown">
+                            <a href="the-loai.html?sort=top_day">Top ngày</a>
+                            <a href="the-loai.html?sort=top_week">Top tuần</a>
+                            <a href="the-loai.html?sort=top_month">Top tháng</a>
+                            <a href="the-loai.html?sort=top_year">Top năm</a>
+                            <a href="the-loai.html?sort=rating_desc">Top đánh giá</a>
+                        </div>
+                    </li>
+                    <li><a href="the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
+                    <li><a href="#">Fanpage</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li class="menu-tim-kiem">
+                        <form action="tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </li>
+                    <!-- Xóa cặp nút Đăng nhập/Đăng ký ở đây -->
+                </ul>
+            </nav>
+        </div>
+        <div class="phan-phai">
+            <form action="tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-section">
+                <div class="user-info" id="user-info" style="display: none;">
+                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                    <div class="user-dropdown">
+                        <a href="../users/profile.html">Thông tin người dùng</a>
+                        <a href="#">Truyện theo dõi</a>
+                        <a href="#">Lịch sử xem</a>
+                        <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                        <a href="../users/logout.php">Đăng xuất</a> <!-- Sửa logout.html thành logout.php -->
+                    </div>
+                </div>
+                <div class="login-buttons" id="login-buttons">
+                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Nội dung chính -->
+    <div class="noi-dung-chinh">
+        <section class="filter-section">
+            <h2><i class="fa-solid fa-filter"></i> Bộ lọc truyện</h2>
+            <form id="filter-form" class="filter-form">
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-tags"></i> Thể loại</h3>
+                    <div class="filter-options theloai-grid" id="theloai-options"></div>
+                </div>
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-book"></i> Loại truyện</h3>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="radio" name="loai_truyen" value="Truyện chữ"> <span>Truyện chữ</span></label>
+                        <label class="filter-option"><input type="radio" name="loai_truyen" value="Truyện tranh"> <span>Truyện tranh</span></label>
+                        <label class="filter-option"><input type="radio" name="loai_truyen" value="Webtoon"> <span>Webtoon</span></label>
+                    </div>
+                </div>
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-star"></i> Xếp hạng</h3>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="radio" name="rating" value="5"> <span>5 sao</span></label>
+                        <label class="filter-option"><input type="radio" name="rating" value="4"> <span>4 sao</span></label>
+                        <label class="filter-option"><input type="radio" name="rating" value="3"> <span>3 sao</span></label>
+                        <label class="filter-option"><input type="radio" name="rating" value="2"> <span>2 sao</span></label>
+                        <label class="filter-option"><input type="radio" name="rating" value="1"> <span>1 sao</span></label>
+                    </div>
+                </div>
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-clock"></i> Tình trạng cập nhật</h3>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="radio" name="trang_thai" value="Đang Cập Nhật"> <span>Đang Cập Nhật</span></label>
+                        <label class="filter-option"><input type="radio" name="trang_thai" value="Hoàn Thành"> <span>Hoàn Thành</span></label>
+                    </div>
+                </div>
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-calendar"></i> Năm đăng</h3>
+                    <div class="filter-options" id="nam-dang-options"></div>
+                </div>
+                <div class="filter-category">
+                    <h3><i class="fa-solid fa-sort"></i> Sắp xếp</h3>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="radio" name="sort" value="thoi_gian_cap_nhat_desc" checked> <span>Mới cập nhật</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="name_asc"> <span>Tên A-Z</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="rating_desc"> <span>Rating cao</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="top_day"> <span>Top ngày</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="top_week"> <span>Top tuần</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="top_month"> <span>Top tháng</span></label>
+                        <label class="filter-option"><input type="radio" name="sort" value="top_year"> <span>Top năm</span></label>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="filter-submit"><i class="fa-solid fa-filter"></i> Lọc kết quả</button>
+                    <button type="button" class="filter-reset" onclick="window.location.href='the-loai.html'"><i class="fa-solid fa-times"></i> Đưa về mặc định</button>
+                </div>
+            </form>
+        </section>
+
+        <div class="hien-thi-truyen">
+            <div class="tieu-de-truyen">
+                <i class="fas fa-book"></i>
+                <h2>Kết quả lọc truyện</h2>
+            </div>
+            <div class="luoi-truyen" id="truyen-list"></div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="noi-dung-footer">
+            <div class="cot-footer">
+                <h3>Truyenviethay</h3>
+                <p>Khám phá thế giới truyện Việt đầy cảm xúc!</p>
+                <div class="mang-xa-hoi">
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên kết nhanh</h3>
+                <ul class="danh-sach-lien-ket">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li><a href="the-loai.html">Thể loại</a></li>
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                </ul>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên hệ công việc</h3>
+                <p>Email: nq20k2@gmail.com</p>
+                <p>Fanpage: <a href="#">Truyenviethay Official</a></p>
+            </div>
+        </div>
+        <div class="ban-quyen">
+            <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
+        </div>
+    </footer>
+    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
+    <script type="module" src="../script/script.js"></script>
+</body>
+</html>
