@@ -1,9 +1,9 @@
 /* Giữ nguyên toàn bộ code cũ của mày */
 .profile-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 50px auto;
     padding: 20px;
-    background: #fff;
+    border: 2px solid #4CAF50;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -690,7 +690,7 @@
     max-width: 800px;
     margin: 50px auto;
     padding: 30px;
-    background: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -714,30 +714,30 @@
 
 .cai-dat-settings-content {
     text-align: left;
-    padding: 0; /* Xóa padding để sát viền */
+    padding: 0; 
 }
 
 .cai-dat-settings-section {
     margin-bottom: 25px;
-    padding: 0; /* Xóa padding */
-    background: transparent; /* Xóa background */
-    border-radius: 0; /* Xóa border-radius */
-    box-shadow: none; /* Xóa shadow */
-    border: none; /* Xóa border */
+    padding: 0;
+    background: transparent; 
+    border-radius: 0; 
+    box-shadow: none; 
+    border: none; 
 }
 
 .cai-dat-settings-section h3 {
-    display: none; /* Ẩn tiêu đề "Tùy chọn nâng cao" */
+    display: none; 
 }
 
 .avatar-section {
     width: 100%;
     text-align: center;
     padding: 20px 0;
-    background: transparent; /* Đảm bảo trong suốt */
+    background: transparent;
     margin-bottom: 20px;
-    border: none; /* Xóa border */
-    box-shadow: none; /* Xóa shadow */
+    border: none; 
+    box-shadow: none; 
 }
 
 .large-avatar {
@@ -746,8 +746,8 @@
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #FFD700;
-    margin: 0 auto; /* Căn giữa avatar */
-    display: block; /* Đảm bảo căn giữa */
+    margin: 0 auto; 
+    display: block; 
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     transition: transform 0.3s ease;
 }
@@ -761,26 +761,26 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-left: 0; /* Sát viền trái */
+    margin-left: 0;
     margin-right: 0;
 }
 
 .cai-dat-info-item label {
     font-weight: 600;
-    width: 130px; /* Đặt width 130px theo yêu cầu */
+    width: 130px; 
     color: #34495e;
-    text-align: left; /* Căn trái label */
+    text-align: left;
 }
 
 .cai-dat-info-item input[type="text"],
 .cai-dat-info-item input[type="email"],
 .cai-dat-info-item input[type="password"] {
     padding: 12px;
-    width: calc(100% - 145px); /* Điều chỉnh width để phù hợp với label 130px + gap 15px */
+    width: calc(100% - 145px);
     border: 2px solid #ecf0f1;
     border-radius: 6px;
-    background: #fafafa;
-    font-size: 14px;
+    border: 1px solid #4CAF50;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);    font-size: 14px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -793,8 +793,8 @@
 }
 
 .cai-dat-info-item input[readonly] {
-    background: #e9ecef;
-    cursor: not-allowed;
+    border: 1px solid #4CAF50;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);    cursor: not-allowed;
     opacity: 0.9;
 }
 
@@ -834,32 +834,32 @@
 
 /* Modal đổi mật khẩu */
 .cai-dat-modal {
-    display: none; /* Ẩn mặc định */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: transparent; /* Xóa background mờ */
+    background-color: transparent; 
     justify-content: center;
     align-items: center;
 }
 
 .cai-dat-modal-content {
-    background-color: #ffffff; /* Nền sáng */
+    background-color: #ffffff; 
     padding: 30px;
     border-radius: 10px;
     width: 90%;
-    max-width: 550px; /* Tăng chiều ngang để tránh xuống hàng */
-    min-height: 400px; /* Giữ chiều dài */
+    max-width: 550px; 
+    min-height: 400px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
-    text-align: center; /* Căn giữa toàn bộ nội dung */
+    text-align: center; 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Căn giữa theo trục ngang */
+    align-items: center;
 }
 
 .cai-dat-modal-content h3 {
@@ -868,31 +868,31 @@
     text-align: center;
     text-transform: uppercase;
     color: #2c3e50;
-    display: block; /* Đảm bảo hiển thị */
-    visibility: visible; /* Đảm bảo không bị ẩn */
+    display: block; 
+    visibility: visible;
 }
 
 .cai-dat-modal-content .cai-dat-info-item {
     margin-bottom: 15px;
     display: flex;
-    flex-direction: row; /* Sắp xếp ngang */
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-start; /* Căn trái nội dung */
+    justify-content: flex-start;
     width: 100%;
-    gap: 10px; /* Khoảng cách giữa label và input */
+    gap: 10px; 
 }
 
 .cai-dat-modal-content .cai-dat-info-item label {
-    margin-bottom: 0; /* Xóa margin-bottom vì không cần xuống dòng */
-    text-align: left; /* Căn trái label */
-    width: 160px; /* Tăng width từ 150px lên 160px */
+    margin-bottom: 0; 
+    text-align: left;
+    width: 160px;
     font-weight: 600;
     color: #34495e;
 }
 
 .cai-dat-modal-content .cai-dat-info-item input[type="password"] {
     padding: 12px;
-    width: 300px; /* Tăng width từ 250px lên 300px theo yêu cầu */
+    width: 300px;
     border: 2px solid #ecf0f1;
     border-radius: 6px;
     background: #fafafa;
@@ -924,10 +924,10 @@
     padding: 12px;
     border-radius: 6px;
     background-color: #e8f6ea;
-    text-align: center; /* Căn giữa thông báo */
+    text-align: center;
     font-weight: 500;
     animation: fadeIn 0.5s ease;
-    width: 100%; /* Đảm bảo full width */
+    width: 100%; 
 }
 
 .cai-dat-modal-error {
@@ -936,18 +936,18 @@
     padding: 12px;
     border-radius: 6px;
     background-color: #fdecea;
-    text-align: center; /* Căn giữa thông báo */
+    text-align: center;
     font-weight: 500;
     animation: fadeIn 0.5s ease;
-    width: 100%; /* Đảm bảo full width */
+    width: 100%; 
 }
 
 .cai-dat-save-password-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center; /* Căn giữa nội dung */
+    justify-content: center;
     gap: 8px;
-    padding: 8px 16px; /* Kích thước đã ok */
+    padding: 8px 16px;
     background: linear-gradient(45deg, #27ae60, #2ecc71);
     color: #fff;
     border-radius: 6px;
@@ -957,7 +957,7 @@
     font-weight: 600;
     transition: all 0.3s ease;
     margin-top: 20px;
-    margin-left: auto; /* Căn giữa nút */
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -1149,7 +1149,7 @@
         min-height: 350px;
     }
     .cai-dat-modal-content .cai-dat-info-item {
-        flex-direction: column; /* Trên mobile, xếp dọc để tránh tràn */
+        flex-direction: column;
         align-items: flex-start;
     }
     .cai-dat-modal-content .cai-dat-info-item label {
@@ -1160,5 +1160,115 @@
     .cai-dat-modal-content .cai-dat-info-item input[type="password"] {
         width: 100%;
         max-width: 300px;
+    }
+}
+.tab-content#moderation {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.moderation-section {
+    width: 100%;
+}
+
+.moderation-title {
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: left;
+}
+
+.moderation-table-container {
+    width: 100%;
+    overflow-x: auto; /* Hỗ trợ cuộn ngang trên màn hình nhỏ */
+}
+
+.moderation-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.moderation-table th,
+.moderation-table td {
+    padding: 14px 16px;
+    border: 1px solid #e0e7ff;
+    text-align: left;
+    font-size: 14px;
+}
+
+.moderation-table th {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.moderation-table td {
+    background: #f9fbfd;
+    color: #34495e;
+}
+
+.moderation-table .empty-message {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.action-btn {
+    padding: 8px 14px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.approve-btn {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    color: #fff;
+}
+
+.approve-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #45a049, #43a047);
+}
+
+.reject-btn {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: #fff;
+}
+
+.reject-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #d32f2f, #b71c1c);
+}
+
+@media (max-width: 768px) {
+    .moderation-table th,
+    .moderation-table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .action-btn {
+        padding: 6px 10px;
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+    .moderation-title {
+        font-size: 18px;
     }
 }

@@ -12,7 +12,7 @@ html, body, .quan-ly-truyen-container {
     max-width: 1200px;
     margin: 40px auto;
     padding: 30px;
-    background: #fff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd); 
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -25,8 +25,17 @@ html, body, .quan-ly-truyen-container {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); 
+    padding: 10px 0;
+    transition: transform 0.3s ease; 
 }
-
+.quan-ly-truyen-container h2:hover {
+    transform: scale(1.05);
+}
 .add-truyen-btn {
     display: inline-flex;
     align-items: center;
@@ -36,7 +45,7 @@ html, body, .quan-ly-truyen-container {
     color: #fff;
     text-decoration: none;
     border-radius: 6px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-weight: 600;
     font-size: 16px;
     border: none;
@@ -48,6 +57,40 @@ html, body, .quan-ly-truyen-container {
     background: linear-gradient(45deg, #2980b9, #4682b4);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: 10px;
+    border: 1px solid #dfe6e9;
+    border-radius: 6px;
+    font-size: 15px;
+    width: 200px;
+}
+
+.filter-bar button {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #3498db, #5dade2);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.filter-bar button:hover {
+    background: linear-gradient(45deg, #2980b9, #4682b4);
 }
 
 .add-truyen-form {
@@ -212,10 +255,11 @@ html, body, .quan-ly-truyen-container {
     width: 100% !important;
     border-collapse: collapse !important;
     margin-top: 20px !important;
+    min-width: 1000px; /* Đảm bảo bảng không co lại quá nhỏ */
 }
 
 .truyen-table th, .truyen-table td {
-    padding: 14px 16px !important;
+    padding: 16px 20px !important; /* Tăng padding */
     border: 1px solid #dfe6e9 !important;
     text-align: left !important;
     font-size: 15px !important;
@@ -223,20 +267,27 @@ html, body, .quan-ly-truyen-container {
 }
 
 .truyen-table th {
-    background-color: #ecf0f1 !important;
+    background: linear-gradient(45deg, #3498db, #5dade2) !important; /* Gradient nền */
     font-weight: 600 !important;
     text-transform: uppercase;
     font-size: 14px !important;
-    color: #2c3e50 !important;
+    color: #fff !important;
+    font-family: 'Roboto', sans-serif !important;
+    transition: background 0.3s ease !important;
 }
 
+.truyen-table th:hover {
+    background: linear-gradient(45deg, #2980b9, #4682b4) !important;
+}
+
+/* Điều chỉnh width cột */
 .truyen-table th:nth-child(1), .truyen-table td:nth-child(1) { 
     width: 5% !important;
     text-align: center !important; 
 }
 
 .truyen-table th:nth-child(2), .truyen-table td:nth-child(2) { 
-    width: 20% !important;
+    width: 25% !important;
 }
 
 .truyen-table th:nth-child(3), .truyen-table td:nth-child(3) {
@@ -244,12 +295,12 @@ html, body, .quan-ly-truyen-container {
 }
 
 .truyen-table th:nth-child(4), .truyen-table td:nth-child(4) {
-    width: 15% !important;
+    width: 10% !important;
     text-align: center !important;
 }
 
 .truyen-table th:nth-child(5), .truyen-table td:nth-child(5) {
-    width: 20% !important;
+    width: 15% !important;
     text-align: center !important; 
 }
 
@@ -259,27 +310,49 @@ html, body, .quan-ly-truyen-container {
 }
 
 .truyen-table th:nth-child(7), .truyen-table td:nth-child(7) {
-    width: 10% !important;
+    width: 25% !important;
+    min-width: 200px !important;
     text-align: center !important;
 }
 
 .truyen-table img {
     width: 80px !important;
-    height: auto !important;
+    height: 120px !important;
+    object-fit: cover !important;
+    border: 1px solid #dfe6e9 !important;
     border-radius: 6px !important;
     display: block;
     margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.truyen-table img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px; 
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 5px 0; 
 }
 
 .truyen-table .action-btn {
-    padding: 8px 16px;
+    padding: 6px 12px;
     text-decoration: none;
     border-radius: 6px;
-    margin: 0 8px;
     font-size: 14px;
     font-weight: 600;
-    transition: background 0.3s ease;
-    display: inline-block; 
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.truyen-table .action-btn:hover {
+    transform: scale(1.05);
 }
 
 .truyen-table .edit-btn {
@@ -307,6 +380,24 @@ html, body, .quan-ly-truyen-container {
 
 .truyen-table .manage-btn:hover {
     background-color: #218838;
+}
+
+.chapter-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.chapter-status.pending {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.chapter-status.approved {
+    background: #27ae60;
+    color: #fff;
 }
 
 .success-message {
@@ -353,13 +444,50 @@ html, body, .quan-ly-truyen-container {
 .pagination a:hover:not(.active) {
     background-color: #ecf0f1;
 }
-/* Thêm vào cuối file quan-ly-truyen.css */
-.chapter-info {
-    font-size: 0.9em;
-    color: #666;
-}
 
-.chapter-info span {
-    display: block;
-    margin-bottom: 5px;
+/* Responsive design */
+@media (max-width: 768px) {
+    .quan-ly-truyen-container {
+        overflow-x: auto;
+    }
+
+    .truyen-table {
+        min-width: 1000px;
+    }
+
+    .truyen-table thead {
+        display: none;
+    }
+
+    .truyen-table tbody tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        border: 1px solid #dfe6e9;
+        border-radius: 6px;
+        background: #f7f9fc;
+        padding: 10px;
+    }
+
+    .truyen-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        border: none;
+        padding: 8px 10px;
+        text-align: left;
+    }
+
+    .truyen-table tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .truyen-table tbody td:nth-child(1):before { content: "ID: "; }
+    .truyen-table tbody td:nth-child(2):before { content: "Tên truyện: "; }
+    .truyen-table tbody td:nth-child(3):before { content: "Tác giả: "; }
+    .truyen-table tbody td:nth-child(4):before { content: "Ảnh bìa: "; }
+    .truyen-table tbody td:nth-child(5):before { content: "Ngày cập nhật: "; }
+    .truyen-table tbody td:nth-child(6):before { content: "Thông tin chương: "; }
+    .truyen-table tbody td:nth-child(7):before { content: "Hành động: "; }
 }

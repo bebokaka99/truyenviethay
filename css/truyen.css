@@ -2,26 +2,48 @@
     max-width: 1000px;
     margin: 50px auto;
     padding: 20px;
-    background: #fff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #4CAF50;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     color: #333;
+    font-family: 'Roboto', sans-serif;
 }
 
 .truyen-container h2 {
-    font-size: 32px;
-    color: #333;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: bold;
+    font-size: 32px; 
+    color: #2c3e50;
+    margin-bottom: 25px;
     text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.truyen-container h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 120px;
+    height: 3px;
+    background: #2ecc71; /* Giữ xanh lá cho viền dưới */
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.truyen-container h2:hover::after {
+    width: 180px;
 }
 
 .truyen-header {
     display: flex;
     gap: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .truyen-image {
@@ -33,48 +55,58 @@
     width: 200px;
     height: 280px;
     object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border: 3px solid #2ecc71; /* Giữ viền xanh lá */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.truyen-cover:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .truyen-info {
     flex: 1;
-    align-items: center;
+    padding: 10px 0;
+    text-align: left;
 }
 
 .truyen-info .info-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 5px 0;
 }
 
 .truyen-info .info-icon {
-    font-size: 18px;
-    color: #4CAF50;
+    font-size: 16px;
+    color: #2ecc71; /* Giữ icon xanh lá */
 }
 
 .truyen-info .info-item label {
-    font-weight: bold;
-    color: #555;
+    font-weight: 400; /* Bỏ đậm */
+    color: #333; /* Đổi thành màu đen */
+    font-style: italic; /* In nghiêng */
     width: 120px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .truyen-info .info-item span {
-    color: #333;
-    font-size: 16px;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .truyen-info .rating-star {
-    font-size: 18px;
+    font-size: 16px;
     color: #f1c40f;
 }
 
 .truyen-info .rating-stars {
     display: inline-flex;
-    gap: 5px;
+    gap: 3px;
     cursor: pointer;
 }
 
@@ -93,312 +125,335 @@
 }
 
 .truyen-info .rating-value {
-    margin-left: 10px;
-    font-size: 16px;
-    color: #333;
+    margin-left: 6px;
+    font-size: 14px;
+    color: #f1c40f;
+    font-weight: 600;
 }
 
 .truyen-info .tags {
     display: flex;
-    gap: 10px;
+    gap: 6px;
     flex-wrap: wrap;
+    margin-top: 8px;
 }
 
 .truyen-info .tags .tag-btn {
-    background: #ff9800;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 14px;
+    background: #e67e22; /* Đổi thành màu cam */
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 12px;
     color: #fff;
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .truyen-info .tags .tag-btn:hover {
-    background: #45a049;
+    background: #d35400;
+    transform: translateY(-1px);
 }
 
 .truyen-info .the-loai {
-    margin-top: 15px;
+    margin-top: 8px;
+    color: #333; /* Đổi thành màu đen */
+    font-style: italic; /* In nghiêng */
+    font-size: 13px;
 }
 
 .action-buttons {
     display: flex;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .read-btn {
-    padding: 12px 24px;
-    background: #28a745;
+    padding: 8px 18px;
+    background: #2ecc71;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .read-btn:hover {
-    background: #45a049;
+    background: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .continue-btn {
-    padding: 12px 24px;
-    background: #1E90FF;
+    padding: 8px 18px;
+    background: #bdc3c7;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .continue-btn:hover {
-    background: #1C86EE;
+    background: #a1a9af;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .continue-btn.disabled {
-    background: #a9a9a9;
+    background: #bdc3c7;
     cursor: not-allowed;
 }
 
 .follow-btn {
-    padding: 12px 24px;
-    background: #dc3545;
+    padding: 8px 18px;
+    background: #e74c3c;
     color: #fff;
     border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .follow-btn:hover {
-    background: #5a6268;
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .like-btn {
-    padding: 12px 24px;
-    background: #6f42c1;
+    padding: 8px 18px;
+    background: #8e44ad;
     color: #fff;
     border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .like-btn:hover {
-    background: #138496;
+    background: #7b3f95;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .truyen-description {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .truyen-description h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .truyen-description p {
-    font-size: 16px;
-    color: #555;
+    font-size: 14px;
+    color: #34495e;
     line-height: 1.6;
 }
 
 .chuong-list {
     border-top: 1px solid #ddd;
-    padding-top: 20px;
+    padding-top: 15px;
 }
 
 .chuong-list h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .chuong-items {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-    background: #fafafa;
 }
 
 .chuong-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 10px 12px;
     border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
 }
-
 .chuong-item:last-child {
     border-bottom: none;
 }
 
 .chuong-item a {
-    color: #333;
+    color: #2c3e50;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .chuong-item a:hover {
-    text-decoration: underline;
+    color: #1a252f;
 }
 
 .chuong-item span {
-    color: #777;
-    font-size: 14px;
+    color: #333;
+    font-size: 13px;
 }
 
 .chuong-count {
-    font-size: 16px;
-    color: #333;
-    margin-top: 10px;
-    font-weight: bold;
+    font-size: 14px;
+    color: #2c3e50;
+    margin-top: 8px;
+    font-weight: 600;
 }
 
 /* Phần bình luận */
 .comment-section {
-    margin-top: 30px;
+    margin-top: 20px;
     border-top: 1px solid #ddd;
-    padding-top: 20px;
+    padding-top: 15px;
     background: #fff;
     color: #333;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
 }
 
 .comment-section h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
 .comment-form {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .comment-form-container {
     display: flex;
-    align-items: center; 
-    gap: 12px;
-    height: 70px; 
-    background: #f5f5f5; 
-    border-radius: 20px;
-    padding: 8px; 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    gap: 8px;
+    height: 50px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .comment-input-wrapper {
     display: flex;
-    align-items: center; 
+    align-items: center;
     flex: 1;
-    height: 100%; 
+    height: 100%;
 }
 
 .comment-avatar {
-    width: 40px; 
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px; 
-    border: 2px solid #4CAF50;
+    margin-right: 6px;
+    border: 1px solid #2c3e50;
 }
 
 .comment-section .comment-form-container .comment-input-wrapper textarea {
     width: 100%;
-    height: 60px !important; 
-    padding: 10px 14px; 
+    height: 40px !important;
+    padding: 6px 10px;
     border: none;
-    border-radius: 20px;
-    font-size: 14px;
-    resize: none !important; 
+    border-radius: 10px;
+    font-size: 13px;
+    resize: none !important;
     background: #fff;
     color: #333;
-    box-shadow: none;
     outline: none;
     line-height: 1.5;
-    overflow-y: auto; 
+    overflow-y: auto;
+    transition: box-shadow 0.3s ease;
+}
+
+.comment-section .comment-form-container .comment-input-wrapper textarea:focus {
+    box-shadow: 0 0 4px rgba(44, 62, 80, 0.2);
 }
 
 .comment-input textarea::placeholder {
-    color: #999; 
+    color: #95a5a6;
 }
 
 .comment-input textarea:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    border-color: #2c3e50;
+    box-shadow: 0 0 4px rgba(44, 62, 80, 0.2);
 }
 
 .submit-commentBtn {
-    padding: 8px 16px;
-    background: #4CAF50;
+    padding: 5px 12px;
+    background: #2c3e50;
     color: #fff;
     border: none;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 6px;
-    height: 40px;
-    min-width: 80px;
-    margin-right: 5px;
+    gap: 4px;
+    height: 32px;
+    min-width: 60px;
 }
 
 .submit-commentBtn:hover {
-    background: #45a049;
+    background: #1a252f;
 }
 
 .comment-list {
     max-height: 400px;
     overflow-y: auto;
-    padding: 10px;
-    background: #fafafa;
+    padding: 8px;
+    background: #fff;
     border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 .comment-item {
-    padding: 15px;
+    padding: 10px;
     border-bottom: 1px solid #eee;
     background: #fff;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    transition: background 0.3s ease;
+}
+
+.comment-item:hover {
+    background: #f5f5f5;
 }
 
 .comment-item:last-child {
@@ -409,7 +464,7 @@
 .comment-header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .comment-user-info {
@@ -418,58 +473,58 @@
 }
 
 .comment-user {
-    font-weight: bold;
-    color: #4CAF50;
-    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 13px;
 }
 
 .comment-time {
-    color: #777;
+    color: #7f8c8d;
     font-size: 12px;
 }
 
 .comment-content p {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     color: #333;
     line-height: 1.5;
 }
 
 .comment-actions {
-    margin-top: 10px;
+    margin-top: 6px;
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 
 .comment-action-btn {
     background: none;
     border: none;
-    color: #4CAF50;
+    color: #2c3e50;
     font-size: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 2px 8px;
-    border-radius: 15px;
-    transition: background-color 0.3s;
+    gap: 3px;
+    padding: 2px 5px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
 }
 
 .comment-action-btn:hover {
-    background: #e0e0e0;
+    background: #ecf0f1;
 }
 
 .no-comments {
     font-style: italic;
-    color: #777;
+    color: #7f8c8d;
     text-align: center;
-    font-size: 14px;
-    padding: 20px;
+    font-size: 13px;
+    padding: 10px;
 }
 
 .error-image {
-    font-size: 14px;
-    color: #f44336;
+    font-size: 13px;
+    color: #e74c3c;
     margin-top: 5px;
     text-align: center;
 }
@@ -480,6 +535,8 @@
 
 .follow-btn.followed:hover {
     background: #4a5156;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .like-btn.liked {
@@ -487,25 +544,270 @@
 }
 
 .like-btn.liked:hover {
-    background: #106c7b;
+    background: #0f6f7d;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .follow-btn.disabled,
 .like-btn.disabled {
-    background: #a9a9a9;
+    background: #bdc3c7;
     cursor: not-allowed;
 }
 
 /* CSS cho thông báo không có chương */
 .no-chapters {
     font-style: italic;
-    color: #777;
+    color: #7f8c8d;
     text-align: center;
-    font-size: 16px;
-    padding: 20px 0;
+    font-size: 14px;
+    padding: 10px 0;
 }
 
 /* CSS cho chương đã đọc */
 .chuong-title.chuong-da-doc {
-    color: #666;
+    color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .truyen-container {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    .truyen-container h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+    }
+
+    .truyen-container h2::after {
+        width: 80px;
+    }
+
+    .truyen-container h2:hover::after {
+        width: 120px;
+    }
+
+    .truyen-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .truyen-image {
+        flex: none;
+        width: 100%;
+        text-align: center;
+    }
+
+    .truyen-cover {
+        width: 160px;
+        height: 224px;
+    }
+
+    .truyen-info {
+        width: 100%;
+        padding: 0;
+    }
+
+    .truyen-info .info-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 5px;
+    }
+
+    .truyen-info .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .truyen-info .info-item label {
+        width: 100px;
+        font-size: 13px;
+        color: #333;
+        font-style: italic;
+    }
+
+    .truyen-info .info-item span {
+        font-size: 13px;
+        flex: 1;
+        text-align: left;
+    }
+
+    .truyen-info .rating-value {
+        text-align: left;
+    }
+
+    .truyen-info .tags {
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .truyen-info .tags .tag-btn {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .read-btn,
+    .continue-btn,
+    .follow-btn,
+    .like-btn {
+        padding: 6px 14px;
+        font-size: 13px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .truyen-description {
+        padding: 10px;
+    }
+
+    .truyen-description h3 {
+        font-size: 16px;
+    }
+
+    .truyen-description p {
+        font-size: 13px;
+    }
+
+    .chuong-list h3 {
+        font-size: 16px;
+    }
+
+    .chuong-item {
+        padding: 8px 10px;
+    }
+
+    .chuong-item a {
+        font-size: 13px;
+    }
+
+    .chuong-item span {
+        font-size: 12px;
+    }
+
+    .chuong-count {
+        font-size: 13px;
+    }
+
+    .comment-section h3 {
+        font-size: 16px;
+    }
+
+    .comment-form-container {
+        height: 45px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .comment-input-wrapper {
+        flex: 1;
+    }
+
+    .comment-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .comment-section .comment-form-container .comment-input-wrapper textarea {
+        height: 35px !important;
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .submit-commentBtn {
+        padding: 4px 10px;
+        font-size: 12px;
+        height: 28px;
+        min-width: 50px;
+    }
+
+    .comment-item {
+        padding: 8px;
+    }
+
+    .comment-user {
+        font-size: 12px;
+    }
+
+    .comment-time {
+        font-size: 11px;
+    }
+
+    .comment-content p {
+        font-size: 12px;
+    }
+
+    .comment-action-btn {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .truyen-container {
+        margin: 10px 5px;
+        padding: 10px;
+    }
+
+    .truyen-container h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        padding-bottom: 6px;
+    }
+
+    .truyen-container h2::after {
+        width: 60px;
+    }
+
+    .truyen-container h2:hover::after {
+        width: 100px;
+    }
+
+    .truyen-header {
+        gap: 10px;
+    }
+
+    .truyen-cover {
+        width: 140px;
+        height: 196px;
+    }
+
+    .truyen-info .info-item label {
+        width: 90px;
+        font-size: 12px;
+        color: #333;
+        font-style: italic;
+    }
+
+    .truyen-info .info-item span {
+        font-size: 12px;
+    }
+
+    .truyen-info .tags .tag-btn {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .action-buttons {
+        gap: 6px;
+    }
+
+    .read-btn,
+    .continue-btn,
+    .follow-btn,
+    .like-btn {
+        padding: 5px 12px;
+        font-size: 12px;
+    }
 }

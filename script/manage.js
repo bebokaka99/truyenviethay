@@ -1,4 +1,8 @@
 export function initManage() {
+    if (!window.location.pathname.includes('quan-ly-truyen.html')) {
+        return;
+    }
+
     fetch('/truyenviethay/api/api.php?action=profile')
         .then(res => res.json())
         .then(data => {
@@ -13,6 +17,9 @@ export function initManage() {
             const userInfo = document.getElementById('user-info');
             userInfo.style.display = 'block';
             document.getElementById('user-avatar').src = '../' + data.data.avatar;
+        })
+        .catch(err => {
+            console.error('Lỗi tải thông tin user:', err);
         });
 
     fetch('/truyenviethay/api/api.php?action=theloai&subaction=categories')
@@ -23,6 +30,9 @@ export function initManage() {
                 theloaiContainer.innerHTML += `<a href="../truyen/the-loai.html?theloai[]=${theloai.id_theloai}" class="theloai-item">${theloai.ten_theloai}</a>`;
             });
             theloaiContainer.innerHTML += `<a href="../truyen/the-loai.html" class="theloai-item xem-tat-ca">Xem tất cả thể loại</a>`;
+        })
+        .catch(err => {
+            console.error('Lỗi tải thể loại:', err);
         });
 
     const addBtn = document.querySelector('.add-truyen-btn');
@@ -43,30 +53,40 @@ export function initManage() {
             method: 'POST',
             body: formData
         })
-        .then(res => res.json())
-        .then(data => {
-            const errorDiv = document.getElementById('error-message');
-            const successDiv = document.getElementById('success-message');
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
-
-            if (data.success) {
-                successDiv.textContent = data.message;
-                successDiv.style.display = 'block';
-                form.reset();
-                formContainer.style.display = 'none';
-                loadTruyen();
-            } else {
-                errorDiv.textContent = data.errors ? Object.values(data.errors)[0] : data.error;
-                errorDiv.style.display = 'block';
-            }
-        });
-    });
-
-    function loadTruyen(page = 1) {
-        fetch(`/truyenviethay/api/api.php?action=manage&page=${page}`)
             .then(res => res.json())
             .then(data => {
+                console.log('API response (add):', data); // Debug
+                const errorDiv = document.getElementById('error-message');
+                const successDiv = document.getElementById('success-message');
+                errorDiv.style.display = 'none';
+                successDiv.style.display = 'none';
+
+                if (data.success) {
+                    successDiv.textContent = data.message;
+                    successDiv.style.display = 'block';
+                    form.reset();
+                    formContainer.style.display = 'none';
+                    loadTruyen(1, document.getElementById('search-input')?.value || '', document.getElementById('status-filter')?.value || '');
+                } else {
+                    errorDiv.textContent = data.errors ? Object.values(data.errors)[0] : data.error;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                console.error('Lỗi khi thêm truyện:', err);
+                document.getElementById('error-message').textContent = 'Lỗi kết nối. Vui lòng thử lại.';
+                document.getElementById('error-message').style.display = 'block';
+            });
+    });
+
+    function loadTruyen(page = 1, search = '', status = '') {
+        fetch(`/truyenviethay/api/api.php?action=manage&page=${page}&search=${encodeURIComponent(search)}&status=${status}`)
+            .then(res => {
+                console.log('API response status (loadTruyen):', res.status); // Debug
+                return res.json();
+            })
+            .then(data => {
+                console.log('API response data (loadTruyen):', data); // Debug
                 if (!data.success) {
                     window.location.href = data.redirect || '/truyenviethay/users/login.html';
                     return;
@@ -88,27 +108,24 @@ export function initManage() {
                                     <th>Ngày cập nhật</th>
                                     <th>Thông tin chương</th>
                                     <th>Hành động</th>
-                                    <th>Quản lý chương</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${data.data.map(row => `
                                     <tr>
-                                        <td>${row.id}</td>
-                                        <td>${row.ten_truyen}</td>
-                                        <td>${row.tac_gia || 'Không rõ'}</td>
-                                        <td><img src="${row.anh_bia}" alt="Ảnh bìa" style="width: 50px;"></td>
-                                        <td>${row.thoi_gian_cap_nhat}</td>
-                                        <td class="chapter-info">
+                                        <td data-label="ID">${row.id}</td>
+                                        <td data-label="Tên truyện">${row.ten_truyen}</td>
+                                        <td data-label="Tác giả">${row.tac_gia || 'Không rõ'}</td>
+                                        <td data-label="Ảnh bìa"><img src="${row.anh_bia}" alt="Ảnh bìa"></td>
+                                        <td data-label="Ngày cập nhật">${row.thoi_gian_cap_nhat}</td>
+                                        <td data-label="Thông tin chương" class="chapter-info">
                                             <span>Số chương: ${row.so_chuong || 0}</span>
-                                            ${role === 'admin' ? `<span>Bạn có ${row.chuong_chua_duyet} chương chưa phê duyệt</span>` : ''}
+                                            ${role === 'admin' ? `<span class="chapter-status ${row.chuong_chua_duyet > 0 ? 'pending' : 'approved'}">${row.chuong_chua_duyet > 0 ? 'Chưa duyệt: ' + row.chuong_chua_duyet : 'Đã duyệt'}</span>` : ''}
                                         </td>
-                                        <td>
-                                            <a href="edit-truyen.html?id=${row.id}" class="action-btn edit-btn">Chỉnh sửa</a>
-                                            <button class="action-btn delete-btn" data-id="${row.id}">Xóa</button>
-                                        </td>
-                                        <td>
-                                            <a href="quan-ly-chuong.html?truyen_id=${row.id}" class="action-btn manage-btn">Quản lý chương</a>
+                                        <td data-label="Hành động" class="action-buttons" style="min-width: 200px;">
+                                            <a href="edit-truyen.html?truyen_id=${row.id}" class="action-btn edit-btn"><i class="fas fa-edit"></i> Chỉnh sửa</a>
+                                            <button class="action-btn delete-btn" data-id="${row.id}"><i class="fas fa-trash"></i> Xóa</button>
+                                            <a href="quan-ly-chuong.html?truyen_id=${row.id}" class="action-btn manage-btn"><i class="fas fa-book"></i> Quản lý chương</a>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -125,22 +142,28 @@ export function initManage() {
                                     method: 'POST',
                                     body: formData
                                 })
-                                .then(res => res.json())
-                                .then(data => {
-                                    const errorDiv = document.getElementById('error-message');
-                                    const successDiv = document.getElementById('success-message');
-                                    errorDiv.style.display = 'none';
-                                    successDiv.style.display = 'none';
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        console.log('API response (delete):', data); // Debug
+                                        const errorDiv = document.getElementById('error-message');
+                                        const successDiv = document.getElementById('success-message');
+                                        errorDiv.style.display = 'none';
+                                        successDiv.style.display = 'none';
 
-                                    if (data.success) {
-                                        successDiv.textContent = data.message;
-                                        successDiv.style.display = 'block';
-                                        loadTruyen(page);
-                                    } else {
-                                        errorDiv.textContent = data.error;
-                                        errorDiv.style.display = 'block';
-                                    }
-                                });
+                                        if (data.success) {
+                                            successDiv.textContent = data.message;
+                                            successDiv.style.display = 'block';
+                                            loadTruyen(page, document.getElementById('search-input')?.value || '', document.getElementById('status-filter')?.value || '');
+                                        } else {
+                                            errorDiv.textContent = data.error;
+                                            errorDiv.style.display = 'block';
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error('Lỗi khi xóa truyện:', err);
+                                        document.getElementById('error-message').textContent = 'Lỗi kết nối. Vui lòng thử lại.';
+                                        document.getElementById('error-message').style.display = 'block';
+                                    });
                             }
                         });
                     });
@@ -163,17 +186,38 @@ export function initManage() {
                         e.preventDefault();
                         const newPage = parseInt(new URLSearchParams(link.search).get('page'));
                         window.history.pushState({}, '', `quan-ly-truyen.html?page=${newPage}`);
-                        loadTruyen(newPage);
+                        loadTruyen(newPage, document.getElementById('search-input')?.value || '', document.getElementById('status-filter')?.value || '');
                     });
                 });
+            })
+            .catch(err => {
+                console.error('Lỗi khi tải danh sách truyện:', err);
+                document.getElementById('error-message').textContent = 'Lỗi tải danh sách truyện. Vui lòng thử lại.';
+                document.getElementById('error-message').style.display = 'block';
             });
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    loadTruyen(parseInt(urlParams.get('page')) || 1);
+    if (document.getElementById('search-btn') && document.getElementById('search-input') && document.getElementById('status-filter')) {
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const search = document.getElementById('search-input').value;
+            const status = document.getElementById('status-filter').value;
+            loadTruyen(1, search, status);
+        });
 
-    window.addEventListener('popstate', () => {
-        const page = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
-        loadTruyen(page);
-    });
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const search = document.getElementById('search-input').value;
+                const status = document.getElementById('status-filter').value;
+                loadTruyen(1, search, status);
+            }
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        loadTruyen(parseInt(urlParams.get('page')) || 1, '', '');
+        
+        window.addEventListener('popstate', () => {
+            const page = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+            loadTruyen(page, document.getElementById('search-input')?.value || '', document.getElementById('status-filter')?.value || '');
+        });
+    }
 }

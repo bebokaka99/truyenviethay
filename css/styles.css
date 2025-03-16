@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f9f9f9;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
 }
 
 /* Header */
@@ -16,7 +16,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background-color: #ffffff;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -41,6 +41,12 @@ body {
   max-width: 100px;
   height: auto;
   display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3); /* Giữ xanh lá cho logo */
 }
 
 .nut-menu {
@@ -48,9 +54,14 @@ body {
   background: none;
   border: none;
   font-size: 24px;
-  color: #333333;
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
   cursor: pointer;
   padding: 0;
+  transition: color 0.3s ease;
+}
+
+.nut-menu:hover {
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
 }
 
 .thanh-dieu-huong .danh-sach-menu {
@@ -64,15 +75,16 @@ body {
 
 .thanh-dieu-huong .danh-sach-menu li a {
   text-decoration: none;
-  color: #333333;
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
   font-size: 16px;
-  transition: color 0.3s;
+  transition: color 0.3s ease, transform 0.3s ease;
   font-weight: bold;
   padding: 4px;
 }
 
 .thanh-dieu-huong .danh-sach-menu li a:hover {
-  color: #4CAF50;
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
+  transform: translateY(-2px);
 }
 
 .menu-tim-kiem, .menu-dang-nhap, .menu-dang-ky {
@@ -87,8 +99,8 @@ body {
 .noi-dung-dropdown {
   display: none;
   position: absolute;
-  background-color: #ffffff;
-  color: #333333;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient xanh nhạt */
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1;
   margin-top: 2px;
@@ -96,8 +108,8 @@ body {
   padding: 15px;
   min-width: 700px;
   max-height: 500px;
-  overflow-y: auto; 
-  border: 1px solid #e0e0e0; 
+  overflow-y: auto;
+  border: 1px solid #c8e6c9; /* Thay viền xám bằng xanh lá nhạt */
 }
 
 .noi-dung-dropdown.active {
@@ -107,14 +119,14 @@ body {
 .theloai-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px; 
+  gap: 10px;
 }
 
 .theloai-item {
-  padding: 8px 12px; 
+  padding: 8px 12px;
   text-decoration: none;
-  color: #333333;
-  font-size: 12px !important; 
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  font-size: 12px !important;
   font-weight: normal !important;
   text-align: center;
   transition: transform 0.3s, color 0.3s;
@@ -125,15 +137,15 @@ body {
 
 .theloai-item:hover {
   transform: scale(1.1);
-  color: #4CAF50;
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
 }
 
 .theloai-item.xem-tat-ca {
   grid-column: 1 / -1;
   padding: 8px 12px;
   text-decoration: none;
-  color: #333333;
-  font-size: 13px !important; 
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  font-size: 13px !important;
   font-weight: normal !important;
   text-align: center;
   transition: transform 0.3s, color 0.3s;
@@ -144,7 +156,7 @@ body {
 
 .theloai-item.xem-tat-ca:hover {
   transform: scale(1.1);
-  color: #4CAF50;
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
 }
 
 /* Thanh cuộn tùy chỉnh */
@@ -153,12 +165,12 @@ body {
 }
 
 .noi-dung-dropdown::-webkit-scrollbar-thumb {
-  background-color: #4CAF50;
+  background-color: #4CAF50; /* Giữ xanh lá */
   border-radius: 4px;
 }
 
 .noi-dung-dropdown::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: #e8f5e9; /* Thay xám bằng xanh lá nhạt */
 }
 
 .phan-phai {
@@ -170,72 +182,81 @@ body {
 
 .thanh-tim-kiem {
   position: relative;
-    display: flex;
-    align-items: center;
-    background-color: #ffffff; 
-    border-radius: 25px;
-    border: 2px solid #28a745;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
+  border-radius: 25px;
+  border: 2px solid #4CAF50; /* Thay xanh lá */
+  overflow: hidden;
 }
 
 .thanh-tim-kiem input {
   padding: 2px 7px 2px 7px;
-    width: 180px;
-    border: none;
-    background-color: transparent;
-    color: #000000;
-    outline: none;
-    font-size: 14px;
+  width: 180px;
+  border: none;
+  background: transparent;
+  color: #333333;
+  outline: none;
+  font-size: 14px;
 }
+
 .thanh-tim-kiem input::placeholder {
-  color: #bbb;
+  color: #a5d6a7; /* Thay placeholder xám bằng xanh lá nhạt */
 }
+
 .thanh-tim-kiem button {
   padding: 7px 11px;
-    color: #28a745;
-    border: 2px solid #ffffff;
-    background-color: transparent;
-    font-size: 16px;
-    cursor: pointer;
-    transition: color 0.3s;
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  border: 2px solid #e8f5e9;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+.thanh-tim-kiem button:hover {
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
+  background: rgba(232, 245, 233, 0.3); /* Nền nhạt khi hover */
 }
 
 .nut-dang-nhap {
   padding: 8px 16px;
-  background-color: #ffffff;
-  color: #4CAF50;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+  color: #4CAF50; /* Giữ xanh lá */
   border: 1px solid #4CAF50;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
   font-weight: bold;
 }
 
 .nut-dang-nhap:hover {
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Gradient xanh lá */
   color: #ffffff;
+  transform: scale(1.05);
 }
 
 .nut-dang-ky {
   padding: 8px 16px;
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s ease, transform 0.3s ease;
   font-weight: bold;
 }
 
 .nut-dang-ky:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  transform: scale(1.05);
 }
 
 /* Footer */
 .footer {
-  background-color: #ffffff;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
   padding: 40px 20px 20px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
@@ -259,14 +280,27 @@ body {
 .cot-footer h3 {
   font-size: 18px;
   font-weight: bold;
-  color: #333333;
+  background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay màu xám bằng gradient xanh lá */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.cot-footer h3:hover {
+  transform: scale(1.05);
 }
 
 .cot-footer p {
   font-size: 14px;
   color: #555555;
   line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.cot-footer p:hover {
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
 }
 
 .mang-xa-hoi {
@@ -276,14 +310,15 @@ body {
 }
 
 .lien-ket-mxh {
-  color: #4CAF50;
+  color: #4CAF50; /* Giữ xanh lá */
   font-size: 18px;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .lien-ket-mxh:hover {
-  color: #45a049;
+  color: #388e3c; /* Gradient xanh lá đậm hơn */
+  transform: rotate(360deg);
 }
 
 .danh-sach-lien-ket {
@@ -299,11 +334,12 @@ body {
   font-size: 14px;
   color: #555555;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .danh-sach-lien-ket a:hover {
-  color: #4CAF50;
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  transform: translateX(5px);
 }
 
 .ban-quyen {
@@ -311,7 +347,12 @@ body {
   font-size: 12px;
   color: #777777;
   padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #c8e6c9; /* Thay viền xám bằng xanh lá nhạt */
+  transition: color 0.3s ease;
+}
+
+.ban-quyen:hover {
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
 }
 
 /* Responsive */
@@ -339,7 +380,7 @@ body {
     left: -250px;
     width: 250px;
     height: 100%;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     z-index: 1000;
@@ -486,7 +527,7 @@ th, td {
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: #e8f5e9; /* Thay màu xám bằng xanh lá nhạt */
 }
 
 .actions {
@@ -496,26 +537,29 @@ th {
 .button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
   color: white;
   text-decoration: none;
   border-radius: 5px;
   margin-right: 10px;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  transform: scale(1.05);
 }
+
 /* Nút Lên Đầu Trang */
 #back-to-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #4CAF50; /* Màu nền xanh lá, đồng bộ với giao diện */
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   padding: 12px;
-  border-radius: 50%; /* Hình tròn để nổi bật */
+  border-radius: 50%;
   width: 40px;
   height: 40px;
   font-size: 18px;
@@ -524,7 +568,7 @@ th {
   transition: opacity 0.3s, transform 0.3s;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng nhẹ */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #back-to-top.show {
@@ -533,16 +577,16 @@ th {
 }
 
 #back-to-top:hover {
-  background-color: #45a049; /* Màu khi hover, đồng bộ với nút khác */
-  transform: scale(1.1); /* Hiệu ứng phóng to khi hover */
+  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  transform: scale(1.1);
 }
 
 #back-to-top.dark-mode {
-  background-color: #45a049; /* Tùy chỉnh cho dark mode */
+  background: linear-gradient(135deg, #388e3c, #2e7d32);
 }
 
 #back-to-top.dark-mode:hover {
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
 }
 
 /* Responsive cho mobile */
@@ -555,11 +599,12 @@ th {
       font-size: 16px;
   }
 }
+
 /* Nút Nhiệm vụ */
 .task-btn {
   position: relative;
   padding: 8px 16px;
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -573,7 +618,7 @@ th {
 }
 
 .task-btn:hover {
-  background-color: #4CAF50; /* Xanh dương đậm hơn khi hover */
+  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
   transform: scale(1.05);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -582,7 +627,7 @@ th {
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: #f44336; /* Đỏ */
+  background-color: #f44336;
   color: #ffffff;
   border-radius: 50%;
   width: 20px;
@@ -593,8 +638,9 @@ th {
   font-size: 12px;
   animation: pulse 2s infinite;
 }
+
 .completed-text {
-  color: #28a745; 
+  color: #4CAF50; /* Giữ xanh lá */
   font-weight: bold;
   padding: 5px 10px;
   display: inline-block;
@@ -606,6 +652,7 @@ th {
   padding: 5px 10px;
   display: inline-block;
 }
+
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
@@ -647,12 +694,12 @@ th {
 }
 
 .task-modal-close:hover {
-  color: #f44336;
+  color: #4CAF50; /* Thay đỏ bằng xanh lá */
 }
 
 .task-modal h2 {
   font-size: 24px;
-  color: #333333;
+  color: #4CAF50; /* Thay màu xám bằng xanh lá */
   margin-bottom: 10px;
   text-align: center;
 }
@@ -682,7 +729,7 @@ th {
 
 .task-item.completed {
   background-color: #e7f3e8;
-  border-color: #4CAF50;
+  border-color: #4CAF50; /* Giữ xanh lá */
 }
 
 .task-info h3 {
@@ -708,7 +755,7 @@ th {
 
 .task-progress {
   height: 100%;
-  background: linear-gradient(90deg, #2196F3, #42A5F5); /* Gradient xanh dương */
+  background: linear-gradient(90deg, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
   transition: width 0.3s ease-in-out;
 }
 
@@ -719,20 +766,20 @@ th {
 
 .claim-btn {
   padding: 8px 16px;
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s;
 }
 
 .claim-btn:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
 }
 
 .claimed {
-  color: #4CAF50;
+  color: #4CAF50; /* Giữ xanh lá */
   font-weight: bold;
 }
 
@@ -765,16 +812,17 @@ th {
       text-align: center;
   }
 }
+
 .success {
-  color: green;
-  background-color: #dff0d8;
+  color: #4CAF50;
+  background-color: #e8f5e9; 
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
 }
 
 .error {
-  color: red;
+  color: #f44336;
   background-color: #f2dede;
   padding: 10px;
   border-radius: 5px;

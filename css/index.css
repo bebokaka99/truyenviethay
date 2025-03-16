@@ -1,12 +1,12 @@
 /* Nội dung chính */
 .noi-dung-chinh {
     padding: 15px 20px;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay gradient xanh nhạt, giữ nhẹ nhàng */
     transition: background-color 0.3s, color 0.3s;
 }
 
 .noi-dung-chinh.dark-mode {
-    background-color: #1a1a1a;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44); /* Tông xanh dương tối cho dark mode */
     color: #ffffff;
 }
 
@@ -15,25 +15,28 @@
     max-width: 100%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .thong-bao-chao-mung.dark-mode {
-    background-color: #2c2c2c;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
     color: #ffffff;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .thong-bao-chao-mung.dark-mode a {
-    color: #4CAF50;
+    color: #4CAF50; 
 }
 
 .thong-bao-chao-mung h1 {
     font-size: 36px;
-    color: #333333;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay xanh dương bằng gradient xanh lá */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     margin-bottom: 20px;
     transition: color 0.3s;
 }
@@ -70,43 +73,43 @@
 }
 
 .nut-kham-pha {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049); 
     color: #ffffff;
 }
 
 .nut-kham-pha:hover {
-    background-color: #45a049;
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
     transform: translateY(-2px);
 }
 
 .nut-kham-pha.dark-mode {
-    background-color: #45a049;
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
 }
 
 .nut-kham-pha.dark-mode:hover {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
 }
 
 .nut-dang-ky-tac-gia {
-    background-color: #ffffff;
-    color: #4CAF50;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+    color: #4CAF50; /* Thay xanh dương bằng xanh lá */
     border: 2px solid #4CAF50;
 }
 
 .nut-dang-ky-tac-gia:hover {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: #ffffff;
     transform: translateY(-2px);
 }
 
 .nut-dang-ky-tac-gia.dark-mode {
-    background-color: #2c2c2c;
-    border-color: #4CAF50;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
+    border-color: #4CAF50; /* Giữ xanh lá */
     color: #4CAF50;
 }
 
 .nut-dang-ky-tac-gia.dark-mode:hover {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: #ffffff;
 }
 
@@ -114,20 +117,23 @@
 .thanh-truot-truyen {
     width: 100%;
     padding: 20px 0;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .thanh-truot-truyen.dark-mode {
-    background-color: #1a1a1a;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .thanh-truot-truyen h2 {
     text-align: center;
     font-size: 24px;
-    color: #333333;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     margin-bottom: 20px;
     transition: color 0.3s;
 }
@@ -156,7 +162,7 @@
     text-align: center;
     margin: 0 10px;
     flex: 0 0 auto;
-    transition: color 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
 }
 
 .truyen.dark-mode {
@@ -178,6 +184,11 @@
     height: 260px;
     border-radius: 8px;
     object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.truyen:hover img {
+    transform: scale(1.05);
 }
 
 .ten-truyen {
@@ -225,26 +236,27 @@
 }
 
 .nut-dieu-huong {
-    background-color: rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #4CAF50, #45a049); 
     color: #ffffff;
     border: none;
     padding: 15px;
     cursor: pointer;
     font-size: 24px;
     z-index: 1;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .nut-dieu-huong.dark-mode {
-    background-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
 }
 
 .nut-dieu-huong:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
+    transform: scale(1.1);
 }
 
 .nut-dieu-huong.dark-mode:hover {
-    background-color: rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, #4CAF50, #45a049);
 }
 
 .nut-trai {
@@ -261,14 +273,14 @@
 .hien-thi-truyen {
     margin-top: 30px;
     padding: 15px;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .hien-thi-truyen.dark-mode {
-    background-color: #1a1a1a;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
@@ -279,14 +291,20 @@
 }
 
 .tieu-de-truyen i {
-    color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     margin-right: 8px;
     font-size: 20px;
 }
 
 .tieu-de-truyen h2 {
     font-size: 20px;
-    color: #333333;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     font-weight: bold;
     transition: color 0.3s;
 }
@@ -302,7 +320,7 @@
 }
 
 .khoi-truyen {
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #ffffff, #e8f5e9);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -310,12 +328,13 @@
 }
 
 .khoi-truyen.dark-mode {
-    background-color: #2c2c2c;
+    background: linear-gradient(135deg, #2c2c2c, #1e3a8a);
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
 }
 
 .khoi-truyen:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .anh-truyen {
@@ -336,7 +355,7 @@
 }
 
 .thoi-gian {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
     color: #ffffff;
     font-size: 10px;
     padding: 3px 6px;
@@ -345,7 +364,7 @@
 }
 
 .thoi-gian.dark-mode {
-    background-color: #45a049;
+    background: linear-gradient(135deg, #388e3c, #2e7d32);
 }
 
 .danh-gia {
@@ -391,7 +410,10 @@
 }
 
 .thong-tin-truyen a:hover h3 {
-    color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay xanh dương bằng xanh lá */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .thong-tin-truyen p {
@@ -405,7 +427,10 @@
 }
 
 .thong-tin-truyen a:hover p {
-    color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay xanh dương bằng xanh lá */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .thong-tin-truyen .chuong-moi {
@@ -417,7 +442,7 @@
 }
 
 .thong-tin-truyen .chuong-moi.dark-mode {
-    color: #4CAF50;
+    color: #4CAF50; /* Thay xanh dương bằng xanh lá */
 }
 
 .thong-tin-truyen .chuong-moi:hover {
@@ -430,28 +455,29 @@
     max-width: 100%;
     padding: 10px 0;
     margin: 20px auto 0;
-    background-color: #ffffff;
-    color: #4CAF50;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+    color: #4CAF50; /* Thay xanh dương bằng xanh lá */
     border: 1px solid #4CAF50;
     text-decoration: none;
     font-weight: bold;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s;
+    transition: background-color 0.3s ease, color 0.3s, transform 0.3s;
 }
 
 .nut_xem_them.dark-mode {
-    background-color: #2c2c2c;
-    border-color: #4CAF50;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
+    border-color: #4CAF50; /* Giữ xanh lá */
     color: #4CAF50;
 }
 
 .nut_xem_them:hover {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: #ffffff;
+    transform: scale(1.05);
 }
 
 .nut_xem_them.dark-mode:hover {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: #ffffff;
 }
 
@@ -462,10 +488,10 @@
     padding: 15px 20px;
     font-weight: bold;
     color: #fff;
-    background: linear-gradient(to right, #acffb8, #4CAF50);
+    background: linear-gradient(to right, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s;
     cursor: pointer;
     text-decoration: none;
 }
@@ -474,18 +500,23 @@
     box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
 }
 
+.nut_dan_trang:hover {
+    background: linear-gradient(to right, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+    transform: scale(1.05);
+}
+
 /* Phần bình chọn */
 .binh-chon-truyen {
     margin-top: 30px;
     padding: 15px;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .binh-chon-truyen.dark-mode {
-    background-color: #1a1a1a;
+    background: linear-gradient(135deg, #1e3a8a, #1a2a44);
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
@@ -493,7 +524,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #c8e6c9; /* Thay xanh dương bằng xanh lá nhạt */
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
     transition: border-color 0.3s;
@@ -528,6 +559,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    background: linear-gradient(45deg, #4CAF50, #388e3c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     transition: color 0.3s;
 }
 
@@ -540,11 +575,11 @@
 }
 
 .bieu-tuong-xanh {
-    color: #3b82f6;
+    color: #4CAF50;
 }
 
 .bieu-tuong-xanh.dark-mode {
-    color: #60a5fa;
+    color: #45a049;
 }
 
 .lien-ket-do {
@@ -566,21 +601,21 @@
 }
 
 .lien-ket-xanh {
-    color: #3b82f6;
+    color: #4CAF50; /* Thay xanh dương bằng xanh lá */
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .lien-ket-xanh.dark-mode {
-    color: #60a5fa;
+    color: #45a049;
 }
 
 .lien-ket-xanh:hover {
-    color: #2563eb;
+    color: #388e3c; /* Gradient xanh lá đậm hơn */
 }
 
 .lien-ket-xanh.dark-mode:hover {
-    color: #3b82f6;
+    color: #4CAF50;
 }
 
 .luoi-binh-chon {
@@ -592,7 +627,7 @@
 .khoi-truyen-binh-chon {
     display: flex;
     gap: 1rem;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, #ffffff, #e8f5e9);
     padding: 8px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -600,12 +635,13 @@
 }
 
 .khoi-truyen-binh-chon.dark-mode {
-    background-color: #2c2c2c;
+    background: linear-gradient(135deg, #2c2c2c, #1e3a8a);
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
 }
 
 .khoi-truyen-binh-chon:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .anh-truyen-binh-chon {
@@ -650,7 +686,10 @@
 }
 
 .thong-tin-binh-chon a:hover h3 {
-    color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #388e3c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .thong-tin-binh-chon p {
@@ -668,7 +707,10 @@
 }
 
 .thong-tin-binh-chon a:hover p {
-    color: #4CAF50;
+    background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay xanh dương bằng xanh lá */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .thong-tin-binh-chon .chuong-moi {
@@ -680,7 +722,7 @@
 }
 
 .thong-tin-binh-chon .chuong-moi.dark-mode {
-    color: #4CAF50;
+    color: #4CAF50; /* Thay xanh dương bằng xanh lá */
 }
 
 .thong-tin-binh-chon .chuong-moi:hover {

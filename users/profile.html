@@ -103,10 +103,28 @@
             </div>
         </div>
         <div class="tab-content" id="moderation" style="display: none;">
-            <h3>Danh sách truyện chờ duyệt</h3>
-            <div id="moderation-list"></div>
+            <div class="moderation-section">
+                <h3 class="moderation-title">Danh sách truyện chờ duyệt</h3>
+                <div class="moderation-table-container">
+                    <table class="moderation-table" id="moderation-list">
+                        <thead>
+                            <tr>
+                                <th>Tên truyện</th>
+                                <th>Tác giả</th>
+                                <th>Thời gian gửi</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu sẽ được render bởi JavaScript -->
+                            <tr>
+                                <td colspan="4" class="empty-message">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
 
     <!-- Footer -->
     <footer class="footer">

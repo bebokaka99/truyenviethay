@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $stmt_check = mysqli_prepare($conn, $sql_check);
         mysqli_stmt_bind_param($stmt_check, "s", $ten_truyen);
         mysqli_stmt_execute($stmt_check);
-        if (mysqli_stmt_num_rows($stmt_check) > 0) {
+        if (mysqli_stmt_num_rows(mysqli_stmt_get_result($stmt_check)) > 0) {
             $errors['ten_truyen'] = "Tên truyện '$ten_truyen' đã tồn tại";
         }
         mysqli_stmt_close($stmt_check);
@@ -166,30 +166,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $page = max(1, (int)($_GET['page'] ?? 1));
     $start = ($page - 1) * $per_page;
 
-    if ($user['role'] === 'admin') {
-        $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
-                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
-                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
-                       FROM truyen_new t ORDER BY t.thoi_gian_cap_nhat DESC LIMIT $start, $per_page";
-        $sql_count = "SELECT COUNT(*) as total FROM truyen_new";
-    } else {
-        $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
-                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
-                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
-                       FROM truyen_new t WHERE t.user_id = ? ORDER BY t.thoi_gian_cap_nhat DESC LIMIT $start, $per_page";
-        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE user_id = ?";
-    }
+    $search = isset($_GET['search']) ? '%' . trim($_GET['search']) . '%' : '';
+    $status = isset($_GET['status']) ? trim($_GET['status']) : '';
 
     if ($user['role'] === 'admin') {
-        $result_truyen = mysqli_query($conn, $sql_truyen);
-        $result_count = mysqli_query($conn, $sql_count);
-    } else {
+        $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
+                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
+                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
+                       FROM truyen_new t WHERE 1=1";
+        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE 1=1";
+        $params = [];
+        $types = '';
+
+        if ($search) {
+            $sql_truyen .= " AND (t.ten_truyen LIKE ? OR t.tac_gia LIKE ?)";
+            $sql_count .= " AND (ten_truyen LIKE ? OR tac_gia LIKE ?)";
+            $params[] = $search;
+            $params[] = $search;
+            $types .= 'ss';
+        }
+
+        if ($status) {
+            $sql_truyen .= " AND t.trang_thai = ?";
+            $sql_count .= " AND trang_thai = ?";
+            $params[] = $status;
+            $types .= 's';
+        }
+
+        // Sắp xếp: ưu tiên truyện có chương chưa duyệt (chuong_chua_duyet) lên đầu, sau đó theo thoi_gian_cap_nhat DESC
+        $sql_truyen .= " ORDER BY (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') DESC, t.thoi_gian_cap_nhat DESC LIMIT $start, $per_page";
         $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
-        mysqli_stmt_bind_param($stmt_truyen, "i", $user_id);
+        if ($params) {
+            mysqli_stmt_bind_param($stmt_truyen, $types, ...$params);
+        }
         mysqli_stmt_execute($stmt_truyen);
         $result_truyen = mysqli_stmt_get_result($stmt_truyen);
+
         $stmt_count = mysqli_prepare($conn, $sql_count);
-        mysqli_stmt_bind_param($stmt_count, "i", $user_id);
+        if ($params) {
+            mysqli_stmt_bind_param($stmt_count, $types, ...$params);
+        }
+        mysqli_stmt_execute($stmt_count);
+        $result_count = mysqli_stmt_get_result($stmt_count);
+    } else {
+        $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
+                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
+                            (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
+                       FROM truyen_new t WHERE t.user_id = ? AND 1=1";
+        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE user_id = ? AND 1=1";
+        $params = [$user_id];
+        $types = 'i';
+
+        if ($search) {
+            $sql_truyen .= " AND (t.ten_truyen LIKE ? OR t.tac_gia LIKE ?)";
+            $sql_count .= " AND (ten_truyen LIKE ? OR tac_gia LIKE ?)";
+            $params[] = $search;
+            $params[] = $search;
+            $types .= 'ss';
+        }
+
+        if ($status) {
+            $sql_truyen .= " AND t.trang_thai = ?";
+            $sql_count .= " AND trang_thai = ?";
+            $params[] = $status;
+            $types .= 's';
+        }
+
+        $sql_truyen .= " ORDER BY t.thoi_gian_cap_nhat DESC LIMIT $start, $per_page";
+        $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
+        mysqli_stmt_bind_param($stmt_truyen, $types, ...$params);
+        mysqli_stmt_execute($stmt_truyen);
+        $result_truyen = mysqli_stmt_get_result($stmt_truyen);
+
+        $stmt_count = mysqli_prepare($conn, $sql_count);
+        mysqli_stmt_bind_param($stmt_count, $types, ...$params);
         mysqli_stmt_execute($stmt_count);
         $result_count = mysqli_stmt_get_result($stmt_count);
     }

@@ -3,6 +3,20 @@ header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
+// Đặt múi giờ Việt Nam (UTC+7) và kiểm tra lỗi
+if (!mysqli_query($conn, "SET time_zone = '+07:00'")) {
+    error_log("Lỗi set múi giờ MySQL: " . mysqli_error($conn));
+    echo json_encode(['error' => 'Lỗi set múi giờ MySQL: ' . mysqli_error($conn)]);
+    exit;
+}
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+// Kiểm tra kết nối DB
+if (!$conn) {
+    echo json_encode(['error' => 'Không thể kết nối đến database: ' . mysqli_connect_error()]);
+    exit;
+}
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'Chưa đăng nhập', 'redirect' => '/truyenviethay/users/login.html']);
     exit;
@@ -13,7 +27,8 @@ $sql_user = "SELECT role FROM users_new WHERE id = ?";
 $stmt_user = mysqli_prepare($conn, $sql_user);
 mysqli_stmt_bind_param($stmt_user, "i", $user_id);
 mysqli_stmt_execute($stmt_user);
-$user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_user)) ?: null;
+$user_result = mysqli_stmt_get_result($stmt_user);
+$user = mysqli_fetch_assoc($user_result) ?: null;
 mysqli_stmt_close($stmt_user);
 
 if (!$user || !in_array($user['role'], ['admin', 'author'])) {
@@ -31,7 +46,8 @@ $sql_truyen = "SELECT user_id FROM truyen_new WHERE id = ?";
 $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
 mysqli_stmt_bind_param($stmt_truyen, "i", $truyen_id);
 mysqli_stmt_execute($stmt_truyen);
-$truyen = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_truyen)) ?: null;
+$truyen_result = mysqli_stmt_get_result($stmt_truyen);
+$truyen = mysqli_fetch_assoc($truyen_result) ?: null;
 mysqli_stmt_close($stmt_truyen);
 
 if (!$truyen) {
@@ -92,27 +108,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // Kiểm tra chương đã tồn tại
         $sql = "SELECT id FROM chuong WHERE truyen_id = ? AND so_chuong = ? AND trang_thai IN ('cho_duyet', 'da_duyet')";
         $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            echo json_encode(['error' => 'Lỗi chuẩn bị câu truy vấn: ' . mysqli_error($conn)]);
+            exit;
+        }
         mysqli_stmt_bind_param($stmt, "ii", $truyen_id, $so_chuong);
         mysqli_stmt_execute($stmt);
-        if (mysqli_stmt_num_rows(mysqli_stmt_get_result($stmt)) > 0) {
+        $result = mysqli_stmt_get_result($stmt);
+        if ($result === false) {
+            error_log("Lỗi lấy kết quả kiểm tra chương: " . mysqli_error($conn));
+            echo json_encode(['error' => 'Lỗi kiểm tra chương tồn tại: ' . mysqli_error($conn)]);
+            mysqli_stmt_close($stmt);
+            exit;
+        }
+        if (mysqli_num_rows($result) > 0) {
             echo json_encode(['error' => "Chương $so_chuong đã tồn tại"]);
+            mysqli_stmt_close($stmt);
             exit;
         }
         mysqli_stmt_close($stmt);
 
+        // Thêm chương mới (không cập nhật thoi_gian_cap_nhat)
         $sql = "INSERT INTO chuong (truyen_id, so_chuong, tieu_de, noi_dung, thoi_gian_dang, luot_xem, trang_thai) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            echo json_encode(['error' => 'Lỗi chuẩn bị câu truy vấn INSERT: ' . mysqli_error($conn)]);
+            exit;
+        }
         mysqli_stmt_bind_param($stmt, "iisssis", $truyen_id, $so_chuong, $tieu_de, $noi_dung, $thoi_gian_dang, $luot_xem, $trang_thai);
         if (mysqli_stmt_execute($stmt)) {
-            $sql = "UPDATE truyen_new SET thoi_gian_cap_nhat = ? WHERE id = ?";
-            $stmt_update = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt_update, "si", $thoi_gian_dang, $truyen_id);
-            mysqli_stmt_execute($stmt_update);
-            mysqli_stmt_close($stmt_update);
             echo json_encode(['success' => true, 'message' => 'Thêm chương thành công! (Chờ phê duyệt)']);
         } else {
+            error_log("Lỗi thêm chương: " . mysqli_error($conn));
             echo json_encode(['error' => 'Thêm chương thất bại: ' . mysqli_error($conn)]);
         }
         mysqli_stmt_close($stmt);
@@ -121,17 +151,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'approve' && $is_admin) {
         $chapter_id = (int)$_POST['chapter_id'];
+        $truyen_id = (int)$_POST['truyen_id']; // Đảm bảo lấy từ POST
+        if ($truyen_id <= 0) {
+            echo json_encode(['error' => 'ID truyện không hợp lệ']);
+            exit;
+        }
         $thoi_gian_dang = date('Y-m-d H:i:s');
         $sql = "UPDATE chuong SET trang_thai = 'da_duyet', thoi_gian_dang = ? WHERE id = ? AND truyen_id = ?";
         $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            echo json_encode(['error' => 'Lỗi chuẩn bị duyệt chương: ' . mysqli_error($conn)]);
+            exit;
+        }
         mysqli_stmt_bind_param($stmt, "sii", $thoi_gian_dang, $chapter_id, $truyen_id);
         if (mysqli_stmt_execute($stmt)) {
             $sql = "UPDATE truyen_new SET thoi_gian_cap_nhat = ? WHERE id = ?";
             $stmt_update = mysqli_prepare($conn, $sql);
+            if (!$stmt_update) {
+                error_log("Lỗi chuẩn bị cập nhật thoi_gian_cap_nhat: " . mysqli_error($conn));
+                echo json_encode(['error' => 'Lỗi chuẩn bị cập nhật thời gian']);
+                mysqli_stmt_close($stmt);
+                exit;
+            }
             mysqli_stmt_bind_param($stmt_update, "si", $thoi_gian_dang, $truyen_id);
-            mysqli_stmt_execute($stmt_update);
+            if (mysqli_stmt_execute($stmt_update)) {
+                if (mysqli_stmt_affected_rows($stmt_update) == 0) {
+                    error_log("Không tìm thấy truyện để cập nhật: truyen_id=$truyen_id");
+                    echo json_encode(['error' => 'Không tìm thấy truyện để cập nhật thời gian']);
+                    mysqli_stmt_close($stmt_update);
+                    mysqli_stmt_close($stmt);
+                    exit;
+                }
+                error_log("Cập nhật thoi_gian_cap_nhat thành công: truyen_id=$truyen_id, thoi_gian_cap_nhat=$thoi_gian_dang");
+                echo json_encode(['success' => true, 'message' => 'Phê duyệt chương thành công']);
+            } else {
+                error_log("Lỗi cập nhật thoi_gian_cap_nhat: " . mysqli_error($conn));
+                echo json_encode(['error' => 'Cập nhật thời gian truyện thất bại: ' . mysqli_error($conn)]);
+            }
             mysqli_stmt_close($stmt_update);
-            echo json_encode(['success' => true, 'message' => 'Phê duyệt chương thành công']);
         } else {
             echo json_encode(['error' => 'Phê duyệt thất bại: ' . mysqli_error($conn)]);
         }
@@ -200,7 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "iii", $truyen_id, $so_chuong, $chapter_id);
         mysqli_stmt_execute($stmt);
-        if (mysqli_stmt_num_rows(mysqli_stmt_get_result($stmt)) > 0) {
+        $result = mysqli_stmt_get_result($stmt);
+        if (mysqli_num_rows($result) > 0) {
             echo json_encode(['error' => "Chương $so_chuong đã tồn tại"]);
             exit;
         }

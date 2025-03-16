@@ -34,13 +34,13 @@ export function initEdit() {
         });
 
     const urlParams = new URLSearchParams(window.location.search);
-    const truyenId = urlParams.get('truyen_id');
+    const truyenId = urlParams.get('truyen_id'); // Đảm bảo dùng đúng 'truyen_id'
     if (!truyenId) {
         document.querySelector('.edit-truyen-container').innerHTML = '<p>Truyện không hợp lệ.</p>';
         return;
     }
 
-    fetch(`/truyenviethay/api/api.php?action=edit&truyen_id=${truyenId}`) // Sửa từ 'id' thành 'truyen_id'
+    fetch(`/truyenviethay/api/api.php?action=edit&truyen_id=${truyenId}`)
         .then(res => res.json())
         .then(data => {
             if (!data.success) {

@@ -1,4 +1,5 @@
 export function initChapter() {
+    // Kiểm tra đăng nhập và load thể loại (giữ nguyên)
     fetch('/truyenviethay/api/api.php?action=profile')
         .then(res => res.json())
         .then(data => {
@@ -6,14 +7,13 @@ export function initChapter() {
                 window.location.href = data.redirect || '/truyenviethay/users/login.html';
                 return;
             }
-            document.getElementById('login-link').style.display = 'none';
-            document.getElementById('register-link').style.display = 'none';
             document.getElementById('login-btn').style.display = 'none';
             document.getElementById('register-btn').style.display = 'none';
             const userInfo = document.getElementById('user-info');
             userInfo.style.display = 'block';
             document.getElementById('user-avatar').src = '../' + data.data.avatar;
-        });
+        })
+        .catch(err => console.error('Lỗi khi kiểm tra profile:', err));
 
     fetch('/truyenviethay/api/api.php?action=theloai&subaction=categories')
         .then(res => res.json())
@@ -23,7 +23,8 @@ export function initChapter() {
                 theloaiContainer.innerHTML += `<a href="../truyen/the-loai.html?theloai[]=${theloai.id_theloai}" class="theloai-item">${theloai.ten_theloai}</a>`;
             });
             theloaiContainer.innerHTML += `<a href="../truyen/the-loai.html" class="theloai-item xem-tat-ca">Xem tất cả thể loại</a>`;
-        });
+        })
+        .catch(err => console.error('Lỗi khi load thể loại:', err));
 
     const urlParams = new URLSearchParams(window.location.search);
     const truyenId = urlParams.get('truyen_id');
@@ -42,18 +43,20 @@ export function initChapter() {
                 }
 
                 document.getElementById('truyen-title').textContent = `QUẢN LÝ CHƯƠNG - ${data.ten_truyen}`;
-
                 const actionsContainer = document.getElementById('chapter-actions');
+
+                // Hiển thị nút và form thêm chương cho tác giả
                 actionsContainer.innerHTML = data.is_author
-                    ? '<button class="add-chuong-btn"><i class="fas fa-plus"></i> Thêm chương mới</button>' +
-                      '<div class="add-chuong-form" id="addChuongForm" style="display: none;">' +
-                      '<form id="addChapterForm">' +
-                      '<div class="form-header"><h3>Thêm chương mới</h3><button type="button" class="close-form-btn"><i class="fas fa-times"></i></button></div>' +
-                      '<div class="form-group"><label for="so_chuong">Số chương:</label><input type="number" name="so_chuong" id="so_chuong" min="1" required></div>' +
-                      '<div class="form-group"><label for="tieu_de">Tiêu đề:</label><input type="text" name="tieu_de" id="tieu_de" required></div>' +
-                      '<div class="form-group"><label for="noi_dung">Nội dung:</label><textarea name="noi_dung" id="noi_dung" required></textarea></div>' +
-                      '<div class="form-actions"><button type="submit" class="submit-btn"><i class="fas fa-plus"></i> Thêm chương</button><button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button></div>' +
-                      '</form></div>'
+                    ? `<button class="add-chuong-btn"><i class="fas fa-plus"></i> Thêm chương mới</button>
+                       <div class="add-chuong-form" id="addChuongForm" style="display: none;">
+                           <form id="addChapterForm">
+                               <div class="form-header"><h3>Thêm chương mới</h3><button type="button" class="close-form-btn"><i class="fas fa-times"></i></button></div>
+                               <div class="form-group"><label for="so_chuong">Số chương:</label><input type="number" name="so_chuong" id="so_chuong" min="1" required></div>
+                               <div class="form-group"><label for="tieu_de">Tiêu đề:</label><input type="text" name="tieu_de" id="tieu_de" required></div>
+                               <div class="form-group"><label for="noi_dung">Nội dung:</label><textarea name="noi_dung" id="noi_dung" required></textarea></div>
+                               <div class="form-actions"><button type="submit" class="submit-btn"><i class="fas fa-plus"></i> Thêm chương</button><button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button></div>
+                           </form>
+                       </div>`
                     : '';
 
                 if (data.is_author) {
@@ -63,21 +66,51 @@ export function initChapter() {
                     const cancelBtn = formContainer.querySelector('.cancel-btn');
                     const form = document.getElementById('addChapterForm');
 
-                    addBtn.addEventListener('click', () => formContainer.style.display = 'block');
-                    closeBtn.addEventListener('click', () => formContainer.style.display = 'none');
-                    cancelBtn.addEventListener('click', () => formContainer.style.display = 'none');
+                    // Đảm bảo các phần tử tồn tại trước khi gắn sự kiện
+                    if (!addBtn || !formContainer || !closeBtn || !cancelBtn || !form) {
+                        console.error('Không tìm thấy phần tử trong DOM:', { addBtn, formContainer, closeBtn, cancelBtn, form });
+                        document.getElementById('error-message').textContent = 'Lỗi giao diện, vui lòng thử lại.';
+                        document.getElementById('error-message').style.display = 'block';
+                        return;
+                    }
+
+                    addBtn.addEventListener('click', () => {
+                        console.log('Nút Thêm chương được nhấn'); // Debug
+                        formContainer.style.display = 'block';
+                    });
+
+                    closeBtn.addEventListener('click', () => {
+                        formContainer.style.display = 'none';
+                    });
+
+                    cancelBtn.addEventListener('click', () => {
+                        formContainer.style.display = 'none';
+                    });
 
                     form.addEventListener('submit', (e) => {
                         e.preventDefault();
+                        console.log('Form submit triggered'); // Debug
                         const formData = new FormData(form);
                         formData.append('action', 'add');
                         formData.append('truyen_id', truyenId);
+
                         fetch('/truyenviethay/api/api.php?action=chapter', {
                             method: 'POST',
                             body: formData
                         })
-                        .then(res => res.json())
-                        .then(data => handleResponse(data, form, formContainer));
+                        .then(res => {
+                            console.log('API response status:', res.status); // Debug
+                            return res.json();
+                        })
+                        .then(data => {
+                            console.log('API response data:', data); // Debug
+                            handleResponse(data, form, formContainer);
+                        })
+                        .catch(err => {
+                            console.error('Lỗi khi gửi request thêm chương:', err);
+                            document.getElementById('error-message').textContent = 'Đã xảy ra lỗi khi thêm chương.';
+                            document.getElementById('error-message').style.display = 'block';
+                        });
                     });
                 }
 
@@ -156,6 +189,7 @@ export function initChapter() {
                             </tbody>
                         </table>`;
 
+                    // Gắn sự kiện cho các nút hành động (giữ nguyên)
                     tableContainer.querySelectorAll('.approve-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
                             const formData = new FormData();
@@ -234,6 +268,11 @@ export function initChapter() {
                         btn.addEventListener('click', () => alert(`Lý do từ chối: ${btn.dataset.reason}`));
                     });
                 }
+            })
+            .catch(err => {
+                console.error('Lỗi khi load chương:', err);
+                document.getElementById('error-message').textContent = 'Đã xảy ra lỗi khi tải danh sách chương.';
+                document.getElementById('error-message').style.display = 'block';
             });
     }
 
@@ -248,7 +287,7 @@ export function initChapter() {
             successDiv.style.display = 'block';
             if (form) form.reset();
             if (formContainer) formContainer.style.display = 'none';
-            loadChapters();
+            loadChapters(); // Tải lại danh sách chương sau khi thêm thành công
         } else {
             errorDiv.textContent = data.error;
             errorDiv.style.display = 'block';
