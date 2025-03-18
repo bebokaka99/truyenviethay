@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Quản lý chương - Truyenviethay</title>
     <link rel="icon" href="../anh/logo.png">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/user.css">
     <link rel="stylesheet" href="../css/quan-ly-chuong.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -22,8 +26,11 @@
                 <ul class="danh-sach-menu">
                     <li><a href="../index.html">Trang chủ</a></li>
                     <li class="dropdown">
-                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
-                        <div class="noi-dung-dropdown" id="theloai-dropdown"><div class="theloai-grid" id="theloai-container"></div></div>
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i
+                                class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown" id="theloai-dropdown">
+                            <div class="theloai-grid" id="theloai-container"></div>
+                        </div>
                     </li>
                     <li class="dropdown dropdown-xep-hang">
                         <a href="#" class="nut-dropdown">Xếp hạng <i class="fa-solid fa-angle-down"></i></a>
@@ -45,8 +52,10 @@
                             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </li>
-                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap" onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
-                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky" onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
+                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap"
+                            onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
+                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky"
+                            onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
                 </ul>
             </nav>
         </div>
@@ -65,8 +74,10 @@
                     <a href="../users/logout.php">Đăng xuất</a>
                 </div>
             </div>
-            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
-            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng
+                nhập</button>
+            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng
+                ký</button>
         </div>
     </header>
 
@@ -77,6 +88,24 @@
         <div id="chapter-actions"></div>
         <div id="chuong-table-container"></div>
     </div>
+    <template id="reject-form-template">
+        <div class="reject-form">
+            <form class="reject-form-submit">
+                <div class="form-header">
+                    <h3>Từ chối chương</h3>
+                    <button type="button" class="close-form-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group">
+                    <label>Lý do từ chối:</label>
+                    <textarea name="ly_do_tu_choi" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Từ chối</button>
+                    <button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button>
+                </div>
+            </form>
+        </div>
+    </template>
 
     <footer class="footer">
         <div class="noi-dung-footer">
@@ -111,4 +140,5 @@
     <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
     <script type="module" src="../script/script.js"></script>
 </body>
+
 </html>

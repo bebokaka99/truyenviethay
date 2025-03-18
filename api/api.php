@@ -18,7 +18,7 @@ switch ($action) {
     case 'profile': require 'profile.php'; break;
     case 'tasks': require 'tasks.php'; break;
     case 'moderation': require 'moderation.php'; break;
-    case 'moderation_detail': require 'moderation.php'; break; // Thêm case này
+    case 'moderation_detail': require 'moderation.php'; break; 
     case 'settings': require 'settings.php'; break;
     case 'manage': require 'manage.php'; break;
     case 'edit': require 'edit.php'; break;
