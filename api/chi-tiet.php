@@ -4,7 +4,7 @@ session_start();
 require_once '../config.php';
 require_once 'db.php';
 
-$truyen_id = isset($_GET['truyen_id']) ? (int)$_GET['truyen_id'] : 0; // Sửa 'id' thành 'truyen_id'
+$truyen_id = isset($_GET['truyen_id']) ? (int)$_GET['truyen_id'] : 0; 
 if ($truyen_id <= 0) die(json_encode(['error' => 'Truyện không hợp lệ']));
 
 $base_path = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] . '/truyenviethay/');
