@@ -6,6 +6,7 @@ require_once '../config.php';
 // Đặt múi giờ Việt Nam (UTC+7)
 mysqli_query($conn, "SET time_zone = '+07:00'");
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+
 function format_time_ago($timestamp) {
     $now = time();
     $diff = $now - $timestamp;
@@ -57,16 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         while ($row = mysqli_fetch_assoc($result)) {
             $theloai_list[] = $row;
         }
-        if (empty($theloai_list)) {
-            echo json_encode(['success' => true, 'data' => [], 'message' => 'Chưa có thể loại nào']);
-        } else {
-            echo json_encode(['success' => true, 'data' => $theloai_list]);
-        }
+        echo json_encode(['success' => true, 'data' => $theloai_list]);
         exit;
     }
 
     if ($action === 'years') {
-        $sql = "SELECT DISTINCT YEAR(thoi_gian_cap_nhat) as nam FROM truyen_new WHERE thoi_gian_cap_nhat IS NOT NULL ORDER BY nam DESC";
+        $sql = "SELECT DISTINCT YEAR(thoi_gian_cap_nhat) as nam FROM truyen_new WHERE thoi_gian_cap_nhat IS NOT NULL AND trang_thai_kiem_duyet = 'duyet' ORDER BY nam DESC";
         $result = mysqli_query($conn, $sql);
         if ($result === false) {
             echo json_encode(['success' => false, 'error' => 'Lỗi truy vấn database: ' . mysqli_error($conn)]);
@@ -93,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sql_truyen = "SELECT DISTINCT t.id, t.ten_truyen, t.anh_bia, t.thoi_gian_cap_nhat, t.rating ";
     $sql_count = "SELECT COUNT(DISTINCT t.id) as total ";
     $from_clause = "FROM truyen_new t ";
-    $where_clause = "";
+    $where_clause = "WHERE t.trang_thai_kiem_duyet = 'duyet' "; // Chỉ lấy truyện đã duyệt
     $join_clause = "";
     $order_clause = "ORDER BY ";
 
@@ -101,29 +98,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $selected_theloai = array_map('intval', $selected_theloai);
         $theloai_ids = implode(',', $selected_theloai);
         $join_clause .= "JOIN truyen_theloai tt ON t.id = tt.id_truyen ";
-        $where_clause = "WHERE tt.id_theloai IN ($theloai_ids) ";
+        $where_clause .= "AND tt.id_theloai IN ($theloai_ids) ";
     }
 
     if (!empty($selected_loai_truyen)) {
         $selected_loai_truyen = mysqli_real_escape_string($conn, $selected_loai_truyen);
-        $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.loai_truyen = '$selected_loai_truyen' ";
+        $where_clause .= "AND t.loai_truyen = '$selected_loai_truyen' ";
     }
 
     if (!empty($selected_trang_thai)) {
         $selected_trang_thai = mysqli_real_escape_string($conn, $selected_trang_thai);
-        $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.tinh_trang = '$selected_trang_thai' ";
+        $where_clause .= "AND t.tinh_trang = '$selected_trang_thai' ";
     }
 
     if ($selected_rating > 0) {
-        $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.rating >= $selected_rating ";
+        $where_clause .= "AND t.rating >= $selected_rating ";
     }
 
     if (!empty($selected_nam_dang)) {
         if ($selected_nam_dang == 'older') {
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "YEAR(t.thoi_gian_cap_nhat) < 2010 ";
+            $where_clause .= "AND YEAR(t.thoi_gian_cap_nhat) < 2010 ";
         } else {
             $selected_nam_dang = (int)$selected_nam_dang;
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "YEAR(t.thoi_gian_cap_nhat) = $selected_nam_dang ";
+            $where_clause .= "AND YEAR(t.thoi_gian_cap_nhat) = $selected_nam_dang ";
         }
     }
 
@@ -131,16 +128,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         case 'name_asc': $order_clause .= "t.ten_truyen ASC"; break;
         case 'rating_desc': $order_clause .= "t.rating DESC, t.thoi_gian_cap_nhat DESC"; break;
         case 'top_day':
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 DAY) ";
+            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 DAY) ";
             $order_clause .= "t.luot_xem DESC"; break;
         case 'top_week':
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 WEEK) ";
+            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 WEEK) ";
             $order_clause .= "t.luot_xem DESC"; break;
         case 'top_month':
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 MONTH) ";
+            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 MONTH) ";
             $order_clause .= "t.luot_xem DESC"; break;
         case 'top_year':
-            $where_clause .= ($where_clause ? "AND " : "WHERE ") . "t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 YEAR) ";
+            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 YEAR) ";
             $order_clause .= "t.luot_xem DESC"; break;
         default: $order_clause .= "t.thoi_gian_cap_nhat DESC"; break;
     }
@@ -164,7 +161,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     while ($row = mysqli_fetch_assoc($result_truyen)) {
         $truyen_id = $row['id'];
         syncChaptersToDatabase($conn, $truyen_id);
-        $sql_chapters = "SELECT MAX(so_chuong) as latest_chapter, MAX(thoi_gian_dang) as latest_time FROM chuong WHERE truyen_id = ?";
+        // Chỉ lấy chương mới nhất đã duyệt
+        $sql_chapters = "SELECT so_chuong as latest_chapter, thoi_gian_dang as latest_time 
+                         FROM chuong 
+                         WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
+                         ORDER BY so_chuong DESC LIMIT 1";
         $stmt_chapters = mysqli_prepare($conn, $sql_chapters);
         mysqli_stmt_bind_param($stmt_chapters, "i", $truyen_id);
         mysqli_stmt_execute($stmt_chapters);

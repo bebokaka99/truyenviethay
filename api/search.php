@@ -3,6 +3,9 @@ header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
+mysqli_query($conn, "SET time_zone = '+07:00'");
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+
 function format_time_ago($timestamp) {
     $now = time();
     $diff = $now - $timestamp;
@@ -26,11 +29,13 @@ if (empty($keyword)) {
 
 $search_keyword = "%" . mysqli_real_escape_string($conn, $keyword) . "%";
 
+// Đếm tổng số truyện với điều kiện đã duyệt
 $sql_count = "SELECT COUNT(DISTINCT t.id) as total 
               FROM truyen_new t 
               LEFT JOIN truyen_theloai tt ON t.id = tt.truyen_id 
               LEFT JOIN theloai_new tl ON tt.theloai_id = tl.id_theloai 
-              WHERE t.ten_truyen LIKE ? OR tl.ten_theloai LIKE ?";
+              WHERE t.trang_thai_kiem_duyet = 'duyet' 
+              AND (t.ten_truyen LIKE ? OR tl.ten_theloai LIKE ?)";
 $stmt_count = mysqli_prepare($conn, $sql_count);
 mysqli_stmt_bind_param($stmt_count, "ss", $search_keyword, $search_keyword);
 mysqli_stmt_execute($stmt_count);
@@ -38,11 +43,13 @@ $total_truyen = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_count))['total']
 $total_pages = ceil($total_truyen / $per_page);
 mysqli_stmt_close($stmt_count);
 
+// Lấy danh sách truyện với điều kiện đã duyệt
 $sql = "SELECT DISTINCT t.id, t.ten_truyen, t.anh_bia, t.is_hot, t.thoi_gian_cap_nhat, t.rating 
         FROM truyen_new t 
         LEFT JOIN truyen_theloai tt ON t.id = tt.truyen_id 
         LEFT JOIN theloai_new tl ON tt.theloai_id = tl.id_theloai 
-        WHERE t.ten_truyen LIKE ? OR tl.ten_theloai LIKE ? 
+        WHERE t.trang_thai_kiem_duyet = 'duyet' 
+        AND (t.ten_truyen LIKE ? OR tl.ten_theloai LIKE ?) 
         ORDER BY t.thoi_gian_cap_nhat DESC 
         LIMIT ? OFFSET ?";
 $stmt = mysqli_prepare($conn, $sql);
