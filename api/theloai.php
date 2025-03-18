@@ -3,6 +3,9 @@ header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
+// Đặt múi giờ Việt Nam (UTC+7)
+mysqli_query($conn, "SET time_zone = '+07:00'");
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 function format_time_ago($timestamp) {
     $now = time();
     $diff = $now - $timestamp;

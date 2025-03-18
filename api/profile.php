@@ -91,3 +91,4 @@ if ($user_info['role'] === 'user') {
 
 echo json_encode(['success' => true, 'data' => $user_info]);
 mysqli_close($conn);
+?>

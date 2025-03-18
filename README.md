@@ -158,7 +158,7 @@ Sử dụng phần mềm xampp để truy cập localhost và phpmyadmin để q
 ## Cài đặt và chạy dự án
 1. **Clone project về máy**:
    ```sh
-   git clone https://github.com/bebokaka99/truyenviethay.git (chưa up)
+   git clone https://github.com/bebokaka99/truyenviethay.git
    ```
 2. **Chạy XAMPP và import database**:
    - Khởi động Apache và MySQL trong XAMPP.

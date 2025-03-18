@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sql = "SELECT t.id, t.ten_truyen, t.trang_thai, t.thoi_gian_cap_nhat, t.anh_bia, t.tac_gia,
                    (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong,
                    (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_cho_duyet
-            FROM truyen_new t WHERE t.user_id = ? ORDER BY t.thoi_gian_cap_nhat DESC";
+            FROM truyen_new t WHERE t.user_id = ? AND t.trang_thai_kiem_duyet = 'duyet' ORDER BY t.thoi_gian_cap_nhat DESC";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $user_id);
     mysqli_stmt_execute($stmt);

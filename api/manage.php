@@ -173,8 +173,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
                             (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
                             (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
-                       FROM truyen_new t WHERE 1=1";
-        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE 1=1";
+                       FROM truyen_new t WHERE t.trang_thai_kiem_duyet = 'duyet'";
+        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE trang_thai_kiem_duyet = 'duyet'";
         $params = [];
         $types = '';
 
@@ -193,7 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $types .= 's';
         }
 
-        // Sắp xếp: ưu tiên truyện có chương chưa duyệt (chuong_chua_duyet) lên đầu, sau đó theo thoi_gian_cap_nhat DESC
         $sql_truyen .= " ORDER BY (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') DESC, t.thoi_gian_cap_nhat DESC LIMIT $start, $per_page";
         $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
         if ($params) {
@@ -212,8 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $sql_truyen = "SELECT t.id, t.ten_truyen, t.thoi_gian_cap_nhat, t.tac_gia, t.anh_bia, 
                             (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'da_duyet') as so_chuong, 
                             (SELECT COUNT(*) FROM chuong c WHERE c.truyen_id = t.id AND c.trang_thai = 'cho_duyet') as chuong_chua_duyet 
-                       FROM truyen_new t WHERE t.user_id = ? AND 1=1";
-        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE user_id = ? AND 1=1";
+                       FROM truyen_new t WHERE t.user_id = ? AND t.trang_thai_kiem_duyet = 'duyet'";
+        $sql_count = "SELECT COUNT(*) as total FROM truyen_new WHERE user_id = ? AND trang_thai_kiem_duyet = 'duyet'";
         $params = [$user_id];
         $types = 'i';
 

@@ -633,7 +633,6 @@
     margin-top: 20px;
     text-align: left;
     padding: 15px;
-    background: #f9f9f9;
     border-radius: 8px;
     border: 1px solid #ddd;
 }
@@ -649,7 +648,6 @@
     justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
-    background: #fff;
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -804,7 +802,6 @@
 }
 
 .cai-dat-gender-options label {
-    display: flex;
     align-items: center;
     color: #34495e;
     font-weight: 500;
@@ -1271,4 +1268,167 @@
     .moderation-title {
         font-size: 18px;
     }
+}
+/* Định dạng ảnh bìa trong bảng */
+.truyen-cover {
+    border-radius: 5px;
+}
+
+/* Định dạng modal chi tiết truyện */
+.truyen-detail-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.truyen-detail-modal-content {
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.truyen-detail-modal-close {
+    color: #34495e;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.truyen-detail-modal-close:hover,
+.truyen-detail-modal-close:focus {
+    color: #e74c3c;
+}
+
+.truyen-detail-header h3 {
+    font-size: 26px;
+    color: #2c3e50;
+    margin: 0 0 20px;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.truyen-detail-cover {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #FFD700;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.truyen-detail-cover:hover {
+    transform: scale(1.05);
+}
+
+.truyen-detail-info {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.truyen-detail-info .info-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+    font-size: 15px;
+    color: #34495e;
+    align-items: center;
+}
+
+.truyen-detail-info .info-row:last-child {
+    border-bottom: none;
+}
+
+.truyen-detail-info .info-label {
+    font-weight: 600;
+    width: 150px;
+    color: #2c3e50;
+}
+
+.truyen-detail-info .info-row span:not(.info-label) {
+    flex: 1;
+}
+/* Hiệu ứng fade-in cho modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive cho modal chi tiết truyện */
+@media (max-width: 768px) {
+    .truyen-detail-modal-content {
+        width: 95%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+
+    .truyen-detail-header h3 {
+        font-size: 20px;
+    }
+
+    .truyen-detail-cover {
+        width: 120px;
+        height: 160px;
+    }
+
+    .truyen-detail-info .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px 0;
+    }
+
+    .truyen-detail-info .info-label {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .truyen-detail-info .info-row span:not(.info-label) {
+        font-size: 14px;
+    }
+}
+.chuong-mau-content {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.chuong-mau-content h4 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.chuong-mau-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #34495e;
+    line-height: 1.5;
 }

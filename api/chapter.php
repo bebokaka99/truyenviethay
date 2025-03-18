@@ -82,6 +82,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $ten_truyen = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_truyen_name))['ten_truyen'] ?? '';
     mysqli_stmt_close($stmt_truyen_name);
 
+    // Thêm log để debug
+    error_log("Chapter API Response: " . json_encode([
+        'success' => true,
+        'data' => $chuong_list,
+        'ten_truyen' => $ten_truyen,
+        'is_admin' => $is_admin,
+        'is_author' => $is_author
+    ]));
+
     echo json_encode([
         'success' => true,
         'data' => $chuong_list,
@@ -224,17 +233,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))['trang_thai'] ?? '';
         mysqli_stmt_close($stmt);
 
-        if (!in_array($status, ['cho_duyet', 'tu_choi'])) {
-            echo json_encode(['error' => "Chỉ có thể xóa chương ở trạng thái 'Chờ duyệt' hoặc 'Từ chối'"]);
+        // Cho phép xóa cả trạng thái 'da_duyet' cho admin
+        if (!in_array($status, ['cho_duyet', 'tu_choi', 'da_duyet'])) {
+            echo json_encode(['error' => "Chỉ có thể xóa chương ở trạng thái 'Chờ duyệt', 'Từ chối' hoặc 'Đã duyệt'"]);
             exit;
         }
+
+        // Xóa các bản ghi trong lich_su_doc_new trước khi xóa chương
+        $sql_delete_history = "DELETE FROM lich_su_doc_new WHERE chuong_id = ?";
+        $stmt_delete_history = mysqli_prepare($conn, $sql_delete_history);
+        mysqli_stmt_bind_param($stmt_delete_history, "i", $chapter_id);
+        if (mysqli_stmt_execute($stmt_delete_history)) {
+            error_log("Đã xóa " . mysqli_stmt_affected_rows($stmt_delete_history) . " bản ghi trong lich_su_doc_new cho chuong_id=$chapter_id");
+        } else {
+            error_log("Lỗi xóa lịch sử đọc: " . mysqli_error($conn));
+            echo json_encode(['error' => 'Lỗi xóa lịch sử đọc: ' . mysqli_error($conn)]);
+            mysqli_stmt_close($stmt_delete_history);
+            exit;
+        }
+        mysqli_stmt_close($stmt_delete_history);
 
         $sql = "DELETE FROM chuong WHERE id = ? AND truyen_id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "ii", $chapter_id, $truyen_id);
         if (mysqli_stmt_execute($stmt)) {
+            error_log("Xóa chương thành công: chuong_id=$chapter_id, truyen_id=$truyen_id");
             echo json_encode(['success' => true, 'message' => 'Xóa chương thành công']);
         } else {
+            error_log("Lỗi xóa chương: " . mysqli_error($conn));
             echo json_encode(['error' => 'Xóa thất bại: ' . mysqli_error($conn)]);
         }
         mysqli_stmt_close($stmt);

@@ -81,6 +81,14 @@
         </div>
     </div>
 
+    <!-- Modal Chi tiết truyện -->
+    <div class="truyen-detail-modal" id="truyen-detail-modal" style="display: none;">
+        <div class="truyen-detail-modal-content">
+            <span class="truyen-detail-modal-close" onclick="closeTruyenDetailModal()">×</span>
+            <div id="truyen-detail-content"></div>
+        </div>
+    </div>
+
     <!-- Nội dung trang Profile -->
     <div class="profile-container">
         <h2>THÔNG TIN TÀI KHOẢN</h2>
@@ -110,6 +118,7 @@
                         <thead>
                             <tr>
                                 <th>Tên truyện</th>
+                                <th>Ảnh bìa</th>
                                 <th>Tác giả</th>
                                 <th>Thời gian gửi</th>
                                 <th>Hành động</th>
@@ -118,13 +127,14 @@
                         <tbody>
                             <!-- Dữ liệu sẽ được render bởi JavaScript -->
                             <tr>
-                                <td colspan="4" class="empty-message">Đang tải dữ liệu...</td>
+                                <td colspan="5" class="empty-message">Đang tải dữ liệu...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">

@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: application/json');
+ob_start(); // Bắt đầu buffer đầu ra
+
 $action = $_GET['action'] ?? 'truyen';
 switch ($action) {
     case 'user': require 'user.php'; break;
@@ -16,6 +18,7 @@ switch ($action) {
     case 'profile': require 'profile.php'; break;
     case 'tasks': require 'tasks.php'; break;
     case 'moderation': require 'moderation.php'; break;
+    case 'moderation_detail': require 'moderation.php'; break; // Thêm case này
     case 'settings': require 'settings.php'; break;
     case 'manage': require 'manage.php'; break;
     case 'edit': require 'edit.php'; break;
@@ -26,3 +29,7 @@ switch ($action) {
     case 'chi-tiet-chuong': require 'chi-tiet-chuong.php'; break;
     default: echo json_encode(['error' => 'Invalid action']);
 }
+
+// Xóa buffer và gửi đầu ra
+ob_end_flush();
+?>

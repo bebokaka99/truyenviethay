@@ -1,3 +1,5 @@
+// script/profile.js (đã sửa)
+
 export function initProfile() {
     fetch('/truyenviethay/api/api.php?action=profile')
         .then(res => res.json())
@@ -96,6 +98,11 @@ export function initProfile() {
             contents.forEach(c => c.style.display = 'none');
             tab.classList.add('active');
             document.getElementById(tab.dataset.tab).style.display = 'block';
+
+            // Tự động load danh sách truyện khi chuyển sang tab Kiểm duyệt
+            if (tab.dataset.tab === 'moderation') {
+                initModeration();
+            }
         });
     });
 }
@@ -137,26 +144,112 @@ function initTasks() {
 }
 
 function initModeration() {
+    const list = document.getElementById('moderation-list');
     fetch('/truyenviethay/api/api.php?action=moderation')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Lỗi khi tải dữ liệu: ' + res.status + ' - ' + res.statusText);
+            }
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                return res.text().then(text => {
+                    throw new Error('Phản hồi không phải JSON: ' + text);
+                });
+            }
+            return res.json();
+        })
         .then(data => {
-            const list = document.getElementById('moderation-list');
-            list.innerHTML = data.truyen_list.length ? '<table class="moderation-table"><thead><tr><th>Tên truyện</th><th>Tác giả</th><th>Thời gian gửi</th><th>Hành động</th></tr></thead><tbody>' : '<p>Không có truyện nào chờ duyệt.</p>';
+            if (!data.success) {
+                list.innerHTML = `<p>${data.error || 'Không thể tải danh sách truyện.'}</p>`;
+                console.log('API Response:', data);
+                return;
+            }
+            list.innerHTML = data.truyen_list.length ? '<table class="moderation-table"><thead><tr><th>Tên truyện</th><th>Ảnh bìa</th><th>Tác giả</th><th>Thời gian gửi</th><th>Hành động</th></tr></thead><tbody>' : '<p>Không có truyện nào chờ duyệt.</p>';
             data.truyen_list.forEach(truyen => {
                 list.innerHTML += `
                     <tr>
                         <td>${truyen.ten_truyen}</td>
+                        <td><img src="${truyen.anh_bia}" alt="${truyen.ten_truyen}" class="truyen-cover" style="width: 50px; height: 70px; object-fit: cover;"></td>
                         <td>${truyen.tac_gia_name}</td>
-                        <td>${truyen.thoi_gian_cap_nhat}</td>
+                        <td>${new Date(truyen.thoi_gian_cap_nhat).toLocaleString('vi-VN')}</td>
                         <td>
+                            <button class="action-btn detail-btn" onclick="showTruyenDetail(${truyen.id})">Xem chi tiết</button>
                             <button class="action-btn approve-btn" onclick="moderate(${truyen.id}, 'approve')">Phê duyệt</button>
                             <button class="action-btn reject-btn" onclick="if(confirm('Bạn có chắc muốn từ chối truyện này?')) moderate(${truyen.id}, 'reject')">Từ chối</button>
                         </td>
                     </tr>`;
             });
             if (data.truyen_list.length) list.innerHTML += '</tbody></table>';
+        })
+        .catch(error => {
+            console.error('Lỗi chi tiết:', error.message);
+            list.innerHTML = '<p>Có lỗi xảy ra khi tải dữ liệu. Vui lòng kiểm tra console để biết thêm chi tiết.</p>';
         });
 }
+
+// Hàm hiển thị modal chi tiết truyện (đã cải tiến)
+// Hàm hiển thị modal chi tiết truyện (đã cải tiến)
+window.showTruyenDetail = function(truyenId) {
+    fetch('/truyenviethay/api/api.php?action=moderation_detail&truyen_id=' + truyenId)
+        .then(res => {
+            if (!res.ok) throw new Error('Lỗi khi tải chi tiết truyện: ' + res.status);
+            return res.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                alert('Lỗi: ' + (data.error || 'Không thể tải chi tiết truyện.'));
+                return;
+            }
+            const truyen = data.truyen;
+            console.log('Dữ liệu truyen:', truyen); // Debug dữ liệu
+            const modal = document.getElementById('truyen-detail-modal');
+            const content = document.getElementById('truyen-detail-content');
+            content.innerHTML = `
+                <div class="truyen-detail-header">
+                    <h3>${truyen.ten_truyen || 'Tên truyện không xác định'}</h3> <!-- Thêm fallback -->
+                    <img src="${truyen.anh_bia}" alt="${truyen.ten_truyen || 'Truyện'}" class="truyen-detail-cover">
+                </div>
+                <div class="truyen-detail-info">
+                    <div class="info-row"><span class="info-label">Tác giả:</span> ${truyen.tac_gia_name || 'Không xác định'}</div>
+                    <div class="info-row"><span class="info-label">Mô tả:</span> ${truyen.mo_ta || 'Chưa có mô tả'}</div>
+                    <div class="info-row"><span class="info-label">Thể loại:</span> ${truyen.the_loai || 'Chưa có thể loại'}</div>
+                    <div class="info-row"><span class="info-label">Tình trạng truyện:</span> ${truyen.trang_thai_viet || 'Chưa có thông tin'}</div>
+                    <div class="info-row"><span class="info-label">Số chương hiện có:</span> Chưa có chương chính thức</div>
+                    <div class="info-row">
+                        <span class="info-label">Chương mẫu:</span> 
+                        <div class="chuong-mau-content">
+                            <p>${truyen.chuong_mau || 'Không có nội dung chương mẫu'}</p>
+                        </div>
+                    </div>
+                    <div class="info-row"><span class="info-label">Ghi chú gửi admin:</span> ${truyen.ghi_chu_admin || 'Chưa có ghi chú'}</div>
+                    <div class="info-row"><span class="info-label">Nguồn truyện:</span> ${truyen.nguon_truyen || 'Chưa có nguồn'}</div>
+                    <div class="info-row"><span class="info-label">Cảnh báo nội dung:</span> ${truyen.canh_bao_noi_dung || 'Chưa có thông tin'}</div>
+                    <div class="info-row"><span class="info-label">Yếu tố nhạy cảm:</span> ${truyen.yeu_to_nhay_cam || 'Không có'}</div>
+                    <div class="info-row"><span class="info-label">Mục tiêu của truyện:</span> ${truyen.muc_tieu || 'Chưa có thông tin'}</div>
+                    <div class="info-row"><span class="info-label">Đánh giá ban đầu:</span> ${truyen.danh_gia || 'Chưa có đánh giá'}</div>
+                    <div class="info-row"><span class="info-label">Thời gian gửi:</span> ${new Date(truyen.thoi_gian_cap_nhat).toLocaleString('vi-VN')}</div>
+                </div>
+            `;
+            modal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Lỗi khi lấy chi tiết truyện:', error);
+            alert('Có lỗi xảy ra khi tải chi tiết truyện.');
+        });
+};
+// Hàm đóng modal
+window.closeTruyenDetailModal = function() {
+    const modal = document.getElementById('truyen-detail-modal');
+    modal.style.display = 'none';
+};
+
+// Đóng modal khi click bên ngoài
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('truyen-detail-modal');
+    if (event.target === modal) {
+        closeTruyenDetailModal();
+    }
+});
 
 window.claimReward = function(taskId) {
     fetch('/truyenviethay/api/api.php?action=tasks', {

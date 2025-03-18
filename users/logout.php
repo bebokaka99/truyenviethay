@@ -31,10 +31,8 @@ if (isset($conn)) {
 }
 
 // Chuyển hướng về trang chính với đường dẫn tuyệt đối
-$base_url = "http://localhost/truyenviethay/"; // Thay bằng domain thực tế khi deploy
+$base_url = "http://localhost:888/truyenviethay/"; // Thay bằng domain thực tế khi deploy
 header("Location: " . $base_url . "index.html");
 exit();
 
-// Phản hồi JSON cho trường hợp AJAX (nếu cần)
-echo json_encode(['success' => true, 'message' => 'Đăng xuất thành công']);
 ?>
