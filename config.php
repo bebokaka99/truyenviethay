@@ -2,7 +2,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$dbname = "truyenviethay_new"; // Cập nhật tên cơ sở dữ liệu mới
+$dbname = "truyenviethay_new";
 
 $conn = mysqli_connect($host, $username, $password, $dbname);
 // Đặt múi giờ cho MySQL ngay sau khi kết nối

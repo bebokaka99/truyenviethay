@@ -1,79 +1,55 @@
-import { initSlider } from "./slider.js";
-import { initHeader } from "./header.js";
-import { initRating } from "./rating.js";
-import { initNavigation } from "./navigation.js";
-import { initForms } from "./forms.js";
-import { initFollow } from "./follow.js";
-import { initTasks, claimReward } from "./tasks.js";
-import { debugTextarea, reportError } from "./utils.js";
-import { initTruyen } from "./truyen.js";
-import { initChiTiet } from "./chi-tiet.js";
-import { initChuong } from "./chuong.js";
-import { initLogin } from "./login.js";
-import { initRegister } from "./register.js";
-import { initProfile } from "./profile.js";
-import { initSettings } from "./settings.js";
-import { initTheLoai } from "./theloai.js";
-import { initManage } from "./manage.js";
-import { initEdit } from "./edit.js";
-import { initChapter } from "./chapter.js";
-import { initUpload } from "./upload.js";
-import { initChiTietChuong } from "./chi-tiet-chuong.js";
-import { initManageAuthor } from "./manage-author.js";
-import { initSearch } from "./search.js";
+import { initSlider } from './slider.js';
+import { initHeader } from './header.js';
+import { initRating } from './rating.js';
+import { initNavigation } from './navigation.js';
+import { initForms } from './forms.js';
+import { initFollow } from './follow.js';
+import { initTasks, claimReward } from './tasks.js';
+import { debugTextarea, reportError } from './utils.js';
+import { initTruyen } from './truyen.js';
+import { initChiTiet } from './chi-tiet.js';
+import { initChuong } from './chuong.js';
+import { initLogin } from './login.js';
+import { initRegister } from './register.js';
+import { initProfile } from './profile.js';
+import { initSettings } from './settings.js';
+import { initTheLoai } from './theloai.js';
+import { initManage } from './manage.js';
+import { initEdit } from './edit.js';
+import { initChapter } from './chapter.js';
+import { initUpload } from './upload.js';
+import { initChiTietChuong } from './chi-tiet-chuong.js';
+import { initManageAuthor } from './manage-author.js';
+import { initSearch } from './search.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Gọi các hàm cho index.html
-  initSlider(); // Thanh trượt truyện
-  initTruyen(); // Truyện chính và top rating
-  initHeader();
-  initRating();
-  initNavigation();
-  initForms();
-  initFollow();
-  initTasks();
-  debugTextarea();
+document.addEventListener('DOMContentLoaded', () => {
+    // Gọi các hàm cho index.html
+    initSlider(); // Thanh trượt truyện
+    initTruyen(); // Truyện chính và top rating
+    initHeader();
+    initRating();
+    initNavigation();
+    initForms();
+    initFollow();
+    initTasks();
+    debugTextarea();
 
-  // Các trang khác
-  if (window.location.pathname.includes("chi-tiet-truyen.html")) initChiTiet();
-  if (window.location.pathname.includes("chuong.html")) initChuong();
-  if (window.location.pathname.includes("login.html")) initLogin();
-  if (window.location.pathname.includes("register.html")) initRegister();
-  if (window.location.pathname.includes("profile.html")) initProfile();
-  if (window.location.pathname.includes("cai-dat-thong-tin.html"))
-    initSettings();
-  if (window.location.pathname.includes("the-loai.html")) initTheLoai();
-  if (window.location.pathname.includes("quan-ly-truyen.html")) initManage();
-  if (window.location.pathname.includes("edit-truyen.html")) initEdit();
-  if (window.location.pathname.includes("quan-ly-chuong.html")) initChapter();
-  if (window.location.pathname.includes("dang-tai-truyen.html")) initUpload();
-  if (window.location.pathname.includes("chi-tiet-chuong.html"))
-    initChiTietChuong();
-  if (window.location.pathname.includes("quan-ly-truyen-tac-gia.html"))
-    initManageAuthor();
-  if (window.location.pathname.includes("tim-kiem.html")) initSearch();
-});
-document.addEventListener("dragstart", function (event) {
-  event.preventDefault();
-});
-//chặn chuột phải
-document.addEventListener("contextmenu", function (event) {
-  event.preventDefault();
+    // Các trang khác
+    if (window.location.pathname.includes('chi-tiet-truyen.html')) initChiTiet();
+    if (window.location.pathname.includes('chuong.html')) initChuong();
+    if (window.location.pathname.includes('login.html')) initLogin();
+    if (window.location.pathname.includes('register.html')) initRegister();
+    if (window.location.pathname.includes('profile.html')) initProfile();
+    if (window.location.pathname.includes('cai-dat-thong-tin.html')) initSettings();
+    if (window.location.pathname.includes('the-loai.html')) initTheLoai();
+    if (window.location.pathname.includes('quan-ly-truyen.html')) initManage();
+    if (window.location.pathname.includes('edit-truyen.html')) initEdit();
+    if (window.location.pathname.includes('quan-ly-chuong.html')) initChapter();
+    if (window.location.pathname.includes('dang-tai-truyen.html')) initUpload();
+    if (window.location.pathname.includes('chi-tiet-chuong.html')) initChiTietChuong();
+    if (window.location.pathname.includes('quan-ly-truyen-tac-gia.html')) initManageAuthor();
+    if (window.location.pathname.includes('tim-kiem.html')) initSearch();
 });
 
-document.addEventListener("copy", function (event) {
-  event.preventDefault();
-  alert("Chức năng sao chép đã bị vô hiệu hóa!");
-});
-// chặn phím xem mã nguồn
-// document.addEventListener("keydown", function (event) {
-//   if (
-//     event.ctrlKey &&
-//     (event.key === "c" || event.key === "x" || event.key === "u")
-//   ) {
-//     event.preventDefault();
-//     alert("Không thể sử dụng phím tắt này!");
-//   }
-// });
 window.reportError = reportError;
 window.claimReward = claimReward;
