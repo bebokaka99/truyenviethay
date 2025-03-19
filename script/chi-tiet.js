@@ -6,10 +6,10 @@ export function initChiTiet() {
         return;
     }
 
-    fetch(`/truyenviethay/api/api.php?action=chi-tiet&truyen_id=${truyenId}`) // Sửa 'id' thành 'truyen_id'
+    fetch(`/truyenviethay/api/api.php?action=chi-tiet&truyen_id=${truyenId}`)
         .then(res => res.json())
         .then(data => {
-            console.log('Dữ liệu API chi tiết truyện:', data); // Debug
+            console.log('Dữ liệu API chi tiết truyện:', data);
             if (data.error) {
                 document.querySelector('.truyen-container').innerHTML = `<p>${data.error}</p>`;
                 return;
@@ -24,8 +24,8 @@ export function initChiTiet() {
             truyenInfo.innerHTML = `
                 <div class="info-item"><span class="info-icon"><i class="fas fa-user"></i></span><label>Tác giả:</label><span>${data.tac_gia || 'Đần giả'}</span></div>
                 <div class="info-item"><span class="info-icon"><i class="fas fa-clock"></i></span><label>Tình trạng:</label><span>${data.tinh_trang || 'Đang tiến hành'}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-heart"></i></span><label>Lượt thích:</label><span>${data.luot_thich || 0}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-users"></i></span><label>Lượt theo dõi:</label><span>${data.luot_theo_doi || 0}</span></div>
+                <div class="info-item"><span class="info-icon"><i class="fas fa-heart"></i></span><label>Lượt thích:</label><span class="luot-thich">${data.luot_thich || 0}</span></div>
+                <div class="info-item"><span class="info-icon"><i class="fas fa-users"></i></span><label>Lượt theo dõi:</label><span class="luot-theo-doi">${data.luot_theo_doi || 0}</span></div>
                 <div class="info-item"><span class="info-icon"><i class="fas fa-eye"></i></span><label>Lượt xem:</label><span>${data.luot_xem || 0}</span></div>
                 <div class="info-item"><span class="info-icon"><i class="fas fa-star rating-star"></i></span><label>Đánh giá:</label>
                     <span class="rating-stars" data-rating="${data.rating || 4.8}">
@@ -48,21 +48,71 @@ export function initChiTiet() {
                 <button id="like-btn" class="like-btn"><i class="fas fa-thumbs-up"></i> Thích</button>
             `;
 
-            document.getElementById('chapter-count').textContent = `Tổng số chương: ${chapterCount}`;
-            const chapterList = document.getElementById('chapter-list');
-            chapterList.innerHTML = chapterCount > 0 ? data.chapters.map(ch => `
-                <div class="chuong-item">
-                    <a href="chuong.html?truyen_id=${truyenId}&chuong_id=${ch.id}">
-                        <span class="chuong-title ${data.chuong_da_doc.includes(ch.id) ? 'chuong-da-doc' : ''}">Chương ${ch.id}</span>
-                    </a>
-                    <span>${new Date(ch.thoi_gian).toLocaleString('vi-VN')}</span>
-                </div>
-            `).join('') : '<p class="no-chapters">Hiện không có chương nào!</p>';
-
-            const commentForm = document.getElementById('comment-form');
             fetch('/truyenviethay/api/api.php?action=user')
                 .then(res => res.json())
                 .then(user => {
+                    const followBtn = document.getElementById('follow-btn');
+                    const likeBtn = document.getElementById('like-btn');
+
+                    if (user.loggedIn) {
+                        Promise.all([
+                            fetch(`/truyenviethay/api/api.php?action=like&truyen_id=${truyenId}`),
+                            fetch(`/truyenviethay/api/api.php?action=follow&truyen_id=${truyenId}`)
+                        ])
+                        .then(([likeRes, followRes]) => Promise.all([likeRes.json(), followRes.json()]))
+                        .then(([likeData, followData]) => {
+                            if (likeData.liked) {
+                                likeBtn.classList.add('liked');
+                                likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> Đã thích`;
+                            }
+                            if (followData.followed) {
+                                followBtn.classList.add('followed');
+                                followBtn.innerHTML = `<i class="fas fa-heart"></i> Đã theo dõi`;
+                            }
+
+                            likeBtn.addEventListener('click', () => {
+                                fetch('/truyenviethay/api/api.php?action=like', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    body: `truyen_id=${truyenId}`
+                                })
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.success) {
+                                        likeBtn.classList.toggle('liked', res.liked);
+                                        likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> ${res.liked ? 'Đã thích' : 'Thích'}`;
+                                        document.querySelector('.luot-thich').textContent = res.luot_thich;
+                                    } else {
+                                        alert(res.error || 'Lỗi khi thích');
+                                    }
+                                });
+                            });
+
+                            followBtn.addEventListener('click', () => {
+                                fetch('/truyenviethay/api/api.php?action=follow', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    body: `truyen_id=${truyenId}`
+                                })
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.success) {
+                                        followBtn.classList.toggle('followed', res.followed);
+                                        followBtn.innerHTML = `<i class="fas fa-heart"></i> ${res.followed ? 'Đã theo dõi' : 'Theo dõi'}`;
+                                        document.querySelector('.luot-theo-doi').textContent = res.luot_theo_doi;
+                                    } else {
+                                        alert(res.error || 'Lỗi khi theo dõi');
+                                    }
+                                });
+                            });
+                        })
+                        .catch(err => console.error('Lỗi khi lấy trạng thái ban đầu:', err));
+                    } else {
+                        followBtn.addEventListener('click', () => alert('Vui lòng đăng nhập để theo dõi truyện.'));
+                        likeBtn.addEventListener('click', () => alert('Vui lòng đăng nhập để thích truyện.'));
+                    }
+
+                    const commentForm = document.getElementById('comment-form');
                     commentForm.innerHTML = user.loggedIn ? `
                         <form id="comment-form-submit" class="comment-form-container">
                             <div class="comment-input-wrapper">
@@ -88,49 +138,25 @@ export function initChiTiet() {
                                 else alert(res.error || 'Lỗi khi gửi bình luận');
                             });
                         });
-
-                        const followBtn = document.getElementById('follow-btn');
-                        followBtn.addEventListener('click', () => {
-                            fetch('/truyenviethay/api/api.php?action=follow', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                body: `truyen_id=${truyenId}`
-                            })
-                            .then(res => res.json())
-                            .then(res => {
-                                if (res.success) {
-                                    followBtn.classList.toggle('followed', res.followed);
-                                    followBtn.innerHTML = `<i class="fas fa-heart"></i> ${res.followed ? 'Đã theo dõi' : 'Theo dõi'}`;
-                                } else alert(res.error || 'Lỗi khi theo dõi');
-                            });
-                        });
-
-                        const likeBtn = document.getElementById('like-btn');
-                        likeBtn.addEventListener('click', () => {
-                            fetch('/truyenviethay/api/api.php?action=like', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                body: `truyen_id=${truyenId}`
-                            })
-                            .then(res => res.json())
-                            .then(res => {
-                                if (res.success) {
-                                    likeBtn.classList.toggle('liked', res.liked);
-                                    likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> ${res.liked ? 'Đã thích' : 'Thích'}`;
-                                } else alert(res.error || 'Lỗi khi thích');
-                            });
-                        });
-                    } else {
-                        document.getElementById('follow-btn').addEventListener('click', () => alert('Vui lòng đăng nhập để theo dõi truyện.'));
-                        document.getElementById('like-btn').addEventListener('click', () => alert('Vui lòng đăng nhập để thích truyện.'));
                     }
                 });
+
+            document.getElementById('chapter-count').textContent = `Tổng số chương: ${chapterCount}`;
+            const chapterList = document.getElementById('chapter-list');
+            chapterList.innerHTML = chapterCount > 0 ? data.chapters.map(ch => `
+                <div class="chuong-item">
+                    <a href="chuong.html?truyen_id=${truyenId}&chuong_id=${ch.id}">
+                        <span class="chuong-title ${data.chuong_da_doc.includes(ch.id) ? 'chuong-da-doc' : ''}">Chương ${ch.id}</span>
+                    </a>
+                    <span>${new Date(ch.thoi_gian).toLocaleString('vi-VN')}</span>
+                </div>
+            `).join('') : '<p class="no-chapters">Hiện không có chương nào!</p>';
 
             const commentList = document.getElementById('comment-list');
             commentList.innerHTML = data.comments.length > 0 ? data.comments.map(c => `
                 <div class="comment-item">
                     <div class="comment-header">
-                        <img src="${data.avatar || '/truyenviethay/anh/avatar-default.jpg'}" alt="Avatar" class="comment-avatar">
+                        <img src="${c.avatar}" alt="Avatar" class="comment-avatar">
                         <div class="comment-user-info">
                             <span class="comment-user">${c.full_name}</span>
                             <span class="comment-time">${new Date(c.created_at).toLocaleString('vi-VN')}</span>

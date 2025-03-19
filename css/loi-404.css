@@ -1,0 +1,113 @@
+body {
+    background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+}
+
+.error-404-container {
+    margin: 40px auto;
+    padding: 0;
+    max-width: 1000px; /* Giảm để tạo không gian gọn hơn */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.error-image-wrapper {
+    flex: 1;
+    text-align: left;
+    padding-right: 40px; /* Tăng khoảng cách giữa ảnh và nội dung */
+}
+
+.error-content {
+    flex: 1;
+    text-align: left; /* Đổi sang căn trái để nội dung tự nhiên hơn */
+    padding-left: 40px; /* Tạo khoảng cách với ảnh */
+}
+
+.error-image {
+    max-width: 550px; /* Giảm nhẹ chiều rộng */
+    max-height: 350px; /* Giảm chiều cao để cân đối */
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.error-title {
+    font-size: 56px; /* Tăng kích thước để nổi bật hơn */
+    font-weight: 700;
+    background: linear-gradient(90deg, #f44336, #ff9800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
+}
+
+.error-description {
+    font-size: 18px;
+    color: #555555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: transparent;
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600; /* Làm chữ đậm hơn */
+    border: none;
+    border-radius: 5px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button i {
+    margin-right: 8px;
+}
+
+.back-button:hover {
+    color: #388e3c;
+    transform: translateX(-5px);
+}
+
+@media (max-width: 768px) {
+    .error-404-container {
+        flex-direction: column;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .error-image-wrapper {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-right: 0;
+    }
+
+    .error-content {
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .error-image {
+        max-width: 350px;
+        max-height: 250px;
+    }
+
+    .error-title {
+        font-size: 40px;
+    }
+
+    .error-description {
+        font-size: 16px;
+    }
+
+    .back-button {
+        font-size: 14px;
+    }
+}
