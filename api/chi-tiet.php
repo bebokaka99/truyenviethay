@@ -4,7 +4,7 @@ session_start();
 require_once '../config.php';
 require_once 'db.php';
 
-$truyen_id = isset($_GET['truyen_id']) ? (int)$_GET['truyen_id'] : 0; // Sửa 'id' thành 'truyen_id'
+$truyen_id = isset($_GET['truyen_id']) ? (int)$_GET['truyen_id'] : 0;
 if ($truyen_id <= 0) die(json_encode(['error' => 'Truyện không hợp lệ']));
 
 $base_path = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] . '/truyenviethay/');
@@ -69,12 +69,17 @@ if ($user_id && mysqli_num_rows(mysqli_query($conn, "SHOW TABLES LIKE 'lich_su_d
 // Bình luận
 $truyen['comments'] = [];
 if (mysqli_num_rows(mysqli_query($conn, "SHOW TABLES LIKE 'comments'")) > 0) {
-    $sql_comments = "SELECT c.content, c.created_at, u.full_name FROM comments c JOIN users_new u ON c.user_id = u.id WHERE c.truyen_id = ? ORDER BY c.created_at DESC";
+    $sql_comments = "SELECT c.content, c.created_at, u.full_name, u.avatar FROM comments c JOIN users_new u ON c.user_id = u.id WHERE c.truyen_id = ? ORDER BY c.created_at DESC";
     $stmt_comments = mysqli_prepare($conn, $sql_comments);
     mysqli_stmt_bind_param($stmt_comments, "i", $truyen_id);
     mysqli_stmt_execute($stmt_comments);
     $result_comments = mysqli_stmt_get_result($stmt_comments);
-    while ($row = mysqli_fetch_assoc($result_comments)) $truyen['comments'][] = $row;
+    while ($row = mysqli_fetch_assoc($result_comments)) {
+        $avatar_relative_path = !empty($row['avatar']) ? $row['avatar'] : 'anh/avatar-default.jpg';
+        $avatar_path = $base_path . $avatar_relative_path;
+        $row['avatar'] = file_exists($avatar_path) ? '/truyenviethay/' . $avatar_relative_path : '/truyenviethay/anh/avatar-default.jpg';
+        $truyen['comments'][] = $row;
+    }
     mysqli_stmt_close($stmt_comments);
 }
 

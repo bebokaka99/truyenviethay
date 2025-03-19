@@ -21,10 +21,15 @@ import { initUpload } from './upload.js';
 import { initChiTietChuong } from './chi-tiet-chuong.js';
 import { initManageAuthor } from './manage-author.js';
 import { initSearch } from './search.js';
+import { initTruyenTheoDoi } from './truyen-theo-doi.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Gọi các hàm cho index.html
-    initSlider(); // Thanh trượt truyện
+    // Chỉ chạy initSlider ở trang chính (index.html)
+    if (window.location.pathname === '/truyenviethay/' || window.location.pathname.includes('index.html')) {
+        initSlider(); // Thanh trượt truyện
+    }
+    
+    // Các hàm chung cho mọi trang
     initTruyen(); // Truyện chính và top rating
     initHeader();
     initRating();
@@ -49,7 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('chi-tiet-chuong.html')) initChiTietChuong();
     if (window.location.pathname.includes('quan-ly-truyen-tac-gia.html')) initManageAuthor();
     if (window.location.pathname.includes('tim-kiem.html')) initSearch();
+    if (window.location.pathname.includes('truyen-theo-doi.html')) initTruyenTheoDoi();
 });
+
+document.addEventListener("dragstart", function (event) {
+    event.preventDefault();
+});
+
+// document.addEventListener("copy", function (event) {
+//     event.preventDefault();
+//     alert("Chức năng sao chép đã bị vô hiệu hóa!");
+// });
 
 window.reportError = reportError;
 window.claimReward = claimReward;

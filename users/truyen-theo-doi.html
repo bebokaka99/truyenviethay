@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Kết Quả Tìm Kiếm - Truyenviethay</title>
-    <link rel="icon" href="../anh/logo.png">
+    <title>Truyện Theo Dõi - Truyenviethay</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/the-loai.css">
     <link rel="stylesheet" href="../css/user.css">
+    <link rel="stylesheet" href="../css/truyen-theo-doi.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
@@ -32,59 +31,53 @@
                             <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
                             <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
                             <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
-                            <a href="../truyen/the-loai.html?sort=rating_desc">Top đánh giá</a>
                         </div>
                     </li>
                     <li><a href="../truyen/the-loai.html?sort=hot">Truyện Hot</a></li>
-                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới/a></li>
+                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
                     <li><a href="#">Fanpage</a></li>
                     <li><a href="#">Discord</a></li>
                     <li><a href="#">Hỗ trợ</a></li>
                     <li class="menu-tim-kiem">
-                        <form id="search-form" class="thanh-tim-kiem">
-                            <input type="text" name="q" placeholder="Tìm kiếm truyện..." id="search-input">
+                        <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
                             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </li>
-                    <!-- Xóa cặp nút Đăng nhập/Đăng ký ở đây -->
+                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap" onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
+                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky" onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
                 </ul>
             </nav>
         </div>
         <div class="phan-phai">
-            <form id="search-form-right" class="thanh-tim-kiem">
-                <input type="text" name="q" placeholder="Tìm kiếm truyện..." id="search-input-right">
+            <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
                 <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
-            <div class="user-section">
-                <div class="user-info" id="user-info" style="display: none;">
-                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
-                    <div class="user-dropdown">
-                        <a href="../users/profile.html">Thông tin người dùng</a>
-                        <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
-                        <a href="#">Lịch sử xem</a>
-                        <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
-                        <a href="../users/logout.php">Đăng xuất</a> <!-- Sửa logout.html thành logout.php -->
-                    </div>
-                </div>
-                <div class="login-buttons" id="login-buttons">
-                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
-                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+            <div class="user-info" id="user-info" style="display: none;">
+                <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                <div class="user-dropdown">
+                    <a href="../users/profile.html">Thông tin người dùng</a>
+                    <a href="#">Truyện theo dõi</a>
+                    <a href="#">Lịch sử xem</a>
+                    <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                    <a href="../users/logout.php">Đăng xuất</a>
                 </div>
             </div>
+            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
         </div>
     </header>
 
-    <div class="noi-dung-chinh">
-        <div class="hien-thi-truyen">
-            <div class="tieu-de-truyen" id="search-title">
-                <i class="fas fa-search"></i>
-                <h2>Kết quả tìm kiếm</h2>
-            </div>
-            <div id="search-results"></div>
-            <div id="pagination" class="pagination"></div>
+    <main class="followed-truyen-page">
+        <h1>TRUYỆN ĐANG THEO DÕI</h1>
+        <div class="followed-truyen-container" id="followed-truyen-list">
+            <!-- Danh sách render bằng JS -->
         </div>
-    </div>
+        <p class="no-followed" id="no-followed" style="display: none;">Bạn chưa theo dõi truyện nào!</p>
+    </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="noi-dung-footer">
             <div class="cot-footer">
@@ -115,7 +108,6 @@
             <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
         </div>
     </footer>
-    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
     <script type="module" src="../script/script.js"></script>
 </body>
 </html>

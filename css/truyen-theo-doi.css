@@ -1,0 +1,129 @@
+/* css/truyen-theo-doi.css */
+.followed-truyen-page {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+    background: transparent;
+}
+
+.followed-truyen-page h1 {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 25px;
+    color: #87CEEB;
+    text-transform: uppercase;
+    border-bottom: 2px solid #87CEEB;
+    padding-bottom: 10px;
+}
+
+.followed-truyen-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+}
+
+.truyen-item {
+    position: relative;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.truyen-item:hover {
+    transform: translateY(-5px);
+}
+
+.truyen-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.truyen-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.truyen-item:hover img {
+    transform: scale(1.05);
+}
+
+.truyen-status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #4CAF50;
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 3px;
+    /* Bỏ text-transform để không in hoa */
+}
+
+.unfollow-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.unfollow-btn i {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.unfollow-btn:hover i {
+    color: #ff4444;
+}
+
+.truyen-item h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 10px 0 5px;
+    line-height: 1.3;
+}
+
+.truyen-item h3 a {
+    color: #333;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.truyen-item h3 a:hover {
+    color: #4CAF50;
+}
+
+.truyen-chapter {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.truyen-chapter a {
+    color: #4CAF50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.truyen-chapter a:hover {
+    color: #ff4444;
+}
+
+.no-followed {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    margin-top: 30px;
+    font-style: italic;
+}

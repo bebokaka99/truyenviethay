@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
-$user_id = $_SESSION['user_id'] ?? null; // Lấy user_id nếu có, không thì null
+$user_id = $_SESSION['user_id'] ?? null;
 $is_admin = false;
 $is_author = false;
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    $sql_truyen = "SELECT ten_truyen, user_id FROM truyen_new WHERE id = ?";
+    $sql_truyen = "SELECT ten_truyen, user_id, luot_xem FROM truyen_new WHERE id = ?";
     $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
     mysqli_stmt_bind_param($stmt_truyen, "i", $truyen_id);
     mysqli_stmt_execute($stmt_truyen);
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    $sql_chuong = "SELECT * FROM chuong WHERE so_chuong = ? AND truyen_id = ?"; // Sửa id thành so_chuong
+    $sql_chuong = "SELECT * FROM chuong WHERE so_chuong = ? AND truyen_id = ?";
     $stmt_chuong = mysqli_prepare($conn, $sql_chuong);
     mysqli_stmt_bind_param($stmt_chuong, "ii", $chapter_id, $truyen_id);
     mysqli_stmt_execute($stmt_chuong);
@@ -55,18 +55,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
+    // Tăng lượt xem cho chương
     if (!isset($_SESSION['viewed_chapters'][$chapter_id])) {
-        $new_luot_xem = ($chapter['luot_xem'] ?? 0) + 1;
-        $sql_update = "UPDATE chuong SET luot_xem = ? WHERE so_chuong = ? AND truyen_id = ?";
-        $stmt_update = mysqli_prepare($conn, $sql_update);
-        mysqli_stmt_bind_param($stmt_update, "iii", $new_luot_xem, $chapter_id, $truyen_id);
-        mysqli_stmt_execute($stmt_update);
-        mysqli_stmt_close($stmt_update);
+        $new_luot_xem_chuong = ($chapter['luot_xem'] ?? 0) + 1;
+        $sql_update_chuong = "UPDATE chuong SET luot_xem = ? WHERE so_chuong = ? AND truyen_id = ?";
+        $stmt_update_chuong = mysqli_prepare($conn, $sql_update_chuong);
+        mysqli_stmt_bind_param($stmt_update_chuong, "iii", $new_luot_xem_chuong, $chapter_id, $truyen_id);
+        mysqli_stmt_execute($stmt_update_chuong);
+        mysqli_stmt_close($stmt_update_chuong);
         $_SESSION['viewed_chapters'][$chapter_id] = true;
-        $chapter['luot_xem'] = $new_luot_xem;
+        $chapter['luot_xem'] = $new_luot_xem_chuong;
     }
 
-    // Lấy danh sách chương để tạo selector
+    // Tăng lượt xem cho truyện
+    if (!isset($_SESSION['viewed_truyen'][$truyen_id])) {
+        $new_luot_xem_truyen = ($truyen['luot_xem'] ?? 0) + 1;
+        $sql_update_truyen = "UPDATE truyen_new SET luot_xem = ? WHERE id = ?";
+        $stmt_update_truyen = mysqli_prepare($conn, $sql_update_truyen);
+        mysqli_stmt_bind_param($stmt_update_truyen, "ii", $new_luot_xem_truyen, $truyen_id);
+        mysqli_stmt_execute($stmt_update_truyen);
+        mysqli_stmt_close($stmt_update_truyen);
+        $_SESSION['viewed_truyen'][$truyen_id] = true;
+        $truyen['luot_xem'] = $new_luot_xem_truyen;
+    }
+
+    // Lấy danh sách chương
     $sql_chapters = "SELECT so_chuong, tieu_de FROM chuong WHERE truyen_id = ? AND trang_thai = 'da_duyet' ORDER BY so_chuong ASC";
     $stmt_chapters = mysqli_prepare($conn, $sql_chapters);
     mysqli_stmt_bind_param($stmt_chapters, "i", $truyen_id);
@@ -78,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     mysqli_stmt_close($stmt_chapters);
 
-    // Tìm chương trước và chương sau
+    // Tìm chương trước và sau
     $chuong_truoc = null;
     $chuong_sau = null;
     for ($i = 0; $i < count($chapters); $i++) {
@@ -89,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 
-    // Kiểm tra trạng thái theo dõi (nếu đã đăng nhập)
+    // Kiểm tra trạng thái theo dõi
     $hasFollowed = false;
     if ($user_id) {
         $sql_follow = "SELECT * FROM theo_doi WHERE user_id = ? AND truyen_id = ?";
@@ -106,17 +119,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $chapter['thoi_gian_dang'] = $chapter['thoi_gian_dang'] ? date('d/m/Y H:i', strtotime($chapter['thoi_gian_dang'])) : 'Chưa đăng';
     echo json_encode([
         'success' => true,
-        'ten_truyen' => $truyen['ten_truyen'], // Sửa truyen thành ten_truyen để khớp với chuong.js
+        'ten_truyen' => $truyen['ten_truyen'],
         'chuong' => $chapter,
-        'chapters' => $chapters, // Danh sách chương cho selector
+        'chapters' => $chapters,
         'chuong_truoc' => $chuong_truoc,
         'chuong_sau' => $chuong_sau,
         'is_admin' => $is_admin,
         'is_author' => $is_author,
-        'hasFollowed' => $hasFollowed
+        'hasFollowed' => $hasFollowed,
+        'luot_xem' => $truyen['luot_xem'] // Trả thêm lượt xem để debug
     ]);
     exit;
 }
 
 echo json_encode(['error' => 'Phương thức không hợp lệ']);
 mysqli_close($conn);
+?>

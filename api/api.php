@@ -27,6 +27,7 @@ switch ($action) {
     case 'manage-author': require 'manage-author.php'; break;
     case 'search': require 'search.php'; break;
     case 'chi-tiet-chuong': require 'chi-tiet-chuong.php'; break;
+    case 'followed_truyen': require 'follow-truyen.php'; break;
     default: echo json_encode(['error' => 'Invalid action']);
 }
 
