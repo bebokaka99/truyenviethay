@@ -1,33 +1,32 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Sử Đọc - Truyenviethay</title>
+    <link rel="icon" href="../anh/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Quản lý chương - Truyenviethay</title>
-    <link rel="icon" href="../anh/logo.png">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/user.css">
-    <link rel="stylesheet" href="../css/quan-ly-chuong.css">
+    <link rel="stylesheet" href="../css/lich-su-doc.css">
 </head>
-
 <body>
     <!-- Header -->
     <header class="header">
         <div class="phan-trai">
             <div class="logo">
-                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img" /></a>
             </div>
-            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <button class="nut-menu" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <nav class="thanh-dieu-huong">
                 <ul class="danh-sach-menu">
                     <li><a href="../index.html">Trang chủ</a></li>
                     <li class="dropdown">
-                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i
-                                class="fa-solid fa-angle-down"></i></a>
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
                         <div class="noi-dung-dropdown" id="theloai-dropdown">
                             <div class="theloai-grid" id="theloai-container"></div>
                         </div>
@@ -39,6 +38,7 @@
                             <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
                             <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
                             <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
+                            <a href="../truyen/the-loai.html?sort=rating_desc">Top đánh giá</a>
                         </div>
                     </li>
                     <li><a href="../truyen/the-loai.html?sort=hot">Truyện Hot</a></li>
@@ -48,65 +48,57 @@
                     <li><a href="#">Hỗ trợ</a></li>
                     <li class="menu-tim-kiem">
                         <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
-                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
-                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
+                            <button type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
                         </form>
                     </li>
-                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap"
-                            onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
-                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky"
-                            onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
                 </ul>
             </nav>
         </div>
         <div class="phan-phai">
             <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
-                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </form>
-            <div class="user-info" id="user-info" style="display: none;">
-                <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
-                <div class="user-dropdown">
-                    <a href="../users/profile.html">Thông tin người dùng</a>
-                    <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
-                    <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
-                    <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
-                    <a href="../users/logout.php">Đăng xuất</a>
+            <div class="user-section">
+                <div class="user-info" id="user-info" style="display: none">
+                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar" />
+                    <div class="user-dropdown">
+                        <a href="profile.html">Thông tin người dùng</a>
+                        <a href="truyen-theo-doi.html">Truyện theo dõi</a>
+                        <a href="lich-su-doc.html">Lịch sử đọc</a>
+                        <a href="cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                        <a href="logout.php">Đăng xuất</a>
+                    </div>
+                </div>
+                <div class="login-buttons" id="login-buttons">
+                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='login.html'">
+                        Đăng nhập
+                    </button>
+                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='register.html'">
+                        Đăng ký
+                    </button>
                 </div>
             </div>
-            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng
-                nhập</button>
-            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng
-                ký</button>
         </div>
     </header>
 
-    <div class="quan-ly-chuong-container">
-        <h2 id="truyen-title">QUẢN LÝ CHƯƠNG</h2>
-        <div id="error-message" class="error-message" style="display: none;"></div>
-        <div id="success-message" class="success-message" style="display: none;"></div>
-        <div id="chapter-actions"></div>
-        <div id="chuong-table-container"></div>
-    </div>
-    <template id="reject-form-template">
-        <div class="reject-form">
-            <form class="reject-form-submit">
-                <div class="form-header">
-                    <h3>Từ chối chương</h3>
-                    <button type="button" class="close-form-btn"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="form-group">
-                    <label>Lý do từ chối:</label>
-                    <textarea name="ly_do_tu_choi" required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Từ chối</button>
-                    <button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button>
-                </div>
-            </form>
+    <!-- Nội dung chính -->
+    <main class="lich-su-xem-container">
+        <h1>Lịch Sử Đọc</h1>
+        <div id="history-list" class="history-grid">
+            <!-- Danh sách lịch sử đọc sẽ được render bằng JavaScript -->
         </div>
-    </template>
+        <div id="pagination" class="pagination">
+            <!-- Phân trang sẽ được render bằng JavaScript -->
+        </div>
+    </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="noi-dung-footer">
             <div class="cot-footer">
@@ -123,7 +115,7 @@
                 <ul class="danh-sach-lien-ket">
                     <li><a href="../index.html">Trang chủ</a></li>
                     <li><a href="../truyen/the-loai.html">Thể loại</a></li>
-                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=rating_desc">Xếp hạng</a></li>
                     <li><a href="#">Hỗ trợ</a></li>
                 </ul>
             </div>
@@ -137,8 +129,10 @@
             <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
         </div>
     </footer>
-    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
+    <button id="back-to-top" title="Lên đầu trang">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script type="module" src="../script/script.js"></script>
 </body>
-
 </html>

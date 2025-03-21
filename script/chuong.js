@@ -8,10 +8,10 @@ export function initChuong() {
         return;
     }
 
-    fetch(`/truyenviethay/api/api.php?action=chuong&truyen_id=${truyenId}&chapter_id=${chuongId}`) // Sửa chuong_id thành chapter_id
+    fetch(`/truyenviethay/api/api.php?action=chuong&truyen_id=${truyenId}&chapter_id=${chuongId}`)
         .then(res => res.json())
         .then(data => {
-            console.log('Dữ liệu API chương:', data); // Debug
+            console.log('Dữ liệu API chương:', data);
             if (data.error) {
                 document.querySelector('.doc-truyen-container').innerHTML = `<p>${data.error}</p>`;
                 return;
@@ -30,6 +30,8 @@ export function initChuong() {
             document.getElementById('noi-dung-truyen').innerHTML = data.chuong.noi_dung.replace(/\n/g, '<br>');
 
             const nav = document.getElementById('chapter-navigation');
+            // Kiểm tra nếu data.chapters không tồn tại hoặc rỗng
+            const chapters = Array.isArray(data.chapters) ? data.chapters : [];
             nav.innerHTML = `
                 <a href="../index.html" class="nav-btn home"><i class="fas fa-home"></i> Trang chủ</a>
                 <button class="nav-btn kieu-chu" onclick="toggleFontSettings()"><i class="fas fa-font"></i> Kiểu chữ</button>
@@ -37,7 +39,7 @@ export function initChuong() {
                     <i class="fas fa-arrow-left"></i> Chương trước
                 </button>
                 <select class="chapter-selector" id="chapterSelector">
-                    ${data.chapters.map(ch => `<option value="${ch.so_chuong}" ${ch.so_chuong == chuongId ? 'selected' : ''}>${ch.tieu_de}</option>`).join('')}
+                    ${chapters.length > 0 ? chapters.map(ch => `<option value="${ch.so_chuong}" ${ch.so_chuong == chuongId ? 'selected' : ''}>Chương ${ch.so_chuong}</option>`).join('') : '<option value="">Không có chương</option>'}
                 </select>
                 <button class="nav-btn next-btn" ${data.chuong_sau === null ? 'disabled' : ''} data-chuong-id="${data.chuong_sau || 'null'}">
                     Chương sau <i class="fas fa-arrow-right"></i>
@@ -56,7 +58,9 @@ export function initChuong() {
             });
 
             document.getElementById('chapterSelector').addEventListener('change', (e) => {
-                window.location.href = `chuong.html?truyen_id=${truyenId}&chuong_id=${e.target.value}`;
+                if (e.target.value) {
+                    window.location.href = `chuong.html?truyen_id=${truyenId}&chuong_id=${e.target.value}`;
+                }
             });
 
             fetch('/truyenviethay/api/api.php?action=user')

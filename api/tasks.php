@@ -3,6 +3,11 @@ header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', '../error.log');
+error_reporting(E_ALL);
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'Chưa đăng nhập']);
     exit;
@@ -17,6 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['claim_reward'])) {
     $task_id = (int)$_POST['task_id'];
     $sql = "SELECT ut.is_completed, ut.is_rewarded, dt.exp_reward FROM user_tasks ut JOIN daily_tasks dt ON ut.task_id = dt.task_id WHERE ut.user_id = ? AND ut.task_id = ? AND ut.last_reset = ?";
     $stmt = mysqli_prepare($conn, $sql);
+    if (!$stmt) {
+        error_log('Prepare failed: ' . mysqli_error($conn));
+        echo json_encode(['error' => 'Lỗi server']);
+        exit;
+    }
     mysqli_stmt_bind_param($stmt, "iis", $user_id, $task_id, $today_str);
     mysqli_stmt_execute($stmt);
     $task = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
@@ -24,12 +34,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['claim_reward'])) {
 
     if ($task && $task['is_completed'] == 1 && $task['is_rewarded'] == 0) {
         $exp_reward = $task['exp_reward'];
-        $sql_update = "UPDATE user_level SET exp = exp + ? WHERE user_id = ?; UPDATE user_tasks SET is_rewarded = 1 WHERE user_id = ? AND task_id = ? AND last_reset = ?";
-        $stmt_update = mysqli_prepare($conn, $sql_update);
-        mysqli_stmt_bind_param($stmt_update, "iiiis", $exp_reward, $user_id, $user_id, $task_id, $today_str);
-        mysqli_stmt_execute($stmt_update);
-        echo json_encode(['success' => true, 'message' => 'Nhận thưởng thành công']);
-        mysqli_stmt_close($stmt_update);
+
+        $sql_update1 = "UPDATE user_level SET exp = exp + ? WHERE user_id = ?";
+        $stmt_update1 = mysqli_prepare($conn, $sql_update1);
+        if (!$stmt_update1) {
+            error_log('Prepare failed (update1): ' . mysqli_error($conn));
+            echo json_encode(['error' => 'Lỗi server']);
+            exit;
+        }
+        mysqli_stmt_bind_param($stmt_update1, "ii", $exp_reward, $user_id);
+        $success1 = mysqli_stmt_execute($stmt_update1);
+        mysqli_stmt_close($stmt_update1);
+
+        $sql_update2 = "UPDATE user_tasks SET is_rewarded = 1 WHERE user_id = ? AND task_id = ? AND last_reset = ?";
+        $stmt_update2 = mysqli_prepare($conn, $sql_update2);
+        if (!$stmt_update2) {
+            error_log('Prepare failed (update2): ' . mysqli_error($conn));
+            echo json_encode(['error' => 'Lỗi server']);
+            exit;
+        }
+        mysqli_stmt_bind_param($stmt_update2, "iis", $user_id, $task_id, $today_str);
+        $success2 = mysqli_stmt_execute($stmt_update2);
+        mysqli_stmt_close($stmt_update2);
+
+        if ($success1 && $success2) {
+            echo json_encode(['success' => true, 'message' => 'Nhận thưởng thành công']);
+        } else {
+            error_log('Execute failed: ' . mysqli_error($conn));
+            echo json_encode(['error' => 'Lỗi khi cập nhật dữ liệu']);
+        }
     } else {
         echo json_encode(['error' => 'Nhiệm vụ không hợp lệ hoặc đã nhận thưởng']);
     }
@@ -72,7 +105,8 @@ mysqli_stmt_execute($stmt_comments);
 $comment_count = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_comments))['count'];
 mysqli_stmt_close($stmt_comments);
 
-$sql_reads = "SELECT COUNT(*) as count FROM lich_su_doc_new WHERE user_id = ? AND DATE(thoi_gian_doc) = ?";
+// Sửa truy vấn: Đếm số chương khác nhau (dựa trên chuong_id)
+$sql_reads = "SELECT COUNT(DISTINCT chuong_id) as count FROM lich_su_doc_new WHERE user_id = ? AND DATE(thoi_gian_doc) = ?";
 $stmt_reads = mysqli_prepare($conn, $sql_reads);
 mysqli_stmt_bind_param($stmt_reads, "is", $user_id, $today_str);
 mysqli_stmt_execute($stmt_reads);

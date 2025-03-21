@@ -48,21 +48,44 @@ mysqli_stmt_close($stmt_chapters);
 $user_id = $_SESSION['user_id'] ?? null;
 $truyen['chuong_da_doc'] = [];
 $truyen['chuong_gan_nhat'] = 0;
-if ($user_id && mysqli_num_rows(mysqli_query($conn, "SHOW TABLES LIKE 'lich_su_doc'")) > 0) {
-    $sql_lich_su = "SELECT chuong_id FROM lich_su_doc WHERE user_id = ? AND truyen_id = ?";
+if ($user_id) {
+    // Lấy danh sách chương đã đọc
+    $sql_lich_su = "SELECT c.so_chuong 
+                    FROM lich_su_doc_new lsd 
+                    JOIN chuong c ON lsd.chuong_id = c.id 
+                    WHERE lsd.user_id = ? AND lsd.truyen_id = ?";
     $stmt_lich_su = mysqli_prepare($conn, $sql_lich_su);
+    if (!$stmt_lich_su) {
+        die(json_encode(['error' => 'Lỗi truy vấn lịch sử đọc: ' . mysqli_error($conn)]));
+    }
     mysqli_stmt_bind_param($stmt_lich_su, "ii", $user_id, $truyen_id);
-    mysqli_stmt_execute($stmt_lich_su);
+    if (!mysqli_stmt_execute($stmt_lich_su)) {
+        die(json_encode(['error' => 'Lỗi khi thực thi truy vấn lịch sử đọc: ' . mysqli_stmt_error($stmt_lich_su)]));
+    }
     $result_lich_su = mysqli_stmt_get_result($stmt_lich_su);
-    while ($row = mysqli_fetch_assoc($result_lich_su)) $truyen['chuong_da_doc'][] = $row['chuong_id'];
+    while ($row = mysqli_fetch_assoc($result_lich_su)) {
+        $truyen['chuong_da_doc'][] = (int)$row['so_chuong'];
+    }
     mysqli_stmt_close($stmt_lich_su);
 
-    $sql_gan_nhat = "SELECT chuong_id FROM lich_su_doc WHERE user_id = ? AND truyen_id = ? ORDER BY thoi_gian_doc DESC LIMIT 1";
+    // Lấy chương gần nhất
+    $sql_gan_nhat = "SELECT c.so_chuong 
+                     FROM lich_su_doc_new lsd 
+                     JOIN chuong c ON lsd.chuong_id = c.id 
+                     WHERE lsd.user_id = ? AND lsd.truyen_id = ? 
+                     ORDER BY lsd.thoi_gian_doc DESC LIMIT 1";
     $stmt_gan_nhat = mysqli_prepare($conn, $sql_gan_nhat);
+    if (!$stmt_gan_nhat) {
+        die(json_encode(['error' => 'Lỗi truy vấn chương gần nhất: ' . mysqli_error($conn)]));
+    }
     mysqli_stmt_bind_param($stmt_gan_nhat, "ii", $user_id, $truyen_id);
-    mysqli_stmt_execute($stmt_gan_nhat);
+    if (!mysqli_stmt_execute($stmt_gan_nhat)) {
+        die(json_encode(['error' => 'Lỗi khi thực thi truy vấn chương gần nhất: ' . mysqli_stmt_error($stmt_gan_nhat)]));
+    }
     $result_gan_nhat = mysqli_stmt_get_result($stmt_gan_nhat);
-    if ($row = mysqli_fetch_assoc($result_gan_nhat)) $truyen['chuong_gan_nhat'] = $row['chuong_id'];
+    if ($row = mysqli_fetch_assoc($result_gan_nhat)) {
+        $truyen['chuong_gan_nhat'] = (int)$row['so_chuong'];
+    }
     mysqli_stmt_close($stmt_gan_nhat);
 }
 

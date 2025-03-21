@@ -77,7 +77,7 @@ export function initTheLoai() {
                 data.data.forEach(truyen => {
                     truyenList.innerHTML += `
                         <div class="khoi-truyen">
-                            <a href="chi-tiet-truyen.html?id=${truyen.id}">
+                            <a href="chi-tiet-truyen.html?truyen_id=${truyen.id}">
                                 <img src="${truyen.anh_bia}" alt="${truyen.ten_truyen}" class="anh-truyen" onerror="this.outerHTML='<div class=error-image>Không có ảnh</div>'">
                                 <div class="thong-tin-truyen">
                                     <div class="thoi-gian-danh-gia">
