@@ -326,4 +326,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 echo json_encode(['error' => 'Phương thức không hợp lệ']);
 mysqli_close($conn);
-?>

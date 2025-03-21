@@ -30,7 +30,7 @@ function syncChaptersToDatabase($conn, $truyen_id) {
                 $stmt_check = mysqli_prepare($conn, $sql_check);
                 mysqli_stmt_bind_param($stmt_check, "ii", $truyen_id, $i);
                 mysqli_stmt_execute($stmt_check);
-                $result_check = mysqli_stmt_get_result($stmt_check);
+                $result_check = mysqli_stmt_push($stmt_check);
                 if (mysqli_num_rows($result_check) == 0) {
                     $sql_insert = "INSERT INTO chuong (truyen_id, so_chuong, noi_dung, thoi_gian_dang) VALUES (?, ?, ?, ?)";
                     $stmt_insert = mysqli_prepare($conn, $sql_insert);
@@ -45,9 +45,9 @@ function syncChaptersToDatabase($conn, $truyen_id) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $action = $_GET['subaction'] ?? 'list';
+    $subaction = $_GET['subaction'] ?? 'list';
 
-    if ($action === 'categories') {
+    if ($subaction === 'categories') {
         $sql = "SELECT * FROM theloai_new ORDER BY ten_theloai ASC";
         $result = mysqli_query($conn, $sql);
         if ($result === false) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    if ($action === 'years') {
+    if ($subaction === 'years') {
         $sql = "SELECT DISTINCT YEAR(thoi_gian_cap_nhat) as nam FROM truyen_new WHERE thoi_gian_cap_nhat IS NOT NULL AND trang_thai_kiem_duyet = 'duyet' ORDER BY nam DESC";
         $result = mysqli_query($conn, $sql);
         if ($result === false) {
@@ -77,71 +77,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    $selected_theloai = isset($_GET['theloai']) ? json_decode($_GET['theloai'], true) : [];
-    $selected_loai_truyen = $_GET['loai_truyen'] ?? '';
+    // Khai báo các biến mặc định
+    $selected_theloai = $_GET['theloai'] ?? []; // Lấy mảng từ $_GET['theloai']
+    if (!is_array($selected_theloai)) $selected_theloai = [];
     $selected_trang_thai = $_GET['trang_thai'] ?? '';
-    $selected_rating = (int)($_GET['rating'] ?? 0);
-    $selected_nam_dang = $_GET['nam_dang'] ?? '';
+    $selected_rating = isset($_GET['rating']) ? (int)$_GET['rating'] : 0;
     $sort_by = $_GET['sort'] ?? 'thoi_gian_cap_nhat_desc';
-    $page = (int)($_GET['page'] ?? 1);
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $per_page = 18;
     $offset = ($page - 1) * $per_page;
 
+    // Xây dựng truy vấn
     $sql_truyen = "SELECT DISTINCT t.id, t.ten_truyen, t.anh_bia, t.thoi_gian_cap_nhat, t.rating ";
     $sql_count = "SELECT COUNT(DISTINCT t.id) as total ";
     $from_clause = "FROM truyen_new t ";
-    $where_clause = "WHERE t.trang_thai_kiem_duyet = 'duyet' "; // Chỉ lấy truyện đã duyệt
+    $where_clause = "WHERE t.trang_thai_kiem_duyet = 'duyet' ";
     $join_clause = "";
     $order_clause = "ORDER BY ";
 
     if (!empty($selected_theloai)) {
         $selected_theloai = array_map('intval', $selected_theloai);
         $theloai_ids = implode(',', $selected_theloai);
-        $join_clause .= "JOIN truyen_theloai tt ON t.id = tt.id_truyen ";
-        $where_clause .= "AND tt.id_theloai IN ($theloai_ids) ";
-    }
-
-    if (!empty($selected_loai_truyen)) {
-        $selected_loai_truyen = mysqli_real_escape_string($conn, $selected_loai_truyen);
-        $where_clause .= "AND t.loai_truyen = '$selected_loai_truyen' ";
+        $join_clause .= "LEFT JOIN truyen_theloai tt ON t.id = tt.truyen_id ";
+        $where_clause .= "AND tt.theloai_id IN ($theloai_ids) ";
     }
 
     if (!empty($selected_trang_thai)) {
         $selected_trang_thai = mysqli_real_escape_string($conn, $selected_trang_thai);
-        $where_clause .= "AND t.tinh_trang = '$selected_trang_thai' ";
+        $where_clause .= "AND t.trang_thai = '$selected_trang_thai' ";
     }
 
     if ($selected_rating > 0) {
         $where_clause .= "AND t.rating >= $selected_rating ";
     }
 
-    if (!empty($selected_nam_dang)) {
-        if ($selected_nam_dang == 'older') {
-            $where_clause .= "AND YEAR(t.thoi_gian_cap_nhat) < 2010 ";
-        } else {
-            $selected_nam_dang = (int)$selected_nam_dang;
-            $where_clause .= "AND YEAR(t.thoi_gian_cap_nhat) = $selected_nam_dang ";
-        }
-    }
-
     switch ($sort_by) {
-        case 'name_asc': $order_clause .= "t.ten_truyen ASC"; break;
-        case 'rating_desc': $order_clause .= "t.rating DESC, t.thoi_gian_cap_nhat DESC"; break;
-        case 'top_day':
-            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 DAY) ";
-            $order_clause .= "t.luot_xem DESC"; break;
-        case 'top_week':
-            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 WEEK) ";
-            $order_clause .= "t.luot_xem DESC"; break;
-        case 'top_month':
-            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 MONTH) ";
-            $order_clause .= "t.luot_xem DESC"; break;
-        case 'top_year':
-            $where_clause .= "AND t.thoi_gian_cap_nhat >= DATE_SUB(NOW(), INTERVAL 1 YEAR) ";
-            $order_clause .= "t.luot_xem DESC"; break;
-        default: $order_clause .= "t.thoi_gian_cap_nhat DESC"; break;
+        case 'name_asc':
+            $order_clause .= "t.ten_truyen ASC";
+            break;
+        case 'rating_desc':
+            $order_clause .= "t.rating DESC, t.thoi_gian_cap_nhat DESC";
+            break;
+        case 'thoi_gian_cap_nhat_desc':
+        default:
+            $order_clause .= "t.thoi_gian_cap_nhat DESC";
+            break;
     }
 
+    // Truy vấn tổng số truyện
     $sql_count .= $from_clause . $join_clause . $where_clause;
     $result_count = mysqli_query($conn, $sql_count);
     if ($result_count === false) {
@@ -151,17 +134,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $total_truyen = mysqli_fetch_assoc($result_count)['total'];
     $total_pages = ceil($total_truyen / $per_page);
 
+    // Truy vấn danh sách truyện
     $sql_truyen .= $from_clause . $join_clause . $where_clause . $order_clause . " LIMIT $per_page OFFSET $offset";
     $result_truyen = mysqli_query($conn, $sql_truyen);
     if ($result_truyen === false) {
         echo json_encode(['success' => false, 'error' => 'Lỗi truy vấn truyện: ' . mysqli_error($conn)]);
         exit;
     }
+
     $truyen_list = [];
     while ($row = mysqli_fetch_assoc($result_truyen)) {
         $truyen_id = $row['id'];
         syncChaptersToDatabase($conn, $truyen_id);
-        // Chỉ lấy chương mới nhất đã duyệt
+
         $sql_chapters = "SELECT so_chuong as latest_chapter, thoi_gian_dang as latest_time 
                          FROM chuong 
                          WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
@@ -170,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         mysqli_stmt_bind_param($stmt_chapters, "i", $truyen_id);
         mysqli_stmt_execute($stmt_chapters);
         $chapter_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_chapters)) ?: ['latest_chapter' => null, 'latest_time' => null];
-        $chapter_latest = $chapter_data['latest_chapter'] ? "Chapter {$chapter_data['latest_chapter']}" : "Chưa có chương";
+        $chapter_latest = $chapter_data['latest_chapter'] ? "Chương {$chapter_data['latest_chapter']}" : "Chưa có chương";
         $chapter_time = $chapter_data['latest_time'] ? strtotime($chapter_data['latest_time']) : strtotime($row['thoi_gian_cap_nhat']);
         $row['update_time'] = $chapter_time ? format_time_ago($chapter_time) : "Chưa cập nhật";
         $row['chuong_moi_nhat'] = $chapter_latest;
@@ -194,3 +179,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 echo json_encode(['error' => 'Phương thức không hợp lệ']);
 mysqli_close($conn);
+?>

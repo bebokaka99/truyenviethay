@@ -101,24 +101,20 @@ export function initChiTietChuong() {
         chapter.trang_thai === "cho_duyet"
           ? '<span style="color: orange;">Chờ duyệt</span>'
           : chapter.trang_thai === "da_duyet"
-          ? '<span style="color: green;">Đã duyệt</span>'
-          : `<span style="color: red;">Từ chối${
-              chapter.ly_do_tu_choi ? ` (Lý do: ${chapter.ly_do_tu_choi})` : ""
+            ? '<span style="color: green;">Đã duyệt</span>'
+            : `<span style="color: red;">Từ chối${chapter.ly_do_tu_choi ? ` (Lý do: ${chapter.ly_do_tu_choi})` : ""
             }</span>`;
 
       // Hiển thị chi tiết chương
       details.innerHTML = `
                 <h3>
-                    <span class="static-field">Chương ${chapter.so_chuong}: ${
-        chapter.tieu_de
-      }</span>
+                    <span class="static-field">Chương ${chapter.so_chuong}: ${chapter.tieu_de
+        }</span>
                     <span class="edit-field">
-                        Chương <input type="number" id="so-chuong" value="${
-                          chapter.so_chuong
-                        }" min="1">
-                        : <input type="text" id="tieu-de" value="${
-                          chapter.tieu_de
-                        }">
+                        Chương <input type="number" id="so-chuong" value="${chapter.so_chuong
+        }" min="1">
+                        : <input type="text" id="tieu-de" value="${chapter.tieu_de
+        }">
                     </span>
                 </h3>
                 <p><strong>Ngày đăng:</strong> ${chapter.thoi_gian_dang}</p>
@@ -126,19 +122,17 @@ export function initChiTietChuong() {
                 <p><strong>Trạng thái:</strong> ${trangThai}</p>
                 <div class="noi-dung-chuong">
                     <h4>Nội dung:</h4>
-                    <div id="chapter-content" class="chapter-content">${
-                      chapter.noi_dung
-                    }</div>
+                    <div id="chapter-content" class="chapter-content">${chapter.noi_dung
+        }</div>
                 </div>
                 <div class="action-buttons">
-                    ${
-                      data.is_admin || data.is_author
-                        ? `<button class="edit-btn" id="edit-btn">Chỉnh sửa</button>
+                    ${data.is_admin || data.is_author
+          ? `<button class="edit-btn" id="edit-btn">Chỉnh sửa</button>
                                <button class="save-btn" id="save-btn" style="display: none;">Lưu thay đổi</button>
                                <button class="cancel-btn" id="cancel-btn" style="display: none;">Hủy</button>
                                <button class="delete-btn" id="delete-btn">Xóa chương</button>`
-                        : ""
-                    }
+          : ""
+        }
                     <a href="quan-ly-chuong.html?truyen_id=${truyenId}" class="back-btn">Quay lại</a>
                 </div>
             `;

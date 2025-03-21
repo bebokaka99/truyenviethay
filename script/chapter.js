@@ -86,16 +86,12 @@ export function initChapter() {
                            <select id="file-select" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
                                <option value="">-- Chọn file --</option>
                                ${data.files_list
-                                 .map(
-                                   (file) => `
-                                   <option value="${file.id}">[${
-                                     file.format
-                                   }] ${file.file_path.split("/").pop()} (${
-                                     file.uploaded_at
-                                   })</option>
+              .map(
+                (file) => `
+                                   <option value="${file.id}">[${file.format}] ${file.file_path.split("/").pop()} (${file.uploaded_at})</option>
                                `
-                                 )
-                                 .join("")}
+              )
+              .join("")}
                            </select>
                        </div>
                        <div class="form-group">
@@ -136,12 +132,15 @@ export function initChapter() {
 
           addBtn.addEventListener("click", () => {
             formContainer.style.display = "block";
+            document.body.classList.add("no-scroll"); // Thêm lớp no-scroll để vô hiệu hóa thanh cuộn của trang
           });
           closeBtn.addEventListener("click", () => {
             formContainer.style.display = "none";
+            document.body.classList.remove("no-scroll"); // Xóa lớp no-scroll để khôi phục thanh cuộn
           });
           cancelBtn.addEventListener("click", () => {
             formContainer.style.display = "none";
+            document.body.classList.remove("no-scroll"); // Xóa lớp no-scroll để khôi phục thanh cuộn
           });
 
           // Xử lý upload file
@@ -210,7 +209,7 @@ export function initChapter() {
                 } else {
                   alert(
                     "Lỗi khi lấy nội dung file: " +
-                      (data.error || "Lỗi không xác định")
+                    (data.error || "Lỗi không xác định")
                   );
                 }
               })
@@ -243,17 +242,15 @@ export function initChapter() {
             chapters.forEach((part, index) => {
               if (part.match(/Chương\s*\d+\s*:?\s*[^\n]*/i)) {
                 if (currentChapter) {
-                  result += `<p><strong>${currentChapter}</strong></p><p>${
-                    chapters[index - 1]
-                  }</p><hr>`;
+                  result += `<p><strong>${currentChapter}</strong></p><p>${chapters[index - 1]
+                    }</p><hr>`;
                 }
                 currentChapter = part;
               }
             });
             if (currentChapter) {
-              result += `<p><strong>${currentChapter}</strong></p><p>${
-                chapters[chapters.length - 1]
-              }</p>`;
+              result += `<p><strong>${currentChapter}</strong></p><p>${chapters[chapters.length - 1]
+                }</p>`;
             }
 
             tinymce.get("noi_dung").setContent(result);
@@ -279,7 +276,12 @@ export function initChapter() {
               }
             )
               .then((res) => res.json())
-              .then((data) => handleResponse(data, form, formContainer))
+              .then((data) => {
+                handleResponse(data, form, formContainer);
+                if (data.success) {
+                  document.body.classList.remove("no-scroll"); // Xóa lớp no-scroll khi submit thành công
+                }
+              })
               .catch((err) => console.error("Add error:", err));
           });
         }
@@ -301,130 +303,87 @@ export function initChapter() {
                 <thead><tr><th>Số chương</th><th>Tiêu đề</th><th>Ngày đăng</th><th>Trạng thái</th><th>Lượt xem</th><th>Hành động</th></tr></thead>
                 <tbody>
                     ${data.data
-                      .map(
-                        (chuong) => `
+              .map(
+                (chuong) => `
                         <tr>
                             <td>${chuong.so_chuong}</td>
                             <td>${chuong.tieu_de}</td>
                             <td>${chuong.thoi_gian_dang}</td>
                             <td class="status-${chuong.trang_thai}">
-                                ${
-                                  chuong.trang_thai === "cho_duyet"
-                                    ? "Chờ duyệt"
-                                    : chuong.trang_thai === "da_duyet"
-                                    ? "Đã duyệt"
-                                    : chuong.trang_thai === "tu_choi"
-                                    ? "Từ chối"
-                                    : "Không xác định"
-                                }
-                                ${
-                                  data.is_author &&
-                                  chuong.trang_thai === "tu_choi" &&
-                                  chuong.ly_do_tu_choi
-                                    ? `<div>Lý do: ${chuong.ly_do_tu_choi}</div>`
-                                    : ""
-                                }
+                                ${chuong.trang_thai === "cho_duyet"
+                    ? "Chờ duyệt"
+                    : chuong.trang_thai === "da_duyet"
+                      ? "Đã duyệt"
+                      : chuong.trang_thai === "tu_choi"
+                        ? "Từ chối"
+                        : "Không xác định"
+                  }
+                                ${data.is_author &&
+                    chuong.trang_thai === "tu_choi" &&
+                    chuong.ly_do_tu_choi
+                    ? `<div>Lý do: ${chuong.ly_do_tu_choi}</div>`
+                    : ""
+                  }
                             </td>
                             <td>${chuong.luot_xem}</td>
                             <td>
-                                ${
-                                  data.is_admin &&
-                                  chuong.trang_thai === "cho_duyet"
-                                    ? `
+                                ${data.is_admin &&
+                    chuong.trang_thai === "cho_duyet"
+                    ? `
                                     <button class="action-btn approve-btn" data-id="${chuong.id}">Phê duyệt</button>
                                     <button class="action-btn reject-btn" data-id="${chuong.id}">Từ chối</button>
                                     <a href="../truyen/chi-tiet-chuong.html?truyen_id=${truyenId}&chapter_id=${chuong.id}" class="action-btn view-btn">Xem chi tiết</a>
                                     <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
                                 `
-                                    : ""
-                                }
-                                ${
-                                  data.is_admin &&
-                                  chuong.trang_thai === "tu_choi"
-                                    ? `
+                    : ""
+                  }
+                                ${data.is_admin &&
+                    chuong.trang_thai === "tu_choi"
+                    ? `
                                     <button class="action-btn reason-btn" data-reason="${chuong.ly_do_tu_choi}">Xem lý do</button>
                                     <a href="../truyen/chi-tiet-chuong.html?truyen_id=${truyenId}&chapter_id=${chuong.id}" class="action-btn view-btn">Xem chi tiết</a>
                                     <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
                                 `
-                                    : ""
-                                }
-                                ${
-                                  data.is_admin &&
-                                  chuong.trang_thai === "da_duyet"
-                                    ? `
+                    : ""
+                  }
+                                ${data.is_admin &&
+                    chuong.trang_thai === "da_duyet"
+                    ? `
                                     <a href="../truyen/chi-tiet-chuong.html?truyen_id=${truyenId}&chapter_id=${chuong.id}" class="action-btn view-btn">Xem chi tiết</a>
-                                `
-                                    : ""
-                                }
-                                ${
-                                  data.is_author &&
-                                  ["cho_duyet", "tu_choi"].includes(
-                                    chuong.trang_thai
-                                  )
-                                    ? `
-                                    <button class="action-btn edit-btn" data-id="${chuong.id}" data-so="${chuong.so_chuong}" data-tieu_de="${chuong.tieu_de}">Chỉnh sửa</button>
                                     <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
                                 `
-                                    : ""
-                                }
-                                ${
-                                  data.is_author &&
-                                  chuong.trang_thai === "da_duyet"
-                                    ? `
+                    : ""
+                  }
+                                ${data.is_author &&
+                    chuong.trang_thai === "cho_duyet"
+                    ? `
                                     <a href="../truyen/chi-tiet-chuong.html?truyen_id=${truyenId}&chapter_id=${chuong.id}" class="action-btn view-btn">Xem chi tiết</a>
+                                    <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
                                 `
-                                    : ""
-                                }
+                    : ""
+                  }
+                                ${data.is_author &&
+                    chuong.trang_thai === "tu_choi"
+                    ? `
+                                    <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
+                                `
+                    : ""
+                  }
+                                ${data.is_author &&
+                    chuong.trang_thai === "da_duyet"
+                    ? `
+                                    <a href="../truyen/chi-tiet-chuong.html?truyen_id=${truyenId}&chapter_id=${chuong.id}" class="action-btn view-btn">Xem chi tiết</a>
+                                    <button class="action-btn delete-btn" data-id="${chuong.id}">Xóa</button>
+                                `
+                    : ""
+                  }
                             </td>
                         </tr>
-                        ${
-                          data.is_author &&
-                          ["cho_duyet", "tu_choi"].includes(chuong.trang_thai)
-                            ? `
-                            <tr class="edit-chuong-row" style="display: none;" id="edit-chuong-row-${chuong.id}">
-                                <td colspan="6">
-                                    <div class="edit-chuong-form" id="edit-chuong-form-${chuong.id}">
-                                        <form class="edit-form" data-id="${chuong.id}">
-                                            <div class="form-header"><h3>Chỉnh sửa chương</h3><button type="button" class="close-form-btn"><i class="fas fa-times"></i></button></div>
-                                            <div class="form-group"><label>Số chương:</label><input type="number" name="so_chuong" value="${chuong.so_chuong}" min="1" required></div>
-                                            <div class="form-group"><label>Tiêu đề:</label><input type="text" name="tieu_de" value="${chuong.tieu_de}" required></div>
-                                            <div class="form-group"><label>Nội dung:</label><textarea name="noi_dung" id="edit-noi-dung-${chuong.id}">${chuong.noi_dung}</textarea></div>
-                                            <div class="form-actions"><button type="submit" class="submit-btn"><i class="fas fa-save"></i> Cập nhật</button><button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button></div>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        `
-                            : ""
-                        }
                     `
-                      )
-                      .join("")}
+              )
+              .join("")}
                 </tbody>
             </table>`;
-
-          // Khởi tạo TinyMCE cho các form chỉnh sửa
-          data.data.forEach((chuong) => {
-            if (
-              data.is_author &&
-              ["cho_duyet", "tu_choi"].includes(chuong.trang_thai)
-            ) {
-              tinymce.init({
-                selector: `#edit-noi-dung-${chuong.id}`,
-                height: 500,
-                plugins: "lists link image",
-                toolbar:
-                  "undo redo | bold italic | bullist numlist | link image",
-                setup: (editor) => {
-                  editor.on("init", () => {
-                    console.log(
-                      `TinyMCE initialized for edit form ${chuong.id}`
-                    );
-                  });
-                },
-              });
-            }
-          });
 
           // Gắn sự kiện
           tableContainer.querySelectorAll(".approve-btn").forEach((btn) => {
@@ -471,58 +430,6 @@ export function initChapter() {
                   .then((data) => handleResponse(data))
                   .catch((err) => console.error("Delete error:", err));
               }
-            });
-          });
-
-          tableContainer.querySelectorAll(".edit-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const row = document.getElementById(
-                `edit-chuong-row-${btn.dataset.id}`
-              );
-              if (row) {
-                row.style.display =
-                  row.style.display === "none" ? "table-row" : "none";
-              }
-            });
-          });
-
-          tableContainer
-            .querySelectorAll(
-              ".edit-chuong-form .close-form-btn, .edit-chuong-form .cancel-btn"
-            )
-            .forEach((btn) => {
-              btn.addEventListener("click", () => {
-                const row = btn.closest(".edit-chuong-row");
-                if (row) row.style.display = "none";
-              });
-            });
-
-          tableContainer.querySelectorAll(".edit-form").forEach((form) => {
-            form.addEventListener("submit", (e) => {
-              e.preventDefault();
-              const formData = new FormData(form);
-              formData.append("action", "update");
-              formData.append("chapter_id", form.dataset.id);
-              formData.append("truyen_id", truyenId);
-              const editorId = `edit-noi-dung-${form.dataset.id}`;
-              const noiDung = tinymce.get(editorId).getContent();
-              if (!noiDung) {
-                alert("Nội dung không được để trống!");
-                return;
-              }
-              formData.set("noi_dung", noiDung);
-              fetch(
-                "http://localhost:888/truyenviethay/api/api.php?action=chapter",
-                {
-                  method: "POST",
-                  body: formData,
-                }
-              )
-                .then((res) => res.json())
-                .then((data) =>
-                  handleResponse(data, null, form.closest(".edit-chuong-row"))
-                )
-                .catch((err) => console.error("Update error:", err));
             });
           });
 
