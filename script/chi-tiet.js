@@ -41,16 +41,37 @@ export function initChiTiet() {
 
             const actionButtons = document.getElementById('action-buttons');
             const chapterCount = data.chapters.length;
-            actionButtons.innerHTML = `
-                ${chapterCount > 0 ? `<a href="chuong.html?truyen_id=${truyenId}&chuong_id=1" class="read-btn"><i class="fas fa-book-reader"></i> Đọc từ đầu</a>` : `<a href="#" class="read-btn disabled"><i class="fas fa-book-reader"></i> Đọc từ đầu</a>`}
-                ${chapterCount > 0 ? `<a href="chuong.html?truyen_id=${truyenId}&chuong_id=${data.chuong_gan_nhat > 0 ? data.chuong_gan_nhat : 1}" class="continue-btn"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>` : `<a href="#" class="continue-btn disabled"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>`}
-                <button id="follow-btn" class="follow-btn"><i class="fas fa-heart"></i> Theo dõi</button>
-                <button id="like-btn" class="like-btn"><i class="fas fa-thumbs-up"></i> Thích</button>
-            `;
 
+            // Kiểm tra trạng thái đăng nhập
             fetch('/truyenviethay/api/api.php?action=user')
                 .then(res => res.json())
                 .then(user => {
+                    let continueButtonHtml = '';
+                    if (chapterCount === 0) {
+                        // Nếu không có chương, khóa nút
+                        continueButtonHtml = `<a href="#" class="continue-btn disabled"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>`;
+                    } else if (!user.loggedIn) {
+                        // Nếu chưa đăng nhập, dẫn tới chương 1 và thêm thông báo
+                        continueButtonHtml = `<a href="chuong.html?truyen_id=${truyenId}&chuong_id=1" class="continue-btn" title="Đăng nhập để lưu lịch sử đọc"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>`;
+                    } else {
+                        // Nếu đã đăng nhập
+                        if (data.chuong_gan_nhat > 0) {
+                            // Nếu đã đọc ít nhất 1 chương, dẫn tới chương gần nhất
+                            continueButtonHtml = `<a href="chuong.html?truyen_id=${truyenId}&chuong_id=${data.chuong_gan_nhat}" class="continue-btn"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>`;
+                        } else {
+                            // Nếu chưa đọc chương nào, khóa nút
+                            continueButtonHtml = `<a href="#" class="continue-btn disabled" title="Bạn chưa đọc chương nào"><i class="fas fa-arrow-right"></i> Đọc tiếp</a>`;
+                        }
+                    }
+
+                    // Render các nút hành động
+                    actionButtons.innerHTML = `
+                        ${chapterCount > 0 ? `<a href="chuong.html?truyen_id=${truyenId}&chuong_id=1" class="read-btn"><i class="fas fa-book-reader"></i> Đọc từ đầu</a>` : `<a href="#" class="read-btn disabled"><i class="fas fa-book-reader"></i> Đọc từ đầu</a>`}
+                        ${continueButtonHtml}
+                        <button id="follow-btn" class="follow-btn"><i class="fas fa-heart"></i> Theo dõi</button>
+                        <button id="like-btn" class="like-btn"><i class="fas fa-thumbs-up"></i> Thích</button>
+                    `;
+
                     const followBtn = document.getElementById('follow-btn');
                     const likeBtn = document.getElementById('like-btn');
 

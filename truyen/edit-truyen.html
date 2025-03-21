@@ -29,78 +29,30 @@
               class="logo-img"
           /></a>
         </div>
-        <button class="nut-menu" aria-label="Menu">
-          <i class="fas fa-bars"></i>
-        </button>
-        <nav class="thanh-dieu-huong">
-          <ul class="danh-sach-menu">
-            <li><a href="../index.html">Trang chủ</a></li>
-            <li class="dropdown">
-              <a href="#" class="nut-dropdown" id="theloai-toggle"
-                >Thể loại <i class="fa-solid fa-angle-down"></i
-              ></a>
-              <div class="noi-dung-dropdown" id="theloai-dropdown">
-                <div class="theloai-grid" id="theloai-container"></div>
-              </div>
-            </li>
-            <li class="dropdown dropdown-xep-hang">
-              <a href="#" class="nut-dropdown"
-                >Xếp hạng <i class="fa-solid fa-angle-down"></i
-              ></a>
-              <div class="noi-dung-dropdown">
-                <a href="../truyen/the-loai.html?sort=top_day">Top ngày</a>
-                <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
-                <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
-                <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
-                <a href="../truyen/the-loai.html?sort=rating_desc"
-                  >Top đánh giá</a
-                >
-              </div>
-            </li>
-            <li>
-              <a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc"
-                >Truyện Mới</a
-              >
-            </li>
-            <li><a href="#">Fanpage</a></li>
-            <li><a href="#">Discord</a></li>
-            <li><a href="#">Hỗ trợ</a></li>
-            <li class="menu-tim-kiem">
-              <form
-                action="../truyen/tim-kiem.html"
-                method="GET"
-                class="thanh-tim-kiem"
-              >
-                <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
-                <button type="submit">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-              </form>
-            </li>
-            <!-- Xóa cặp nút Đăng nhập/Đăng ký ở đây -->
-          </ul>
-        </nav>
-      </div>
-      <div class="phan-phai">
-        <form
-          action="../truyen/tim-kiem.html"
-          method="GET"
-          class="thanh-tim-kiem"
-        >
-          <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
-          <button type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-        <div class="user-section">
-          <div class="user-info" id="user-info" style="display: none">
-            <img src="" alt="Avatar" class="user-avatar" id="user-avatar" />
-            <div class="user-dropdown">
-              <a href="../users/profile.html">Thông tin người dùng</a>
-              <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
-              <a href="#">Lịch sử xem</a>
-              <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
-              <a href="../users/logout.php">Đăng xuất</a>
+
+        <div class="phan-phai">
+            <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-section">
+                <div class="user-info" id="user-info" style="display: none;">
+                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                    <div class="user-dropdown">
+                        <a href="../users/profile.html">Thông tin người dùng</a>
+                        <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
+                        <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
+                        <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                        <a href="../users/logout.php">Đăng xuất</a>
+                    </div>
+                </div>
+                <div class="login-buttons" id="login-buttons">
+                    <button class="nut-dang-nhap" id="login-btn"
+                        onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+                    <button class="nut-dang-ky" id="register-btn"
+                        onclick="window.location.href='../users/register.html'">Đăng ký</button>
+                </div>
+
             </div>
           </div>
           <div class="login-buttons" id="login-buttons">
@@ -142,46 +94,48 @@
           <label for="ten_truyen">Tên truyện:</label>
           <input type="text" name="ten_truyen" id="ten_truyen" required />
         </div>
-        <div class="form-group">
-          <label for="tac_gia">Tác giả:</label>
-          <input type="text" name="tac_gia" id="tac_gia" required />
-        </div>
-        <div class="form-group">
-          <label for="mo_ta">Mô tả:</label>
-          <textarea name="mo_ta" id="mo_ta" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="theloai">Thể loại (giữ Ctrl để chọn nhiều):</label>
-          <select
-            name="theloai[]"
-            id="theloai"
-            multiple
-            style="height: 200px"
-            required
-          ></select>
-        </div>
-        <div class="form-group">
-          <label for="trang_thai">Trạng thái:</label>
-          <select name="trang_thai" id="trang_thai" required>
-            <option value="dang_tien_hanh">Đang tiến hành</option>
-            <option value="da_hoan_thanh">Đã hoàn thành</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="anh_bia">Ảnh bìa hiện tại:</label>
-          <div class="current-image-container">
-            <div class="current-image" id="current-image"></div>
-          </div>
-          <label for="anh_bia">Thay đổi ảnh bìa:</label>
-          <input type="file" name="anh_bia" id="anh_bia" accept="image/*" />
-          <p class="file-note">Chỉ hỗ trợ file jpg, jpeg, png, gif dưới 5MB</p>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="submit-btn">
-            <i class="fas fa-check"></i> Cập nhật truyện
-          </button>
-        </div>
-      </form>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+        <form id="edit-truyen-form" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="truyen-id">
+            <div class="form-group">
+                <label for="ten_truyen">Tên truyện:</label>
+                <input type="text" name="ten_truyen" id="ten_truyen" required>
+            </div>
+            <div class="form-group">
+                <label for="tac_gia">Tác giả:</label>
+                <input type="text" name="tac_gia" id="tac_gia" required>
+            </div>
+            <div class="form-group">
+                <label for="mo_ta">Mô tả:</label>
+                <textarea name="mo_ta" id="mo_ta" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="theloai">Thể loại (giữ Ctrl để chọn nhiều):</label>
+                <select name="theloai[]" id="theloai" multiple style="height: 200px;" required></select>
+            </div>
+            <div class="form-group">
+                <label for="trang_thai">Trạng thái:</label>
+                <select name="trang_thai" id="trang_thai" required>
+                    <option value="dang_tien_hanh">Đang tiến hành</option>
+                    <option value="da_hoan_thanh">Đã hoàn thành</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="anh_bia">Ảnh bìa hiện tại:</label>
+                <div class="current-image-container">
+                    <div class="current-image" id="current-image"></div>
+                </div>
+                <label for="anh_bia">Thay đổi ảnh bìa:</label>
+                <input type="file" name="anh_bia" id="anh_bia" accept="image/*">
+                <p class="file-note">Chỉ hỗ trợ file jpg, jpeg, png, gif dưới 5MB</p>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn"><i class="fas fa-check"></i> Cập nhật truyện</button>
+            </div>
+        </form>
+
     </div>
 
     <footer class="footer">

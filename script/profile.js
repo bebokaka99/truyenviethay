@@ -1,4 +1,4 @@
-// script/profile.js (đã sửa)
+// script/profile.js
 
 export function initProfile() {
     fetch('/truyenviethay/api/api.php?action=profile')
@@ -99,7 +99,6 @@ export function initProfile() {
             tab.classList.add('active');
             document.getElementById(tab.dataset.tab).style.display = 'block';
 
-            // Tự động load danh sách truyện khi chuyển sang tab Kiểm duyệt
             if (tab.dataset.tab === 'moderation') {
                 initModeration();
             }
@@ -187,9 +186,7 @@ function initModeration() {
         });
 }
 
-// Hàm hiển thị modal chi tiết truyện (đã cải tiến)
-// Hàm hiển thị modal chi tiết truyện (đã cải tiến)
-window.showTruyenDetail = function(truyenId) {
+window.showTruyenDetail = function (truyenId) {
     fetch('/truyenviethay/api/api.php?action=moderation_detail&truyen_id=' + truyenId)
         .then(res => {
             if (!res.ok) throw new Error('Lỗi khi tải chi tiết truyện: ' + res.status);
@@ -201,12 +198,12 @@ window.showTruyenDetail = function(truyenId) {
                 return;
             }
             const truyen = data.truyen;
-            console.log('Dữ liệu truyen:', truyen); // Debug dữ liệu
+            console.log('Dữ liệu truyen:', truyen);
             const modal = document.getElementById('truyen-detail-modal');
             const content = document.getElementById('truyen-detail-content');
             content.innerHTML = `
                 <div class="truyen-detail-header">
-                    <h3>${truyen.ten_truyen || 'Tên truyện không xác định'}</h3> <!-- Thêm fallback -->
+                    <h3>${truyen.ten_truyen || 'Tên truyện không xác định'}</h3>
                     <img src="${truyen.anh_bia}" alt="${truyen.ten_truyen || 'Truyện'}" class="truyen-detail-cover">
                 </div>
                 <div class="truyen-detail-info">
@@ -237,13 +234,12 @@ window.showTruyenDetail = function(truyenId) {
             alert('Có lỗi xảy ra khi tải chi tiết truyện.');
         });
 };
-// Hàm đóng modal
-window.closeTruyenDetailModal = function() {
+
+window.closeTruyenDetailModal = function () {
     const modal = document.getElementById('truyen-detail-modal');
     modal.style.display = 'none';
 };
 
-// Đóng modal khi click bên ngoài
 window.addEventListener('click', (event) => {
     const modal = document.getElementById('truyen-detail-modal');
     if (event.target === modal) {
@@ -251,20 +247,50 @@ window.addEventListener('click', (event) => {
     }
 });
 
-window.claimReward = function(taskId) {
+window.claimReward = function (taskId) {
     fetch('/truyenviethay/api/api.php?action=tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `claim_reward=1&task_id=${taskId}`
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Lỗi server: ' + res.status);
+            }
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                return res.text().then(text => {
+                    console.error('Response không phải JSON:', text);
+                    throw new Error('Response không phải JSON');
+                });
+            }
+            return res.json();
+        })
         .then(data => {
             alert(data.message || data.error);
-            if (data.success) initTasks();
+            if (data.success) {
+                // Cập nhật giao diện ngay lập tức cho nhiệm vụ vừa nhận thưởng
+                const taskAction = document.querySelector(`.task-item .task-action button[onclick="claimReward(${taskId})"]`)?.parentElement;
+                if (taskAction) {
+                    taskAction.innerHTML = '<span class="completed-text">Đã hoàn thành</span>';
+                    // Cập nhật badge
+                    const badge = document.getElementById('task-badge');
+                    let incomplete = parseInt(badge.textContent) || 0;
+                    if (incomplete > 0) {
+                        incomplete--;
+                        badge.textContent = incomplete;
+                        badge.style.display = incomplete > 0 ? 'inline' : 'none';
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi khi nhận thưởng:', error);
+            alert('Có lỗi xảy ra khi nhận thưởng.');
         });
 };
 
-window.moderate = function(truyenId, action) {
+window.moderate = function (truyenId, action) {
     fetch('/truyenviethay/api/api.php?action=moderation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

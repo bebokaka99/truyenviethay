@@ -60,7 +60,13 @@ if ($user_info['role'] === 'user') {
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $user_id);
     mysqli_stmt_execute($stmt);
-    $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) ?: ['total_views' => 0, 'total_chapters' => 0];
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    // Đảm bảo total_views không là null
+    $row = [
+        'total_views' => $row['total_views'] ?? 0, // Gán 0 nếu null
+        'total_chapters' => $row['total_chapters'] ?? 0
+    ];
     $exp = $row['total_views'] * 1 + $row['total_chapters'] * 50;
     $level = floor($exp / 200);
     $sql_level = "INSERT INTO author_level (user_id, exp, level) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE exp = ?, level = ?";

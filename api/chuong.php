@@ -55,6 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
+    // Ghi lịch sử đọc vào bảng lich_su_doc_new (nếu user đã đăng nhập)
+    if ($user_id) {
+        $sql = "INSERT INTO lich_su_doc_new (user_id, truyen_id, chuong_id, thoi_gian_doc) VALUES (?, ?, ?, NOW())";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "iii", $user_id, $truyen_id, $chapter['id']);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
     // Tăng lượt xem cho chương
     if (!isset($_SESSION['viewed_chapters'][$chapter_id])) {
         $new_luot_xem_chuong = ($chapter['luot_xem'] ?? 0) + 1;
@@ -79,28 +88,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $truyen['luot_xem'] = $new_luot_xem_truyen;
     }
 
-    // Lấy danh sách chương
-    $sql_chapters = "SELECT so_chuong, tieu_de FROM chuong WHERE truyen_id = ? AND trang_thai = 'da_duyet' ORDER BY so_chuong ASC";
+    // Lấy danh sách chương (vẫn giữ thứ tự giảm dần để hiển thị trong dropdown)
+    $sql_chapters = "SELECT so_chuong, tieu_de FROM chuong WHERE truyen_id = ? AND trang_thai = 'da_duyet' ORDER BY so_chuong DESC";
     $stmt_chapters = mysqli_prepare($conn, $sql_chapters);
+    if (!$stmt_chapters) {
+        echo json_encode(['error' => 'Lỗi truy vấn danh sách chương: ' . mysqli_error($conn)]);
+        exit;
+    }
     mysqli_stmt_bind_param($stmt_chapters, "i", $truyen_id);
-    mysqli_stmt_execute($stmt_chapters);
+    if (!mysqli_stmt_execute($stmt_chapters)) {
+        echo json_encode(['error' => 'Lỗi khi thực thi truy vấn danh sách chương: ' . mysqli_stmt_error($stmt_chapters)]);
+        exit;
+    }
     $result_chapters = mysqli_stmt_get_result($stmt_chapters);
+    if (!$result_chapters) {
+        echo json_encode(['error' => 'Lỗi khi lấy kết quả danh sách chương: ' . mysqli_stmt_error($stmt_chapters)]);
+        exit;
+    }
     $chapters = [];
     while ($row = mysqli_fetch_assoc($result_chapters)) {
         $chapters[] = $row;
     }
     mysqli_stmt_close($stmt_chapters);
 
-    // Tìm chương trước và sau
+    // Tìm chương trước và sau (dựa trên giá trị so_chuong, không phụ thuộc vào thứ tự mảng $chapters)
     $chuong_truoc = null;
     $chuong_sau = null;
-    for ($i = 0; $i < count($chapters); $i++) {
-        if ($chapters[$i]['so_chuong'] == $chapter_id) {
-            if ($i > 0) $chuong_truoc = $chapters[$i - 1]['so_chuong'];
-            if ($i < count($chapters) - 1) $chuong_sau = $chapters[$i + 1]['so_chuong'];
-            break;
-        }
+
+    // Tìm chương trước (so_chuong nhỏ hơn $chapter_id và gần nhất)
+    $prev_chapter_id = $chapter_id - 1;
+    $sql_prev = "SELECT so_chuong FROM chuong WHERE truyen_id = ? AND so_chuong = ? AND trang_thai = 'da_duyet'";
+    $stmt_prev = mysqli_prepare($conn, $sql_prev);
+    mysqli_stmt_bind_param($stmt_prev, "ii", $truyen_id, $prev_chapter_id);
+    mysqli_stmt_execute($stmt_prev);
+    $result_prev = mysqli_stmt_get_result($stmt_prev);
+    if (mysqli_num_rows($result_prev) > 0) {
+        $chuong_truoc = $prev_chapter_id;
     }
+    mysqli_stmt_close($stmt_prev);
+
+    // Tìm chương sau (so_chuong lớn hơn $chapter_id và gần nhất)
+    $next_chapter_id = $chapter_id + 1;
+    $sql_next = "SELECT so_chuong FROM chuong WHERE truyen_id = ? AND so_chuong = ? AND trang_thai = 'da_duyet'";
+    $stmt_next = mysqli_prepare($conn, $sql_next);
+    mysqli_stmt_bind_param($stmt_next, "ii", $truyen_id, $next_chapter_id);
+    mysqli_stmt_execute($stmt_next);
+    $result_next = mysqli_stmt_get_result($stmt_next);
+    if (mysqli_num_rows($result_next) > 0) {
+        $chuong_sau = $next_chapter_id;
+    }
+    mysqli_stmt_close($stmt_next);
 
     // Kiểm tra trạng thái theo dõi
     $hasFollowed = false;
@@ -127,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'is_admin' => $is_admin,
         'is_author' => $is_author,
         'hasFollowed' => $hasFollowed,
-        'luot_xem' => $truyen['luot_xem'] // Trả thêm lượt xem để debug
+        'luot_xem' => $truyen['luot_xem']
     ]);
     exit;
 }

@@ -28,10 +28,15 @@ switch ($action) {
     case 'search': require 'search.php'; break;
     case 'chi-tiet-chuong': require 'chi-tiet-chuong.php'; break;
     case 'followed_truyen': require 'follow-truyen.php'; break;
+
     case 'upload-story': require 'upload-story'; break;
     case 'get-file-content': require 'get-file-content'; break;
+
+    case 'lich-su-doc': require 'lich-su-doc.php'; break;
+    case 'xoa-lich-su-doc': require 'lich-su-doc.php'; break;
+
     default: echo json_encode(['error' => 'Invalid action']);
-}
+
 
 // Xóa buffer và gửi đầu ra
 ob_end_flush();

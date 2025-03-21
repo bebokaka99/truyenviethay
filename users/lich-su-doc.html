@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title id="truyen-title">Truyenviethay</title>
+    <title>Lịch Sử Đọc - Truyenviethay</title>
     <link rel="icon" href="../anh/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/user.css">
-    <link rel="stylesheet" href="../css/truyen.css">
+    <link rel="stylesheet" href="../css/lich-su-doc.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="phan-trai">
             <div class="logo">
-                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img" /></a>
             </div>
-            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <button class="nut-menu" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <nav class="thanh-dieu-huong">
                 <ul class="danh-sach-menu">
                     <li><a href="../index.html">Trang chủ</a></li>
@@ -37,67 +41,62 @@
                             <a href="../truyen/the-loai.html?sort=rating_desc">Top đánh giá</a>
                         </div>
                     </li>
-                    <li><a href="#">Truyện Hot</a></li>
-                    <li><a href="#">Truyện Mới</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=hot">Truyện Hot</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
                     <li><a href="#">Fanpage</a></li>
                     <li><a href="#">Discord</a></li>
                     <li><a href="#">Hỗ trợ</a></li>
                     <li class="menu-tim-kiem">
                         <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
-                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
-                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
+                            <button type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
                         </form>
                     </li>
-                    <!-- Xóa cặp nút Đăng nhập/Đăng ký ở đây -->
                 </ul>
             </nav>
         </div>
         <div class="phan-phai">
             <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
-                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" name="q" placeholder="Tìm kiếm truyện..." />
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </form>
             <div class="user-section">
-                <div class="user-info" id="user-info" style="display: none;">
-                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                <div class="user-info" id="user-info" style="display: none">
+                    <img src="" alt="Avatar" class="user-avatar" id="user-avatar" />
                     <div class="user-dropdown">
-                        <a href="../users/profile.html">Thông tin người dùng</a>
-                        <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
-                        <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
-                        <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
-                        <a href="../users/logout.php">Đăng xuất</a>
+                        <a href="profile.html">Thông tin người dùng</a>
+                        <a href="truyen-theo-doi.html">Truyện theo dõi</a>
+                        <a href="lich-su-doc.html">Lịch sử đọc</a>
+                        <a href="cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                        <a href="logout.php">Đăng xuất</a>
                     </div>
                 </div>
                 <div class="login-buttons" id="login-buttons">
-                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
-                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='login.html'">
+                        Đăng nhập
+                    </button>
+                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='register.html'">
+                        Đăng ký
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Nội dung trang chi tiết truyện -->
-    <div class="truyen-container">
-        <h2 id="ten-truyen"></h2>
-        <div class="truyen-header">
-            <div class="truyen-image" id="truyen-image"></div>
-            <div class="truyen-info" id="truyen-info"></div>
+    <!-- Nội dung chính -->
+    <main class="lich-su-xem-container">
+        <h1>Lịch Sử Đọc</h1>
+        <div id="history-list" class="history-grid">
+            <!-- Danh sách lịch sử đọc sẽ được render bằng JavaScript -->
         </div>
-        <div class="truyen-description">
-            <h3><i class="fas fa-info-circle"></i> Mô tả</h3>
-            <p id="mo-ta"></p>
+        <div id="pagination" class="pagination">
+            <!-- Phân trang sẽ được render bằng JavaScript -->
         </div>
-        <div class="chuong-list">
-            <h3><i class="fas fa-list"></i> Danh sách chương</h3>
-            <div class="chuong-count" id="chapter-count"></div>
-            <div class="chuong-items" id="chapter-list"></div>
-        </div>
-        <div class="comment-section">
-            <h3><i class="fas fa-comments"></i> Bình luận</h3>
-            <div class="comment-form" id="comment-form"></div>
-            <div class="comment-list" id="comment-list"></div>
-        </div>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -116,7 +115,7 @@
                 <ul class="danh-sach-lien-ket">
                     <li><a href="../index.html">Trang chủ</a></li>
                     <li><a href="../truyen/the-loai.html">Thể loại</a></li>
-                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=rating_desc">Xếp hạng</a></li>
                     <li><a href="#">Hỗ trợ</a></li>
                 </ul>
             </div>
@@ -130,7 +129,10 @@
             <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
         </div>
     </footer>
-    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
+    <button id="back-to-top" title="Lên đầu trang">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script type="module" src="../script/script.js"></script>
 </body>
 </html>
