@@ -60,12 +60,34 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 2px solid #4caf50;
+  z-index: 1001;
+  border-radius: 12px;
   width: 90%;
-  max-width: 600px;
+  max-width: 700px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+/* Tùy chỉnh thanh cuộn */
+#addChuongForm::-webkit-scrollbar {
+  width: 10px;
+}
+
+#addChuongForm::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#addChuongForm::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 10px;
+}
+
+#addChuongForm::-webkit-scrollbar-thumb:hover {
+  background: #388e3c;
 }
 
 #addChuongForm.active {
@@ -76,43 +98,108 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
 }
 
 #addChuongForm .form-header h3 {
   margin: 0;
-  color: #333;
+  color: #2e7d32;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 #addChuongForm .close-form-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   color: #666;
+  transition: color 0.3s ease;
 }
 
 #addChuongForm .close-form-btn:hover {
-  color: #333;
+  color: #d32f2f;
 }
 
 #addChuongForm .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  position: relative;
 }
 
 #addChuongForm .form-group label {
   display: block;
-  margin-bottom: 5px;
-  color: #333;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+  background: linear-gradient(to right, #2e7d32, #66bb6a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  font-size: 17px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Gạch dưới động */
+#addChuongForm .form-group label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #2e7d32, #a5d6a7);
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+  transition: transform 0.5s ease, background 0.3s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Hiệu ứng hover */
+#addChuongForm .form-group label:hover {
+  transform: translateY(-2px);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#addChuongForm .form-group label:hover::after {
+  transform: scaleX(1);
+  background: linear-gradient(to right, #388e3c, #81c784);
+}
+
+#addChuongForm .form-group label i {
+  margin-right: 8px;
+  color: #4caf50;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+#addChuongForm .form-group label:hover i {
+  color: #388e3c;
+  transform: scale(1.2);
 }
 
 #addChuongForm .form-group input,
-#addChuongForm .form-group textarea {
+#addChuongForm .form-group textarea,
+#addChuongForm .form-group select {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   box-sizing: border-box;
+  font-size: 15px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#addChuongForm .form-group input:focus,
+#addChuongForm .form-group textarea:focus,
+#addChuongForm .form-group select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  outline: none;
 }
 
 #addChuongForm .form-group textarea {
@@ -122,20 +209,22 @@
 
 #addChuongForm .form-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
+  margin-top: 20px;
 }
 
 #addChuongForm .submit-btn,
 #addChuongForm .cancel-btn {
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 #addChuongForm .submit-btn {
@@ -144,7 +233,8 @@
 }
 
 #addChuongForm .submit-btn:hover {
-  background: #45a049;
+  background: #388e3c;
+  transform: translateY(-2px);
 }
 
 #addChuongForm .cancel-btn {
@@ -153,7 +243,26 @@
 }
 
 #addChuongForm .cancel-btn:hover {
-  background: #da190b;
+  background: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* Vô hiệu hóa thanh cuộn của trang và thêm overlay mờ khi form mở */
+body.no-scroll {
+  overflow: hidden;
+  position: relative;
+}
+
+body.no-scroll::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
 }
 
 /* Style cho bảng danh sách chương */
@@ -255,7 +364,7 @@
 
 /* Style cho form chỉnh sửa chương */
 .edit-chuong-form {
-  display: none; /* Ẩn mặc định */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -343,7 +452,7 @@
 
 /* Style cho form từ chối chương */
 .reject-form {
-  display: none; /* Ẩn mặc định */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -434,6 +543,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+
   .chuong-table th,
   .chuong-table td {
     padding: 8px;
