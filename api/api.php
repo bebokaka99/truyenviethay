@@ -37,7 +37,7 @@ switch ($action) {
 
     default: echo json_encode(['error' => 'Invalid action']);
 
-
+}
 // Xóa buffer và gửi đầu ra
 ob_end_flush();
 ?>
