@@ -28,6 +28,8 @@ switch ($action) {
     case 'search': require 'search.php'; break;
     case 'chi-tiet-chuong': require 'chi-tiet-chuong.php'; break;
     case 'followed_truyen': require 'follow-truyen.php'; break;
+    case 'upload-story': require 'upload-story'; break;
+    case 'get-file-content': require 'get-file-content'; break;
     default: echo json_encode(['error' => 'Invalid action']);
 }
 

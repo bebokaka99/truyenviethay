@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "truyenviethay_new";
+$username = "admin";
+$password = "123456";
+$dbname = "truyenviethay_new" ;
 
 $conn = mysqli_connect($host, $username, $password, $dbname);
 // Đặt múi giờ cho MySQL ngay sau khi kết nối
