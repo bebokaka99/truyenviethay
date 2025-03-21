@@ -1,70 +1,70 @@
 .chi-tiet-chuong-container {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 20px;
-    background: linear-gradient(135deg, #e8f5e9, #e3f2fd); 
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: left;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 .chi-tiet-chuong-container h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: bold;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .chapter-details {
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .chapter-details h3 {
-    font-size: 20px;
-    color: #2196F3;
-    margin-bottom: 10px;
+  font-size: 20px;
+  color: #2196f3;
+  margin-bottom: 10px;
 }
 
 .chapter-details p {
-    margin: 5px 0;
-    color: #555;
+  margin: 5px 0;
+  color: #555;
 }
 
 .noi-dung-chuong {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .noi-dung-chuong h4 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
 }
 
 .noi-dung-chuong pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background: #f9f9f9;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    color: #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #333;
 }
 
 .back-btn {
-    display: inline-block;
-    padding: 8px 15px;
-    margin-top: 20px;
-    background: linear-gradient(45deg, #2196F3, #42A5F5);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: transform 0.3s, box-shadow 0.3s;
+  display: inline-block;
+  padding: 8px 15px;
+  margin-top: 20px;
+  background: linear-gradient(45deg, #2196f3, #42a5f5);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .back-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

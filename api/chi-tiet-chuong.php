@@ -23,8 +23,8 @@ try {
         exit;
     }
 
-    $truyen_id = (int)($_GET['truyen_id'] ?? 0);
-    $chapter_id = (int)($_GET['chapter_id'] ?? 0);
+    $truyen_id = (int)($_GET['truyen_id'] ?? $_POST['truyen_id'] ?? 0);
+    $chapter_id = (int)($_GET['chapter_id'] ?? $_POST['chapter_id'] ?? 0);
 
     if ($truyen_id <= 0 || $chapter_id <= 0) {
         echo json_encode(['success' => false, 'error' => 'ID không hợp lệ']);
@@ -51,6 +51,56 @@ try {
         exit;
     }
 
+    // Kiểm tra phương thức request
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'update') {
+            // Cập nhật chương
+            $so_chuong = (int)($_POST['so_chuong'] ?? 0);
+            $tieu_de = trim($_POST['tieu_de'] ?? '');
+            $noi_dung = $_POST['noi_dung'] ?? '';
+
+            if ($so_chuong <= 0 || empty($tieu_de) || empty($noi_dung)) {
+                echo json_encode(['success' => false, 'error' => 'Dữ liệu không hợp lệ']);
+                exit;
+            }
+
+            $sql_update = "UPDATE chuong SET so_chuong = ?, tieu_de = ?, noi_dung = ? WHERE id = ? AND truyen_id = ?";
+            $stmt_update = mysqli_prepare($conn, $sql_update);
+            if (!$stmt_update) throw new Exception("Lỗi chuẩn bị truy vấn: " . mysqli_error($conn));
+            mysqli_stmt_bind_param($stmt_update, "issii", $so_chuong, $tieu_de, $noi_dung, $chapter_id, $truyen_id);
+            $success = mysqli_stmt_execute($stmt_update);
+            mysqli_stmt_close($stmt_update);
+
+            if ($success) {
+                echo json_encode(['success' => true, 'message' => 'Cập nhật chương thành công']);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Lỗi khi cập nhật chương']);
+            }
+            exit;
+        } elseif ($action === 'delete') {
+            // Xóa chương
+            $sql_delete = "DELETE FROM chuong WHERE id = ? AND truyen_id = ?";
+            $stmt_delete = mysqli_prepare($conn, $sql_delete);
+            if (!$stmt_delete) throw new Exception("Lỗi chuẩn bị truy vấn: " . mysqli_error($conn));
+            mysqli_stmt_bind_param($stmt_delete, "ii", $chapter_id, $truyen_id);
+            $success = mysqli_stmt_execute($stmt_delete);
+            mysqli_stmt_close($stmt_delete);
+
+            if ($success) {
+                echo json_encode(['success' => true, 'message' => 'Xóa chương thành công']);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Lỗi khi xóa chương']);
+            }
+            exit;
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Hành động không hợp lệ']);
+            exit;
+        }
+    }
+
+    // Lấy thông tin chương (GET)
     $sql_chapter = "SELECT * FROM chuong WHERE id = ? AND truyen_id = ?";
     $stmt_chapter = mysqli_prepare($conn, $sql_chapter);
     if (!$stmt_chapter) throw new Exception("Lỗi chuẩn bị truy vấn: " . mysqli_error($conn));
@@ -86,7 +136,7 @@ try {
         'is_author' => $is_author
     ]);
 } catch (Exception $e) {
-    error_log("Lỗi trong chi-tiet-chuong.php: " . $e->getMessage()); // Thêm log
+    error_log("Lỗi trong chi-tiet-chuong.php: " . $e->getMessage());
     echo json_encode(['success' => false, 'error' => 'Lỗi server: ' . $e->getMessage()]);
     exit;
 }

@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
 }
 
@@ -16,7 +16,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); 
+  background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -54,7 +54,7 @@ body {
   background: none;
   border: none;
   font-size: 24px;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   cursor: pointer;
   padding: 0;
   transition: color 0.3s ease;
@@ -75,7 +75,7 @@ body {
 
 .thanh-dieu-huong .danh-sach-menu li a {
   text-decoration: none;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   font-size: 16px;
   transition: color 0.3s ease, transform 0.3s ease;
   font-weight: bold;
@@ -87,7 +87,9 @@ body {
   transform: translateY(-2px);
 }
 
-.menu-tim-kiem, .menu-dang-nhap, .menu-dang-ky {
+.menu-tim-kiem,
+.menu-dang-nhap,
+.menu-dang-ky {
   display: none;
 }
 
@@ -99,8 +101,12 @@ body {
 .noi-dung-dropdown {
   display: none;
   position: absolute;
-  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient xanh nhạt */
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  background: linear-gradient(
+    135deg,
+    #e8f5e9,
+    #e3f2fd
+  ); /* Thay nền trắng bằng gradient xanh nhạt */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1;
   margin-top: 2px;
@@ -125,7 +131,7 @@ body {
 .theloai-item {
   padding: 8px 12px;
   text-decoration: none;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   font-size: 12px !important;
   font-weight: normal !important;
   text-align: center;
@@ -144,7 +150,7 @@ body {
   grid-column: 1 / -1;
   padding: 8px 12px;
   text-decoration: none;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   font-size: 13px !important;
   font-weight: normal !important;
   text-align: center;
@@ -165,7 +171,7 @@ body {
 }
 
 .noi-dung-dropdown::-webkit-scrollbar-thumb {
-  background-color: #4CAF50; /* Giữ xanh lá */
+  background-color: #4caf50; /* Giữ xanh lá */
   border-radius: 4px;
 }
 
@@ -184,9 +190,13 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
+  background: linear-gradient(
+    135deg,
+    #e8f5e9,
+    #e3f2fd
+  ); /* Thay nền trắng bằng gradient */
   border-radius: 25px;
-  border: 2px solid #4CAF50; /* Thay xanh lá */
+  border: 2px solid #4caf50; /* Thay xanh lá */
   overflow: hidden;
 }
 
@@ -206,7 +216,7 @@ body {
 
 .thanh-tim-kiem button {
   padding: 7px 11px;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   border: 2px solid #e8f5e9;
   background: transparent;
   font-size: 16px;
@@ -222,8 +232,8 @@ body {
 .nut-dang-nhap {
   padding: 8px 16px;
   background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
-  color: #4CAF50; /* Giữ xanh lá */
-  border: 1px solid #4CAF50;
+  color: #4caf50; /* Giữ xanh lá */
+  border: 1px solid #4caf50;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
@@ -232,14 +242,14 @@ body {
 }
 
 .nut-dang-nhap:hover {
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Gradient xanh lá */
+  background: linear-gradient(135deg, #4caf50, #45a049); /* Gradient xanh lá */
   color: #ffffff;
   transform: scale(1.05);
 }
 
 .nut-dang-ky {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
+  background: linear-gradient(135deg, #4caf50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -250,13 +260,21 @@ body {
 }
 
 .nut-dang-ky:hover {
-  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #2e7d32
+  ); /* Gradient xanh lá đậm hơn */
   transform: scale(1.05);
 }
 
 /* Footer */
 .footer {
-  background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
+  background: linear-gradient(
+    135deg,
+    #e8f5e9,
+    #e3f2fd
+  ); /* Thay nền trắng bằng gradient */
   padding: 40px 20px 20px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
@@ -280,7 +298,11 @@ body {
 .cot-footer h3 {
   font-size: 18px;
   font-weight: bold;
-  background: linear-gradient(45deg, #4CAF50, #388e3c); /* Thay màu xám bằng gradient xanh lá */
+  background: linear-gradient(
+    45deg,
+    #4caf50,
+    #388e3c
+  ); /* Thay màu xám bằng gradient xanh lá */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -300,7 +322,7 @@ body {
 }
 
 .cot-footer p:hover {
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
 }
 
 .mang-xa-hoi {
@@ -310,7 +332,7 @@ body {
 }
 
 .lien-ket-mxh {
-  color: #4CAF50; /* Giữ xanh lá */
+  color: #4caf50; /* Giữ xanh lá */
   font-size: 18px;
   text-decoration: none;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -338,7 +360,7 @@ body {
 }
 
 .danh-sach-lien-ket a:hover {
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   transform: translateX(5px);
 }
 
@@ -352,7 +374,7 @@ body {
 }
 
 .ban-quyen:hover {
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
 }
 
 /* Responsive */
@@ -380,7 +402,11 @@ body {
     left: -250px;
     width: 250px;
     height: 100%;
-    background: linear-gradient(135deg, #e8f5e9, #e3f2fd); /* Thay nền trắng bằng gradient */
+    background: linear-gradient(
+      135deg,
+      #e8f5e9,
+      #e3f2fd
+    ); /* Thay nền trắng bằng gradient */
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     z-index: 1000;
@@ -406,7 +432,9 @@ body {
     padding: 5px 0;
   }
 
-  .menu-tim-kiem, .menu-dang-nhap, .menu-dang-ky {
+  .menu-tim-kiem,
+  .menu-dang-nhap,
+  .menu-dang-ky {
     display: block;
   }
 
@@ -425,7 +453,8 @@ body {
     font-size: 14px;
   }
 
-  .menu-dang-nhap .nut-dang-nhap, .menu-dang-ky .nut-dang-ky {
+  .menu-dang-nhap .nut-dang-nhap,
+  .menu-dang-ky .nut-dang-ky {
     width: 100%;
     text-align: center;
     padding: 8px 16px;
@@ -520,7 +549,8 @@ table {
   margin-bottom: 20px;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
   border: 1px solid #ddd;
@@ -537,7 +567,11 @@ th {
 .button {
   display: inline-block;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #45a049
+  ); /* Thay xanh dương bằng xanh lá */
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -546,7 +580,11 @@ th {
 }
 
 .button:hover {
-  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #2e7d32
+  ); /* Gradient xanh lá đậm hơn */
   transform: scale(1.05);
 }
 
@@ -555,7 +593,7 @@ th {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
+  background: linear-gradient(135deg, #4caf50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   padding: 12px;
@@ -577,7 +615,11 @@ th {
 }
 
 #back-to-top:hover {
-  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #2e7d32
+  ); /* Gradient xanh lá đậm hơn */
   transform: scale(1.1);
 }
 
@@ -586,17 +628,17 @@ th {
 }
 
 #back-to-top.dark-mode:hover {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
+  background: linear-gradient(135deg, #4caf50, #45a049);
 }
 
 /* Responsive cho mobile */
 @media (max-width: 768px) {
   #back-to-top {
-      bottom: 15px;
-      right: 15px;
-      width: 35px;
-      height: 35px;
-      font-size: 16px;
+    bottom: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
   }
 }
 
@@ -604,7 +646,7 @@ th {
 .task-btn {
   position: relative;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
+  background: linear-gradient(135deg, #4caf50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -618,7 +660,11 @@ th {
 }
 
 .task-btn:hover {
-  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #2e7d32
+  ); /* Gradient xanh lá đậm hơn */
   transform: scale(1.05);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -640,7 +686,7 @@ th {
 }
 
 .completed-text {
-  color: #4CAF50; /* Giữ xanh lá */
+  color: #4caf50; /* Giữ xanh lá */
   font-weight: bold;
   padding: 5px 10px;
   display: inline-block;
@@ -654,9 +700,15 @@ th {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Modal Nhiệm vụ */
@@ -694,12 +746,12 @@ th {
 }
 
 .task-modal-close:hover {
-  color: #4CAF50; /* Thay đỏ bằng xanh lá */
+  color: #4caf50; /* Thay đỏ bằng xanh lá */
 }
 
 .task-modal h2 {
   font-size: 24px;
-  color: #4CAF50; /* Thay màu xám bằng xanh lá */
+  color: #4caf50; /* Thay màu xám bằng xanh lá */
   margin-bottom: 10px;
   text-align: center;
 }
@@ -729,7 +781,7 @@ th {
 
 .task-item.completed {
   background-color: #e7f3e8;
-  border-color: #4CAF50; /* Giữ xanh lá */
+  border-color: #4caf50; /* Giữ xanh lá */
 }
 
 .task-info h3 {
@@ -755,7 +807,11 @@ th {
 
 .task-progress {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #45a049); /* Thay xanh dương bằng xanh lá */
+  background: linear-gradient(
+    90deg,
+    #4caf50,
+    #45a049
+  ); /* Thay xanh dương bằng xanh lá */
   transition: width 0.3s ease-in-out;
 }
 
@@ -766,7 +822,7 @@ th {
 
 .claim-btn {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #4CAF50, #45a049); /* Giữ xanh lá */
+  background: linear-gradient(135deg, #4caf50, #45a049); /* Giữ xanh lá */
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -775,11 +831,15 @@ th {
 }
 
 .claim-btn:hover {
-  background: linear-gradient(135deg, #388e3c, #2e7d32); /* Gradient xanh lá đậm hơn */
+  background: linear-gradient(
+    135deg,
+    #388e3c,
+    #2e7d32
+  ); /* Gradient xanh lá đậm hơn */
 }
 
 .claimed {
-  color: #4CAF50; /* Giữ xanh lá */
+  color: #4caf50; /* Giữ xanh lá */
   font-weight: bold;
 }
 
@@ -791,31 +851,31 @@ th {
 /* Responsive cho modal nhiệm vụ */
 @media (max-width: 640px) {
   .task-modal-content {
-      width: 95%;
-      margin: 10% auto;
-      padding: 15px;
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
   }
 
   .task-item {
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
   }
 
   .task-action {
-      width: 100%;
-      justify-content: flex-end;
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .claim-btn {
-      width: 100%;
-      text-align: center;
+    width: 100%;
+    text-align: center;
   }
 }
 
 .success {
-  color: #4CAF50;
-  background-color: #e8f5e9; 
+  color: #4caf50;
+  background-color: #e8f5e9;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -827,4 +887,110 @@ th {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+.chuong-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.chuong-table th,
+.chuong-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.chuong-table td {
+  vertical-align: top;
+}
+
+.edit-chuong-row {
+  background: #f9f9f9;
+}
+
+.edit-chuong-form {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-chuong-form textarea {
+  width: 100%;
+  min-height: 300px;
+  resize: vertical;
+}
+
+.add-chuong-form,
+.reject-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 90%;
+  max-width: 800px;
+}
+
+.add-chuong-form form,
+.reject-form form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-actions {
+  text-align: right;
+}
+
+.form-actions button {
+  margin-left: 10px;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.action-btn.edit-btn {
+  background: #ff9800;
+  color: #fff;
+}
+
+.action-btn.delete-btn {
+  background: #f44336;
+  color: #fff;
+}
+
+.action-btn.view-btn {
+  background: #2196f3;
+  color: #fff;
+  text-decoration: none;
+}
+
+.action-btn.approve-btn {
+  background: #4caf50;
+  color: #fff;
+}
+
+.action-btn.reject-btn {
+  background: #f44336;
+  color: #fff;
 }

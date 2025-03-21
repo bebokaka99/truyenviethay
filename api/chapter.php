@@ -63,6 +63,7 @@ if (!$is_admin && !$is_author) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Lấy danh sách chương
     $sql = "SELECT * FROM chuong WHERE truyen_id = ? ORDER BY so_chuong DESC";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $truyen_id);
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     mysqli_stmt_close($stmt);
 
+    // Lấy tên truyện
     $sql_truyen_name = "SELECT ten_truyen FROM truyen_new WHERE id = ?";
     $stmt_truyen_name = mysqli_prepare($conn, $sql_truyen_name);
     mysqli_stmt_bind_param($stmt_truyen_name, "i", $truyen_id);
@@ -82,11 +84,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $ten_truyen = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_truyen_name))['ten_truyen'] ?? '';
     mysqli_stmt_close($stmt_truyen_name);
 
+    // Lấy danh sách file đã upload
+    $files_list = [];
+    if ($is_author) { // Chỉ lấy danh sách file nếu người dùng là tác giả
+        $sql_files = "SELECT id, file_path, format, uploaded_at FROM files WHERE truyen_id = ? AND user_id = ? ORDER BY uploaded_at DESC";
+        $stmt_files = mysqli_prepare($conn, $sql_files);
+        mysqli_stmt_bind_param($stmt_files, "ii", $truyen_id, $user_id);
+        mysqli_stmt_execute($stmt_files);
+        $result_files = mysqli_stmt_get_result($stmt_files);
+        while ($row = mysqli_fetch_assoc($result_files)) {
+            $row['uploaded_at'] = date('d/m/Y H:i', strtotime($row['uploaded_at']));
+            $files_list[] = $row;
+        }
+        mysqli_stmt_close($stmt_files);
+    }
+
     // Thêm log để debug
     error_log("Chapter API Response: " . json_encode([
         'success' => true,
         'data' => $chuong_list,
         'ten_truyen' => $ten_truyen,
+        'files_list' => $files_list,
         'is_admin' => $is_admin,
         'is_author' => $is_author
     ]));
@@ -95,12 +113,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'success' => true,
         'data' => $chuong_list,
         'ten_truyen' => $ten_truyen,
+        'files_list' => $files_list,
         'is_admin' => $is_admin,
         'is_author' => $is_author
     ]);
     exit;
 }
 
+// Phần POST giữ nguyên
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -160,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'approve' && $is_admin) {
         $chapter_id = (int)$_POST['chapter_id'];
-        $truyen_id = (int)$_POST['truyen_id']; // Đảm bảo lấy từ POST
+        $truyen_id = (int)$_POST['truyen_id'];
         if ($truyen_id <= 0) {
             echo json_encode(['error' => 'ID truyện không hợp lệ']);
             exit;
@@ -233,13 +253,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))['trang_thai'] ?? '';
         mysqli_stmt_close($stmt);
 
-        // Cho phép xóa cả trạng thái 'da_duyet' cho admin
         if (!in_array($status, ['cho_duyet', 'tu_choi', 'da_duyet'])) {
             echo json_encode(['error' => "Chỉ có thể xóa chương ở trạng thái 'Chờ duyệt', 'Từ chối' hoặc 'Đã duyệt'"]);
             exit;
         }
 
-        // Xóa các bản ghi trong lich_su_doc_new trước khi xóa chương
         $sql_delete_history = "DELETE FROM lich_su_doc_new WHERE chuong_id = ?";
         $stmt_delete_history = mysqli_prepare($conn, $sql_delete_history);
         mysqli_stmt_bind_param($stmt_delete_history, "i", $chapter_id);
@@ -308,3 +326,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 echo json_encode(['error' => 'Phương thức không hợp lệ']);
 mysqli_close($conn);
+?>
