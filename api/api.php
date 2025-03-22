@@ -1,6 +1,6 @@
 <?php
-ob_start(); // Thêm dòng này
 header('Content-Type: application/json');
+ob_start(); // Bắt đầu buffer đầu ra
 
 $action = $_GET['action'] ?? 'truyen';
 switch ($action) {
@@ -28,14 +28,16 @@ switch ($action) {
     case 'search': require 'search.php'; break;
     case 'chi-tiet-chuong': require 'chi-tiet-chuong.php'; break;
     case 'followed_truyen': require 'follow-truyen.php'; break;
+
     case 'upload-story': require 'upload-story'; break;
     case 'get-file-content': require 'get-file-content'; break;
+
     case 'lich-su-doc': require 'lich-su-doc.php'; break;
     case 'xoa-lich-su-doc': require 'lich-su-doc.php'; break;
-    case 'manage_users': require 'manage-users.php'; break;
 
     default: echo json_encode(['error' => 'Invalid action']);
-}
 
+}
+// Xóa buffer và gửi đầu ra
 ob_end_flush();
 ?>
