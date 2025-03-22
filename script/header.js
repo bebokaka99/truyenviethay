@@ -13,12 +13,19 @@ export function initUserSection() {
         if (loginBtn) loginBtn.style.display = "none";
         if (registerBtn) registerBtn.style.display = "none";
         if (userInfo) userInfo.style.display = "block";
-        if (userAvatar && data.data.avatar)
-          userAvatar.src = "../" + data.data.avatar;
+        if (userAvatar && data.data.avatar) {
+          // Kiểm tra xem trang hiện tại có nằm ở thư mục gốc không
+          const isRootPage =
+            window.location.pathname === "/truyenviethay/" ||
+            window.location.pathname.includes("index.html");
+          userAvatar.src = isRootPage
+            ? "/truyenviethay/" + data.data.avatar
+            : "../" + data.data.avatar;
+        }
       } else {
         if (loginButtons) loginButtons.style.display = "block";
         if (loginBtn) loginBtn.style.display = "inline-block";
-        if (registerBtn) registerBtn.style.display = "inline-block";
+        if (registerBtn) loginBtn.style.display = "inline-block";
         if (userInfo) userInfo.style.display = "none";
       }
     })
@@ -30,7 +37,7 @@ export function initUserSection() {
       const registerBtn = document.getElementById("register-btn");
       if (loginButtons) loginButtons.style.display = "block";
       if (loginBtn) loginBtn.style.display = "inline-block";
-      if (registerBtn) registerBtn.style.display = "inline-block";
+      if (registerBtn) loginBtn.style.display = "inline-block";
       if (userInfo) userInfo.style.display = "none";
     });
 }
