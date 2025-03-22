@@ -1,0 +1,290 @@
+.doc-truyen-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px 40px;
+  background: #f5f5e8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, color 0.3s;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.breadcrumb-item {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.breadcrumb-item:hover {
+  color: #4caf50;
+}
+
+.breadcrumb-item.current {
+  color: #666;
+  font-weight: bold;
+}
+
+.breadcrumb-separator {
+  color: #999;
+}
+
+.truyen-title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chapter-title {
+  font-size: 22px;
+  color: #4caf50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.noi-dung-truyen {
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  color: #333;
+  line-height: 1.8;
+  text-align: justify;
+  padding: 20px;
+  background: #f5f5e8;
+  border-radius: 4px;
+}
+
+.chapter-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #e0f7fa;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.chapter-navigation .nav-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer !important; /* Ưu tiên cao nhất */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s, background-color 0.3s;
+}
+.nav-btn.home {
+  text-decoration: none;
+}
+.chapter-navigation .nav-btn.kieu-chu,
+.chapter-navigation .nav-btn.bao-loi,
+.chapter-navigation .nav-btn.home,
+.chapter-navigation .nav-btn.follow-btn {
+  background-color: transparent;
+  color: #333;
+}
+.chapter-navigation .nav-btn.home:hover {
+  text-decoration: none;
+  color: #33ff00;
+}
+.chapter-navigation .nav-btn.kieu-chu:hover {
+  color: #2196f3;
+}
+
+.chapter-navigation .nav-btn.bao-loi:hover {
+  color: #9c27b0;
+}
+
+.chapter-navigation .nav-btn.follow-btn:hover {
+  color: #ffc107;
+}
+
+.chapter-navigation .nav-btn i {
+  transition: transform 0.3s ease;
+}
+
+.chapter-navigation .nav-btn:hover i {
+  transform: scale(1.2);
+}
+
+.chapter-navigation .nav-btn.prev-btn {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.chapter-navigation .nav-btn.prev-btn:hover {
+  background-color: #fb8c00;
+}
+
+.chapter-navigation .nav-btn.next-btn {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.chapter-navigation .nav-btn.next-btn:hover {
+  background-color: #e53935;
+}
+
+.chapter-navigation .chapter-selector {
+  padding: 8px 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 120px;
+}
+.chapter-selector {
+  max-width: 200px; /* Giới hạn chiều rộng */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chapter-navigation .nav-btn[disabled] {
+  background-color: #ccc !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+  pointer-events: none !important;
+}
+
+.chapter-navigation .nav-btn:not([disabled]):hover {
+  cursor: pointer !important;
+}
+
+.font-settings {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: none;
+  gap: 10px;
+}
+
+.font-settings.active {
+  display: flex;
+}
+
+.font-settings button {
+  padding: 5px 10px;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  padding: 10px;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+}
+
+.scroll-top-btn.show {
+  display: block;
+}
+
+.dark-mode .doc-truyen-container,
+.dark-mode .noi-dung-truyen {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.dark-mode .chapter-navigation {
+  background: #2d2d2d;
+}
+
+.dark-mode .breadcrumb {
+  background: #2d2d2d;
+}
+
+.dark-mode .breadcrumb-item {
+  color: #e0e0e0;
+}
+
+.dark-mode .breadcrumb-item:hover {
+  color: #4caf50;
+}
+
+.dark-mode .breadcrumb-item.current {
+  color: #bbb;
+}
+
+.dark-mode .breadcrumb-separator {
+  color: #bbb;
+}
+
+.dark-mode .chapter-navigation .nav-btn.kieu-chu,
+.dark-mode .chapter-navigation .nav-btn.bao-loi,
+.dark-mode .chapter-navigation .nav-btn.follow-btn {
+  background-color: transparent;
+  color: #e0e0e0;
+}
+
+/* Dark mode hover */
+.dark-mode .chapter-navigation .nav-btn.kieu-chu:hover {
+  color: #2196f3;
+}
+
+.dark-mode .chapter-navigation .nav-btn.bao-loi:hover {
+  color: #9c27b0;
+}
+
+.dark-mode .chapter-navigation .nav-btn.follow-btn:hover {
+  color: #ffc107;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .doc-truyen-container {
+    padding: 15px;
+    margin: 20px auto;
+  }
+  .noi-dung-truyen {
+    font-size: 16px;
+  }
+  .breadcrumb {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .chapter-navigation {
+    flex-wrap: wrap;
+    padding: 5px;
+    gap: 10px;
+  }
+  .chapter-navigation .nav-btn {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  .chapter-navigation .chapter-selector {
+    padding: 6px 10px;
+    font-size: 14px;
+    min-width: 100px;
+  }
+}

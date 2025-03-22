@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truyện Theo Dõi - Truyenviethay</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/user.css">
+    <link rel="stylesheet" href="../css/truyen-theo-doi.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="phan-trai">
+            <div class="logo">
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+            </div>
+            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <nav class="thanh-dieu-huong">
+                <ul class="danh-sach-menu">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown" id="theloai-dropdown"><div class="theloai-grid" id="theloai-container"></div></div>
+                    </li>
+                    <li class="dropdown dropdown-xep-hang">
+                        <a href="#" class="nut-dropdown">Xếp hạng <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown">
+                            <a href="../truyen/the-loai.html?sort=top_day">Top ngày</a>
+                            <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
+                            <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
+                            <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
+                        </div>
+                    </li>
+                    <li><a href="../truyen/the-loai.html?sort=hot">Truyện Hot</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
+                    <li><a href="#">Fanpage</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li class="menu-tim-kiem">
+                        <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </li>
+                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap" onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
+                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky" onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="phan-phai">
+            <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-info" id="user-info" style="display: none;">
+                <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                <div class="user-dropdown">
+                    <a href="../users/profile.html">Thông tin người dùng</a>
+                    <a href="#">Truyện theo dõi</a>
+                    <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
+                    <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                    <a href="../users/logout.php">Đăng xuất</a>
+                </div>
+            </div>
+            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+        </div>
+    </header>
+
+    <main class="followed-truyen-page">
+        <h1>TRUYỆN ĐANG THEO DÕI</h1>
+        <div class="followed-truyen-container" id="followed-truyen-list">
+            <!-- Danh sách render bằng JS -->
+        </div>
+        <p class="no-followed" id="no-followed" style="display: none;">Bạn chưa theo dõi truyện nào!</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="noi-dung-footer">
+            <div class="cot-footer">
+                <h3>Truyenviethay</h3>
+                <p>Khám phá thế giới truyện Việt đầy cảm xúc!</p>
+                <div class="mang-xa-hoi">
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên kết nhanh</h3>
+                <ul class="danh-sach-lien-ket">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li><a href="../truyen/the-loai.html">Thể loại</a></li>
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                </ul>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên hệ công việc</h3>
+                <p>Email: nq20k2@gmail.com</p>
+                <p>Fanpage: <a href="#">Truyenviethay Official</a></p>
+            </div>
+        </div>
+        <div class="ban-quyen">
+            <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
+        </div>
+    </footer>
+    <script type="module" src="../script/script.js"></script>
+</body>
+</html>

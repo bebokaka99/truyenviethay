@@ -1,0 +1,33 @@
+/* tinymce-content.css */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #374151 !important;
+  padding: 15px;
+}
+p {
+  margin: 10px 0;
+  color: #374151 !important; /* Thêm để đảm bảo các đoạn văn không bị đè */
+}
+h1,
+h2,
+h3,
+h4 {
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* Đảm bảo trong chi-tiet-chuong.css */
+.mce-tinymce-inline {
+  z-index: 1000 !important; /* Đảm bảo thanh công cụ có độ ưu tiên cao */
+}
+.tox-tinymce {
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+}
+.tox-toolbar,
+.tox-editor-header {
+  display: flex !important;
+}

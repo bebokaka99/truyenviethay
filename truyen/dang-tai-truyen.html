@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Đăng tải truyện - Truyenviethay</title>
+    <link rel="icon" href="../anh/logo.png">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dang-tai-truyen.css">
+    <link rel="stylesheet" href="../css/user.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lobster&family=Roboto:wght@400;700&display=swap');
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="phan-trai">
+            <div class="logo">
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+            </div>
+            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <nav class="thanh-dieu-huong">
+                <ul class="danh-sach-menu">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown" id="theloai-dropdown"><div class="theloai-grid" id="theloai-container"></div></div>
+                    </li>
+                    <li class="dropdown dropdown-xep-hang">
+                        <a href="#" class="nut-dropdown">Xếp hạng <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown">
+                            <a href="../truyen/the-loai.html?sort=top_day">Top ngày</a>
+                            <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
+                            <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
+                            <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
+                            <a href="../truyen/the-loai.html?sort=rating_desc">Top đánh giá</a>
+                        </div>
+                    </li>
+                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
+                    <li><a href="#">Fanpage</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li class="menu-tim-kiem">
+                        <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </li>
+                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap" onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
+                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky" onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="phan-phai">
+            <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-info" id="user-info" style="display: none;">
+                <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                <div class="user-dropdown">
+                    <a href="../users/profile.html">Thông tin người dùng</a>
+                    <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
+                    <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
+                    <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                    <a href="../users/logout.php">Đăng xuất</a>
+                </div>
+            </div>
+            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+        </div>
+    </header>
+
+    <div class="upload-story-container">
+        <h2 class="animated-title"><i class="fas fa-feather-alt"></i> Tạo nên câu chuyện của bạn!</h2>
+        <p class="subtitle">Hãy để trí tưởng tượng bay xa và chia sẻ câu chuyện của bạn với cộng đồng!</p>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+        <form id="upload-form" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i> Thông tin cơ bản</h3>
+                <div class="form-group">
+                    <label for="ten_truyen"><i class="fas fa-book"></i> Tên truyện:</label>
+                    <input type="text" name="ten_truyen" id="ten_truyen" required placeholder="Nhập tên truyện (tối đa 100 ký tự)">
+                </div>
+                <div class="form-group">
+                    <label for="tac_gia"><i class="fas fa-user"></i> Tác giả:</label>
+                    <input type="text" name="tac_gia" id="tac_gia" required readonly placeholder="Tên tác giả sẽ tự động điền">
+                </div>
+                <div class="form-group">
+                    <label for="mo_ta"><i class="fas fa-align-left"></i> Mô tả:</label>
+                    <textarea name="mo_ta" id="mo_ta" required placeholder="Viết mô tả ngắn gọn, hấp dẫn về truyện (tối đa 500 ký tự)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="trang_thai_viet"><i class="fas fa-clock"></i> Tình trạng truyện:</label>
+                    <select name="trang_thai_viet" id="trang_thai_viet" required>
+                        <option value="dang_tien_hanh">Đang tiến hành</option>
+                        <option value="hoan_thanh">Hoàn thành</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="so_chuong"><i class="fas fa-list-ol"></i> Số chương hiện có:</label>
+                    <input type="number" name="so_chuong" id="so_chuong" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="lich_dang"><i class="fas fa-calendar-alt"></i> Lịch đăng dự kiến:</label>
+                    <input type="text" name="lich_dang" id="lich_dang" placeholder="Ví dụ: 1 chương/tuần">
+                </div>
+                <div class="form-group">
+                    <label for="chuong_mau"><i class="fas fa-pen"></i> Chương mẫu (tối thiểu 50 từ):</label>
+                    <textarea name="chuong_mau" id="chuong_mau" required placeholder="Nhập tóm tắt cốt truyện hoặc nội dung chương mẫu"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ghi_chu_admin"><i class="fas fa-comment"></i> Ghi chú gửi admin:</label>
+                    <textarea name="ghi_chu_admin" id="ghi_chu_admin" placeholder="Gửi lời nhắn cho admin (nếu có)"></textarea>
+                </div>
+            </div>
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-tags"></i> Phân loại truyện</h3>
+                <div class="form-group">
+                    <label for="theloai"><i class="fas fa-tags"></i> Thể loại (giữ Ctrl để chọn nhiều):</label>
+                    <select name="theloai[]" id="theloai" multiple required></select>
+                </div>
+                <div class="form-group">
+                    <label for="nguon_truyen"><i class="fas fa-globe"></i> Nguồn truyện:</label>
+                    <select name="nguon_truyen" id="nguon_truyen" required>
+                        <option value="tu_sang_tac">Tự sáng tác</option>
+                        <option value="dich_thuat">Dịch thuật</option>
+                        <option value="chuyen_the">Chuyển thể</option>
+                    </select>
+                </div>
+                <div class="form-group" id="link-nguon-group" style="display: none;">
+                    <label for="link_nguon"><i class="fas fa-link"></i> Link nguồn:</label>
+                    <input type="url" name="link_nguon" id="link_nguon" placeholder="Nhập link nguồn (nếu có)">
+                </div>
+                <div class="form-group">
+                    <label for="canh_bao"><i class="fas fa-exclamation-triangle"></i> Cảnh báo nội dung:</label>
+                    <select name="doi_tuong_doc_gia" id="canh_bao" required>
+                        <option value="duoi_13">Tất cả lứa tuổi</option>
+                        <option value="16_18">16+</option>
+                        <option value="18_plus">18+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="yeu_to_nhay_cam"><i class="fas fa-exclamation-circle"></i> Yếu tố nhạy cảm (giữ Ctrl để chọn nhiều):</label>
+                    <select name="yeu_to_nhay_cam[]" id="yeu_to_nhay_cam" multiple>
+                        <option value="khong_co">Không có</option>
+                        <option value="bao_luc">Bạo lực</option>
+                        <option value="ngon_ngu_tuc_tiu">Ngôn ngữ tục tĩu</option>
+                        <option value="noi_dung_nguoi_lon">Nội dung người lớn</option>
+                        <option value="chinh_tri">Chính trị</option>
+                        <option value="phap_luat">Pháp luật</option>
+                        <option value="ton_giao">Tôn giáo</option>
+                        <option value="ky_thi">Kỳ thị</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="muc_tieu"><i class="fas fa-bullseye"></i> Mục tiêu của truyện:</label>
+                    <select name="muc_tieu" id="muc_tieu" required>
+                        <option value="chia_se_sang_tac">Chia sẻ sáng tác</option>
+                        <option value="tham_gia_cuoc_thi">Tham gia cuộc thi</option>
+                        <option value="tang_tuong_tac">Tăng tương tác</option>
+                        <option value="xay_dung_cong_dong_doc_gia">Xây dựng cộng đồng độc giả</option>
+                        <option value="tim_kiem_hop_tac_xuat_ban">Tìm kiếm hợp tác xuất bản</option>
+                        <option value="thu_nghiem_y_tuong_moi">Thử nghiệm ý tưởng mới</option>
+                        <option value="phat_trien_ky_nang_viet">Phát triển kỹ năng viết</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-star"></i> Đánh giá ban đầu (tự chấm, 1-10):</label>
+                    <div class="rating-group">
+                        <label for="danh_gia_noi_dung">Nội dung: </label>
+                        <select name="danh_gia_noi_dung" id="danh_gia_noi_dung" required>
+                            <option value="" disabled selected>Chọn điểm</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <label for="danh_gia_van_phong">Văn phong: </label>
+                        <select name="danh_gia_van_phong" id="danh_gia_van_phong" required>
+                            <option value="" disabled selected>Chọn điểm</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <label for="danh_gia_sang_tao">Sáng tạo: </label>
+                        <select name="danh_gia_sang_tao" id="danh_gia_sang_tao" required>
+                            <option value="" disabled selected>Chọn điểm</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-image"></i> Ảnh bìa</h3>
+                <div class="form-group">
+                    <label for="anh_bia"><i class="fas fa-image"></i> Ảnh bìa:</label>
+                    <input type="file" name="anh_bia" id="anh_bia" accept="image/*" required>
+                    <p class="file-note">Chỉ hỗ trợ file jpg, jpeg, png, gif dưới 5MB</p>
+                </div>
+            </div>
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-check"></i> Xác nhận</h3>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="cam_ket" id="cam_ket" required>
+                        <span><i class="fas fa-check-circle"></i> Tôi cam kết thông tin trên là đúng</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-rocket"></i> Đăng truyện ngay!</button>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <div class="noi-dung-footer">
+            <div class="cot-footer">
+                <h3>Truyenviethay</h3>
+                <p>Khám phá thế giới truyện Việt đầy cảm xúc!</p>
+                <div class="mang-xa-hoi">
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên kết nhanh</h3>
+                <ul class="danh-sach-lien-ket">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li><a href="../truyen/the-loai.html">Thể loại</a></li>
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                </ul>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên hệ công việc</h3>
+                <p>Email: nq20k2@gmail.com</p>
+                <p>Fanpage: <a href="#">Truyenviethay Official</a></p>
+            </div>
+        </div>
+        <div class="ban-quyen">
+            <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
+        </div>
+    </footer>
+    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
+    <script type="module" src="../script/script.js"></script>
+</body>
+</html>

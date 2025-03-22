@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet"> <!-- Thêm font Roboto -->
+    <title>Quản lý truyện - Truyenviethay</title>
+    <link rel="icon" href="../anh/logo.png">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/user.css">
+    <link rel="stylesheet" href="../css/quan-ly-truyen.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="phan-trai">
+            <div class="logo">
+                <a href="../index.html"><img src="../anh/logo.png" alt="Truyenviethay Logo" class="logo-img"></a>
+            </div>
+            <button class="nut-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            <nav class="thanh-dieu-huong">
+                <ul class="danh-sach-menu">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown" id="theloai-dropdown"><div class="theloai-grid" id="theloai-container"></div></div>
+                    </li>
+                    <li class="dropdown dropdown-xep-hang">
+                        <a href="#" class="nut-dropdown">Xếp hạng <i class="fa-solid fa-angle-down"></i></a>
+                        <div class="noi-dung-dropdown">
+                            <a href="../truyen/the-loai.html?sort=top_day">Top ngày</a>
+                            <a href="../truyen/the-loai.html?sort=top_week">Top tuần</a>
+                            <a href="../truyen/the-loai.html?sort=top_month">Top tháng</a>
+                            <a href="../truyen/the-loai.html?sort=top_year">Top năm</a>
+                        </div>
+                    </li>
+                    <li><a href="../truyen/the-loai.html?sort=hot">Truyện Hot</a></li>
+                    <li><a href="../truyen/the-loai.html?sort=thoi_gian_cap_nhat_desc">Truyện Mới</a></li>
+                    <li><a href="#">Fanpage</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li class="menu-tim-kiem">
+                        <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                            <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </li>
+                    <li class="menu-dang-nhap" id="login-link"><button class="nut-dang-nhap" onclick="window.location.href='../users/login.html'">Đăng nhập</button></li>
+                    <li class="menu-dang-ky" id="register-link"><button class="nut-dang-ky" onclick="window.location.href='../users/register.html'">Đăng ký</button></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="phan-phai">
+            <form action="../truyen/tim-kiem.html" method="GET" class="thanh-tim-kiem">
+                <input type="text" name="q" placeholder="Tìm kiếm truyện...">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-info" id="user-info" style="display: none;">
+                <img src="" alt="Avatar" class="user-avatar" id="user-avatar">
+                <div class="user-dropdown">
+                    <a href="../users/profile.html">Thông tin người dùng</a>
+                    <a href="../users/truyen-theo-doi.html">Truyện theo dõi</a>
+                    <a href="../users/lich-su-doc.html">Lịch sử đọc</a>
+                    <a href="../users/cai-dat-thong-tin.html">Cài đặt thông tin</a>
+                    <a href="../users/logout.php">Đăng xuất</a>
+                </div>
+            </div>
+            <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+            <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+        </div>
+    </header>
+
+    <div class="quan-ly-truyen-container">
+        <h2>QUẢN LÝ TRUYỆN</h2>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+        <button class="add-truyen-btn"><i class="fas fa-plus"></i> Thêm truyện mới</button>
+        <div class="filter-bar">
+            <input type="text" id="search-input" placeholder="Tìm kiếm truyện...">
+            <select id="status-filter">
+                <option value="">Tất cả trạng thái</option>
+                <option value="dang_tien_hanh">Đang tiến hành</option>
+                <option value="da_hoan_thanh">Đã hoàn thành</option>
+            </select>
+            <button id="search-btn"><i class="fas fa-search"></i> Tìm</button>
+        </div>
+        <div class="add-truyen-form" id="addTruyenForm" style="display: none;">
+            <form id="addTruyenFormSubmit" enctype="multipart/form-data">
+                <div class="form-header">
+                    <h3>Thêm truyện mới</h3>
+                    <button type="button" class="close-form-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="form-group">
+                    <label for="ten_truyen">Tên truyện:</label>
+                    <input type="text" name="ten_truyen" id="ten_truyen" required>
+                </div>
+                <div class="form-group">
+                    <label for="tac_gia">Tác giả:</label>
+                    <input type="text" name="tac_gia" id="tac_gia" required>
+                </div>
+                <div class="form-group">
+                    <label for="mo_ta">Mô tả:</label>
+                    <textarea name="mo_ta" id="mo_ta" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="the_loai">Thể loại (cách nhau bởi dấu phẩy):</label>
+                    <input type="text" name="the_loai" id="the_loai" placeholder="Ví dụ: Hành động, Phiêu lưu">
+                </div>
+                <div class="form-group">
+                    <label for="trang_thai">Trạng thái:</label>
+                    <select name="trang_thai" id="trang_thai">
+                        <option value="Đang Cập Nhật">Đang Cập Nhật</option>
+                        <option value="Hoàn Thành">Hoàn Thành</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tinh_trang">Tình trạng:</label>
+                    <select name="tinh_trang" id="tinh_trang">
+                        <option value="dang_tien_hanh">Đang tiến hành</option>
+                        <option value="da_hoan_thanh">Đã hoàn thành</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="anh_bia">Ảnh bìa:</label>
+                    <input type="file" name="anh_bia" id="anh_bia" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn"><i class="fas fa-plus"></i> Thêm truyện</button>
+                    <button type="button" class="cancel-btn"><i class="fas fa-times"></i> Hủy</button>
+                </div>
+            </form>
+        </div>
+        <div id="truyen-table-container"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <button class="scroll-top-btn"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <footer class="footer">
+        <div class="noi-dung-footer">
+            <div class="cot-footer">
+                <h3>Truyenviethay</h3>
+                <p>Khám phá thế giới truyện Việt đầy cảm xúc!</p>
+                <div class="mang-xa-hoi">
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="lien-ket-mxh"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên kết nhanh</h3>
+                <ul class="danh-sach-lien-ket">
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li><a href="../truyen/the-loai.html">Thể loại</a></li>
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                </ul>
+            </div>
+            <div class="cot-footer">
+                <h3>Liên hệ công việc</h3>
+                <p>Email: nq20k2@gmail.com</p>
+                <p>Fanpage: <a href="#">Truyenviethay Official</a></p>
+            </div>
+        </div>
+        <div class="ban-quyen">
+            <p>© 2025 Truyenviethay. Bản quyền thuộc về đội ngũ phát triển.</p>
+        </div>
+    </footer>
+    <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
+    <script type="module" src="../script/script.js"></script>
+</body>
+</html>
