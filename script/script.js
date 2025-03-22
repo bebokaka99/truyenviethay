@@ -23,6 +23,7 @@ import { initManageAuthor } from './manage-author.js';
 import { initSearch } from './search.js';
 import { initTruyenTheoDoi } from './truyen-theo-doi.js';
 import { initLichSuDoc } from './lich-su-doc.js';
+import { initManageUsers } from './manage-users.js'; // Thêm dòng này
 
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname === '/truyenviethay/' || window.location.pathname.includes('index.html')) {
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('tim-kiem.html')) initSearch();
     if (window.location.pathname.includes('truyen-theo-doi.html')) initTruyenTheoDoi();
     if (window.location.pathname.includes('lich-su-doc.html')) initLichSuDoc();
+    if (window.location.pathname.includes('manage-users.html')) initManageUsers(); // Thêm dòng này
 
     document.addEventListener("dragstart", function (event) {
         event.preventDefault();

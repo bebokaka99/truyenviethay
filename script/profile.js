@@ -84,8 +84,7 @@ export function initProfile() {
                     <div class="stat-item"><span class="stat-label"><i class="fas fa-quote-left"></i> Trích dẫn ngẫu nhiên:</span><span class="stat-value">"Hãy để câu chuyện dẫn lối bạn!"</span></div>`;
                 toolsSection.innerHTML = `
                     <button class="tool-btn tool-manage-truyen" onclick="window.location.href='../truyen/quan-ly-truyen.html'"><i class="fas fa-book"></i> Quản lý truyện</button>
-                    <button class="tool-btn tool-manage-users" onclick="alert('Tính năng quản lý người dùng đang được phát triển!')"><i class="fas fa-users"></i> Quản lý người dùng</button>`;
-                initModeration();
+<button class="tool-btn tool-manage-users" onclick="window.location.href='../users/manage-users.html'"><i class="fas fa-users"></i> Quản lý người dùng</button>`;                initModeration();
             }
         });
 
