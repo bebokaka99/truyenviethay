@@ -27,37 +27,36 @@ export function initTruyenTheoDoi() {
           // Dùng time_ago từ API
           const timeAgo = truyen.time_ago;
           // Chapter mới nhất
-          const latestChapter = truyen.latest_chapter || 0;
+          const hasChapter = truyen.chuong_moi_nhat_so_chuong && truyen.chuong_moi_nhat !== "Chưa có chương";
+          const chapterLink = hasChapter
+            ? `<a href="../truyen/chuong.html?truyen_id=${truyen.id}&chuong_id=${truyen.chuong_moi_nhat_so_chuong}">Đọc tiếp ${truyen.chuong_moi_nhat}</a>`
+            : `<span>Chưa có chương</span>`;
+
           return `
-                    <div class="truyen-item">
-                        <div class="truyen-image">
-                            <a href="../truyen/chi-tiet-truyen.html?truyen_id=${
-                              truyen.id
-                            }">
-                                <img src="${
-                                  truyen.anh_bia_url ||
-                                  "/truyenviethay/anh/default.jpg"
-                                }" alt="${truyen.ten_truyen}">
-                            </a>
-                            <span class="truyen-status">${timeAgo}</span>
-                            <button class="unfollow-btn" data-truyen-id="${
-                              truyen.id
-                            }" title="Hủy theo dõi">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <h3>
-                            <a href="../truyen/chi-tiet-truyen.html?truyen_id=${
-                              truyen.id
-                            }">${truyen.ten_truyen}</a>
-                        </h3>
-                        <p class="truyen-chapter">
-                            <a href="../truyen/chuong.html?truyen_id=${
-                              truyen.id
-                            }&chapter_id=${latestChapter}">Đọc tiếp Chapter ${latestChapter}</a>
-                        </p>
-                    </div>
-                `;
+            <div class="truyen-item">
+                <div class="truyen-image">
+                    <a href="../truyen/chi-tiet-truyen.html?truyen_id=${truyen.id}">
+                        <img src="${
+                          truyen.anh_bia_url || "/truyenviethay/anh/default.jpg"
+                        }" alt="${truyen.ten_truyen}">
+                    </a>
+                    <span class="truyen-status">${timeAgo}</span>
+                    <button class="unfollow-btn" data-truyen-id="${
+                      truyen.id
+                    }" title="Hủy theo dõi">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <h3>
+                    <a href="../truyen/chi-tiet-truyen.html?truyen_id=${
+                      truyen.id
+                    }">${truyen.ten_truyen}</a>
+                </h3>
+                <p class="truyen-chapter">
+                    ${chapterLink}
+                </p>
+            </div>
+          `;
         })
         .join("");
 

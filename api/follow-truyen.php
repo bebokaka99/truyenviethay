@@ -30,14 +30,12 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Lấy danh sách truyện theo dõi, chỉ lấy chương có trang_thai = 'da_duyet'
-    $sql = "SELECT t.id, t.ten_truyen, t.anh_bia, t.luot_xem, t.luot_thich, t.luot_theo_doi, 
-                   (SELECT so_chuong FROM chuong WHERE truyen_id = t.id AND trang_thai = 'da_duyet' ORDER BY so_chuong DESC LIMIT 1) as latest_chapter,
-                   (SELECT thoi_gian_dang FROM chuong WHERE truyen_id = t.id AND trang_thai = 'da_duyet' ORDER BY so_chuong DESC LIMIT 1) as last_update
+    // Lấy danh sách truyện theo dõi
+    $sql = "SELECT t.id, t.ten_truyen, t.anh_bia, t.luot_xem, t.luot_thich, t.luot_theo_doi
             FROM truyen_new t 
             JOIN theo_doi td ON t.id = td.truyen_id 
             WHERE td.user_id = ?
-            ORDER BY (SELECT thoi_gian_dang FROM chuong WHERE truyen_id = t.id AND trang_thai = 'da_duyet' ORDER BY so_chuong DESC LIMIT 1) DESC, t.id DESC";
+            ORDER BY t.id DESC";
     
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -46,8 +44,29 @@ try {
 
     $truyen_list = [];
     while ($row = mysqli_fetch_assoc($result)) {
-        $last_update = $row['last_update'];
-        $time_ago = $last_update ? format_time_ago(strtotime($last_update)) : 'Chưa có chương';
+        // Lấy chương mới nhất
+        $sql_chuong = "SELECT so_chuong, thoi_gian_dang 
+                       FROM chuong 
+                       WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
+                       ORDER BY thoi_gian_dang DESC LIMIT 1";
+        $stmt_chuong = mysqli_prepare($conn, $sql_chuong);
+        mysqli_stmt_bind_param($stmt_chuong, "i", $row['id']);
+        mysqli_stmt_execute($stmt_chuong);
+        $chuong = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_chuong)) ?: null;
+        mysqli_stmt_close($stmt_chuong);
+
+        // Debug: Ghi log để kiểm tra dữ liệu chương
+        if (!$chuong) {
+            error_log("Không tìm thấy chương cho truyen_id: " . $row['id']);
+        } else {
+            error_log("Truyen_id: " . $row['id'] . " | Chương mới nhất: " . $chuong['so_chuong'] . " | Thời gian: " . $chuong['thoi_gian_dang']);
+        }
+
+        $last_update = $chuong && $chuong['thoi_gian_dang'] ? strtotime($chuong['thoi_gian_dang']) : 0;
+        $time_ago = $last_update ? format_time_ago($last_update) : 'Chưa có chương';
+        $chuong_moi_nhat = $chuong ? "Chương " . $chuong['so_chuong'] : "Chưa có chương";
+        $chuong_moi_nhat_so_chuong = $chuong ? $chuong['so_chuong'] : null;
+
         $truyen_list[] = [
             'id' => $row['id'],
             'ten_truyen' => $row['ten_truyen'],
@@ -56,9 +75,18 @@ try {
             'luot_thich' => $row['luot_thich'],
             'luot_theo_doi' => $row['luot_theo_doi'],
             'time_ago' => $time_ago,
-            'latest_chapter' => $row['latest_chapter'] ?? 0
+            'chuong_moi_nhat' => $chuong_moi_nhat,
+            'chuong_moi_nhat_so_chuong' => $chuong_moi_nhat_so_chuong,
+            'last_update' => $last_update // Thêm trường last_update để sắp xếp
         ];
     }
+
+    // Sắp xếp lại danh sách theo thời gian cập nhật chương mới nhất
+    usort($truyen_list, function($a, $b) {
+        $timeA = $a['last_update'];
+        $timeB = $b['last_update'];
+        return $timeB - $timeA; // Sắp xếp giảm dần (gần nhất lên đầu)
+    });
 
     echo json_encode($truyen_list);
 } catch (Exception $e) {

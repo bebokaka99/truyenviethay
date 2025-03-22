@@ -24,7 +24,7 @@ function format_time_ago($timestamp) {
 
 $subaction = $_GET['subaction'] ?? 'new';
 $page = (int)($_GET['page'] ?? 1);
-$per_page = ($subaction === 'slider') ? 5 : 18;
+$per_page = ($subaction === 'slider') ? 10 : 18; // Sửa từ 5 thành 10 cho slider
 $offset = ($page - 1) * $per_page;
 
 // Xác định truy vấn
@@ -87,9 +87,11 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     if ($chuong) {
         $row['chuong_moi_nhat'] = "Chương " . $chuong['so_chuong'] . ": " . $chuong['tieu_de'];
+        $row['chuong_moi_nhat_so_chuong'] = $chuong['so_chuong']; // Thêm số chương
         $update_time = strtotime($chuong['thoi_gian_dang']);
     } else {
         $row['chuong_moi_nhat'] = "Chưa có chương";
+        $row['chuong_moi_nhat_so_chuong'] = null; // Không có chương thì để null
         $update_time = strtotime($row['thoi_gian_cap_nhat']);
     }
     $row['update_time'] = $update_time ? format_time_ago($update_time) : "Chưa cập nhật";
@@ -108,3 +110,4 @@ echo json_encode([
     'current_page' => $page
 ]);
 mysqli_close($conn);
+?>

@@ -1,3 +1,4 @@
+// script/login.js (giữ nguyên)
 export function initLogin() {
     const form = document.getElementById('login-form');
     if (!form) return;
@@ -32,6 +33,11 @@ export function initLogin() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                if (data.user_id) {
+                    localStorage.setItem("user_id", data.user_id); // Lưu user_id
+                } else {
+                    console.log("API không trả user_id, kiểm tra backend!");
+                }
                 window.location.href = data.redirect || '/truyenviethay/index.html';
             } else {
                 loginError.textContent = data.error || 'Đã xảy ra lỗi';

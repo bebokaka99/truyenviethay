@@ -48,16 +48,7 @@ try {
             lsd.truyen_id, 
             lsd.thoi_gian_doc, 
             t.ten_truyen, 
-            t.anh_bia, 
-            (SELECT MAX(c2.so_chuong) 
-             FROM chuong c2 
-             WHERE c2.truyen_id = lsd.truyen_id) as so_chuong,
-            (SELECT c3.id 
-             FROM chuong c3 
-             WHERE c3.truyen_id = lsd.truyen_id 
-             AND c3.so_chuong = (SELECT MAX(c4.so_chuong) 
-                                 FROM chuong c4 
-                                 WHERE c4.truyen_id = lsd.truyen_id)) as chuong_id
+            t.anh_bia
         FROM lich_su_doc_new lsd
         JOIN truyen_new t ON lsd.truyen_id = t.id
         WHERE lsd.user_id = ?
@@ -76,14 +67,27 @@ try {
     $result = mysqli_stmt_get_result($stmt);
     $history = [];
     while ($row = mysqli_fetch_assoc($result)) {
+        // Lấy chương mới nhất
+        $sql_chuong = "SELECT so_chuong 
+                       FROM chuong 
+                       WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
+                       ORDER BY thoi_gian_dang DESC LIMIT 1";
+        $stmt_chuong = mysqli_prepare($conn, $sql_chuong);
+        mysqli_stmt_bind_param($stmt_chuong, "i", $row['truyen_id']);
+        mysqli_stmt_execute($stmt_chuong);
+        $chuong = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_chuong)) ?: null;
+        mysqli_stmt_close($stmt_chuong);
+
         $time_ago = $row['thoi_gian_doc'] ? format_time_ago(strtotime($row['thoi_gian_doc'])) : 'Chưa có chương';
+        $chuong_moi_nhat = $chuong ? "Chương " . $chuong['so_chuong'] : "Chưa có chương";
+        $chuong_moi_nhat_so_chuong = $chuong ? $chuong['so_chuong'] : null;
 
         $history[] = [
             'truyen_id' => $row['truyen_id'],
             'ten_truyen' => $row['ten_truyen'],
             'anh_bia' => !empty($row['anh_bia']) ? "../anh/{$row['anh_bia']}" : "../anh/default-truyen.jpg",
-            'chuong_id' => $row['chuong_id'],
-            'so_chuong' => $row['so_chuong'] ?? 0,
+            'chuong_moi_nhat' => $chuong_moi_nhat,
+            'chuong_moi_nhat_so_chuong' => $chuong_moi_nhat_so_chuong,
             'thoi_gian_doc' => $time_ago
         ];
     }

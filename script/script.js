@@ -1,3 +1,4 @@
+// script/script.js
 import { initSlider } from "./slider.js";
 import { initHeader } from "./header.js";
 import { initRating } from "./rating.js";
@@ -23,44 +24,40 @@ import { initManageAuthor } from "./manage-author.js";
 import { initSearch } from "./search.js";
 import { initTruyenTheoDoi } from "./truyen-theo-doi.js";
 import { initLichSuDoc } from "./lich-su-doc.js";
-import { initManageUsers } from "./manage-users.js"; // Thêm dòng này
+import { initManageUsers } from "./manage-users.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (
-    window.location.pathname === "/truyenviethay/" ||
-    window.location.pathname.includes("index.html")
-  ) {
+  if (window.location.pathname === "/truyenviethay/" || window.location.pathname.includes("index.html")) {
     initSlider();
   }
   initTruyen();
   initHeader();
-  initRating();
   initNavigation();
   initForms();
   initFollow();
   initTasks();
   debugTextarea();
-  if (window.location.pathname.includes("chi-tiet-truyen.html")) initChiTiet();
+
+  if (window.location.pathname.includes("chi-tiet-truyen.html")) {
+    initChiTiet(); // Render HTML trước
+    initRating();  // Gắn event sau
+  }
   if (window.location.pathname.includes("chuong.html")) initChuong();
   if (window.location.pathname.includes("login.html")) initLogin();
   if (window.location.pathname.includes("register.html")) initRegister();
   if (window.location.pathname.includes("profile.html")) initProfile();
-  if (window.location.pathname.includes("cai-dat-thong-tin.html"))
-    initSettings();
+  if (window.location.pathname.includes("cai-dat-thong-tin.html")) initSettings();
   if (window.location.pathname.includes("the-loai.html")) initTheLoai();
   if (window.location.pathname.includes("quan-ly-truyen.html")) initManage();
   if (window.location.pathname.includes("edit-truyen.html")) initEdit();
   if (window.location.pathname.includes("quan-ly-chuong.html")) initChapter();
   if (window.location.pathname.includes("dang-tai-truyen.html")) initUpload();
-  if (window.location.pathname.includes("chi-tiet-chuong.html"))
-    initChiTietChuong();
-  if (window.location.pathname.includes("quan-ly-truyen-tac-gia.html"))
-    initManageAuthor();
+  if (window.location.pathname.includes("chi-tiet-chuong.html")) initChiTietChuong();
+  if (window.location.pathname.includes("quan-ly-truyen-tac-gia.html")) initManageAuthor();
   if (window.location.pathname.includes("tim-kiem.html")) initSearch();
-  if (window.location.pathname.includes("truyen-theo-doi.html"))
-    initTruyenTheoDoi();
+  if (window.location.pathname.includes("truyen-theo-doi.html")) initTruyenTheoDoi();
   if (window.location.pathname.includes("lich-su-doc.html")) initLichSuDoc();
-  if (window.location.pathname.includes("manage-users.html")) initManageUsers(); // Thêm dòng này
+  if (window.location.pathname.includes("manage-users.html")) initManageUsers();
 
   document.addEventListener("dragstart", function (event) {
     event.preventDefault();

@@ -21,22 +21,30 @@ export function initLichSuDoc() {
                 return;
             }
 
-            historyList.innerHTML = data.history.map(item => `
-                <div class="history-item">
-                    <a href="../truyen/chi-tiet-truyen.html?truyen_id=${item.truyen_id}">
-                        <div class="cover-image" style="background-image: url('${item.anh_bia}');">
-                            <span class="time-ago">${item.thoi_gian_doc}</span>
-                            <button class="delete-btn" data-truyen-id="${item.truyen_id}">X</button>
-                        </div>
-                    </a>
-                    <a href="../truyen/chi-tiet-truyen.html?truyen_id=${item.truyen_id}">
-                        <h3>${item.ten_truyen}</h3>
-                    </a>
-                    <a href="../truyen/chuong.html?truyen_id=${item.truyen_id}&id=${item.chuong_id}">
-                        <p>Chương ${item.so_chuong}</p>
-                    </a>
-                </div>
-            `).join('');
+            historyList.innerHTML = data.history.map(item => {
+                // Kiểm tra xem có chương mới nhất không
+                const hasChapter = item.chuong_moi_nhat_so_chuong && item.chuong_moi_nhat !== "Chưa có chương";
+                const chapterLink = hasChapter
+                    ? `<a href="../truyen/chuong.html?truyen_id=${item.truyen_id}&chuong_id=${item.chuong_moi_nhat_so_chuong}">
+                        <p>${item.chuong_moi_nhat}</p>
+                    </a>`
+                    : `<p>Chưa có chương</p>`;
+
+                return `
+                    <div class="history-item">
+                        <a href="../truyen/chi-tiet-truyen.html?truyen_id=${item.truyen_id}">
+                            <div class="cover-image" style="background-image: url('${item.anh_bia}');">
+                                <span class="time-ago">${item.thoi_gian_doc}</span>
+                                <button class="delete-btn" data-truyen-id="${item.truyen_id}">X</button>
+                            </div>
+                        </a>
+                        <a href="../truyen/chi-tiet-truyen.html?truyen_id=${item.truyen_id}">
+                            <h3>${item.ten_truyen}</h3>
+                        </a>
+                        ${chapterLink}
+                    </div>
+                `;
+            }).join('');
 
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {

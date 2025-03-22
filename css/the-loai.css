@@ -1,10 +1,8 @@
 .noi-dung-chinh {
   padding: 15px 20px;
-  background-color: #f9f9f9;
 }
 
 .filter-section {
-  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -81,7 +79,7 @@
   transform: scale(1.1);
 }
 
-.filter-option input:checked + span {
+.filter-option input:checked+span {
   color: #4caf50;
   transform: scale(1.1);
 }
@@ -126,11 +124,10 @@
   background-color: #e0e0e0;
 }
 
-/* Danh sách truyện (tương tự index.css) */
+/* Danh sách truyện */
 .hien-thi-truyen {
   margin-top: 30px;
   padding: 15px;
-  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -156,45 +153,68 @@
 .luoi-truyen {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: 20px;
 }
 
+/* Thiết kế lại khối truyện */
 .khoi-truyen {
-  background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
+  border: 1px solid #4caf50;
 }
 
 .khoi-truyen:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
 }
 
 .anh-truyen {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.update-time {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #4caf50;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .thong-tin-truyen {
-  padding: 8px;
+  padding: 12px;
+  text-align: center;
+  /* Căn giữa tên truyện và chương */
 }
 
 .thoi-gian-danh-gia {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .thoi-gian {
   background-color: #4caf50;
   color: #ffffff;
-  font-size: 10px;
-  padding: 3px 6px;
-  border-radius: 3px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .danh-gia {
@@ -206,18 +226,19 @@
 
 .danh-gia i {
   color: #f1c40f;
-  margin-right: 3px;
+  margin-right: 4px;
 }
 
 .thong-tin-truyen h3 {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333333;
-  margin-bottom: 3px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4caf50;
+  margin: 0 0 6px 0;
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.3s ease;
 }
 
 .thong-tin-truyen a {
@@ -230,12 +251,14 @@
 }
 
 .thong-tin-truyen a:hover h3 {
-  color: #4caf50;
+  color: #388e3c;
+  /* Màu xanh lá đậm hơn khi hover */
 }
 
 .thong-tin-truyen p {
-  font-size: 12px;
+  font-size: 13px;
   color: #777777;
+  margin: 0;
 }
 
 .thong-tin-truyen a:hover p {
@@ -244,10 +267,13 @@
 
 .thong-tin-truyen .chuong-moi {
   font-size: 12px;
-  color: #777777;
+  /* Giảm cỡ chữ của chương */
+  color: #666;
   display: block;
+  margin-top: 6px;
   text-decoration: none;
-  transition: color 0.3s;
+  font-style: italic;
+  transition: color 0.3s ease;
 }
 
 .thong-tin-truyen .chuong-moi:hover {
@@ -257,13 +283,15 @@
 /* Nhãn "Hot" */
 .hot-label {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 10px;
+  left: 10px;
   background-color: #f44336;
   color: #fff;
-  padding: 2px 6px;
-  font-size: 10px;
-  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Phân trang */
@@ -275,8 +303,8 @@
 }
 
 .page-link {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,6 +329,49 @@
   border-color: #4caf50;
 }
 
+/* CSS tách từ inline */
+#error-message {
+  display: none;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  background: #fdeded;
+  color: #d32f2f;
+  font-size: 14px;
+}
+
+#selected-filters {
+  margin: 10px 0;
+  display: none;
+}
+
+.selected-filter {
+  display: inline-block;
+  background: #e0e0e0;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.remove-filter {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .filter-options.theloai-grid {
@@ -312,7 +383,31 @@
   }
 
   .anh-truyen {
-    height: 180px;
+    height: 200px;
+  }
+
+  .image-container {
+    height: 200px;
+  }
+
+  .update-time {
+    top: 8px;
+    left: 8px;
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .khoi-truyen {
+    border-radius: 10px;
+  }
+
+  .thong-tin-truyen h3 {
+    font-size: 15px;
+  }
+
+  .thong-tin-truyen .chuong-moi {
+    font-size: 11px;
+    /* Giảm cỡ chữ chương trên tablet */
   }
 }
 
@@ -322,15 +417,51 @@
   }
 
   .filter-options.theloai-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .luoi-truyen {
-    grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
 
   .anh-truyen {
-    height: 160px;
+    height: 180px;
+  }
+
+  .image-container {
+    height: 180px;
+  }
+
+  .update-time {
+    top: 6px;
+    left: 6px;
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .khoi-truyen {
+    border-radius: 8px;
+  }
+
+  .thong-tin-truyen {
+    padding: 10px;
+  }
+
+  .thong-tin-truyen h3 {
+    font-size: 14px;
+  }
+
+  .thong-tin-truyen .chuong-moi {
+    font-size: 11px;
+    /* Giảm cỡ chữ chương trên mobile */
+  }
+
+  .hot-label {
+    top: 8px;
+    left: 8px;
+    padding: 3px 6px;
+    font-size: 11px;
   }
 
   .filter-actions {
@@ -346,6 +477,52 @@
 @media (min-width: 1024px) {
   .luoi-truyen {
     grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .luoi-truyen {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .anh-truyen {
+    height: 200px;
+  }
+
+  .image-container {
+    height: 200px;
+  }
+
+  .update-time {
+    top: 6px;
+    left: 6px;
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  .khoi-truyen {
+    border-radius: 6px;
+  }
+
+  .thong-tin-truyen {
+    padding: 8px;
+  }
+
+  .thong-tin-truyen h3 {
+    font-size: 13px;
+  }
+
+  .thong-tin-truyen .chuong-moi {
+    font-size: 10px;
+    /* Giảm cỡ chữ chương trên mobile nhỏ */
+  }
+
+  .hot-label {
+    top: 6px;
+    left: 6px;
+    padding: 2px 5px;
+    font-size: 10px;
   }
 }
 

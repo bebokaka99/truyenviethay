@@ -10,7 +10,7 @@ if ($truyen_id <= 0) die(json_encode(['error' => 'Truyện không hợp lệ']))
 $base_path = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] . '/truyenviethay/');
 
 // Lấy thông tin truyện
-$sql_truyen = "SELECT ten_truyen, anh_bia, tac_gia, mo_ta, rating, luot_xem, tinh_trang, luot_thich, luot_theo_doi FROM truyen_new WHERE id = ?";
+$sql_truyen = "SELECT ten_truyen, anh_bia, tac_gia, mo_ta, rating, rating_count, luot_xem, tinh_trang, luot_thich, luot_theo_doi FROM truyen_new WHERE id = ?";
 $stmt_truyen = mysqli_prepare($conn, $sql_truyen);
 mysqli_stmt_bind_param($stmt_truyen, "i", $truyen_id);
 mysqli_stmt_execute($stmt_truyen);

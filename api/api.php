@@ -33,6 +33,8 @@ switch ($action) {
     case 'lich-su-doc': require 'lich-su-doc.php'; break;
     case 'xoa-lich-su-doc': require 'lich-su-doc.php'; break;
     case 'manage_users': require 'manage-users.php'; break;
+    case 'rating': require 'rating.php'; break;
+    case 'get_user_rating': require 'get_user_rating.php'; break;
 
     default: echo json_encode(['error' => 'Invalid action']);
 }

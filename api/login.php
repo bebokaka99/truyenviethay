@@ -1,11 +1,15 @@
 <?php
-ob_start(); // Thêm để chặn output không mong muốn
+ob_start();
 header('Content-Type: application/json');
 session_start();
 require_once '../config.php';
 
 if (isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => true, 'redirect' => '/truyenviethay/index.php']);
+    echo json_encode([
+        'success' => true,
+        'user_id' => $_SESSION['user_id'], // Thêm user_id
+        'redirect' => '/truyenviethay/index.php'
+    ]);
     exit;
 }
 
@@ -59,7 +63,11 @@ if (mysqli_num_rows($result) == 1) {
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['tenDangNhap'] = $row['username'];
         $_SESSION['role'] = $row['role'];
-        echo json_encode(['success' => true, 'redirect' => '/truyenviethay/index.html']);
+        echo json_encode([
+            'success' => true,
+            'user_id' => $row['id'], // Thêm user_id vào response
+            'redirect' => '/truyenviethay/index.html'
+        ]);
     } else {
         echo json_encode(['error' => 'Tên đăng nhập hoặc mật khẩu không đúng']);
     }
@@ -69,5 +77,5 @@ if (mysqli_num_rows($result) == 1) {
 
 mysqli_stmt_close($stmt);
 mysqli_close($conn);
-ob_end_flush(); // Thêm để đảm bảo chỉ trả JSON
+ob_end_flush();
 ?>

@@ -23,21 +23,21 @@ export function initChiTiet() {
             const truyenInfo = document.getElementById('truyen-info');
             truyenInfo.innerHTML = `
                 <div class="info-item"><span class="info-icon"><i class="fas fa-user"></i></span><label>Tác giả:</label><span>${data.tac_gia || 'Đần giả'}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-clock"></i></span><label>Tình trạng:</label><span>${data.tinh_trang || 'Đang tiến hành'}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-heart"></i></span><label>Lượt thích:</label><span class="luot-thich">${data.luot_thich || 0}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-users"></i></span><label>Lượt theo dõi:</label><span class="luot-theo-doi">${data.luot_theo_doi || 0}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-eye"></i></span><label>Lượt xem:</label><span>${data.luot_xem || 0}</span></div>
-                <div class="info-item"><span class="info-icon"><i class="fas fa-star rating-star"></i></span><label>Đánh giá:</label>
-                    <span class="rating-stars" data-rating="${data.rating || 4.8}">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </span>
-                    <span class="rating-value">${data.rating || 4.8} / 5</span>
-                </div>
-                <div class="info-item the-loai"><span class="info-icon"><i class="fas fa-tags"></i></span><label>Thể loại:</label>
-                    <div class="tags">${data.theloai.length > 0 ? data.theloai.map(t => `<a href="../truyen/the-loai.html?theloai[]=${t.id_theloai}" class="tag-btn">${t.ten_theloai}</a>`).join('') : '<span>Chưa có thể loại</span>'}</div>
-                </div>
-                <div class="action-buttons" id="action-buttons"></div>
-            `;
+    <div class="info-item"><span class="info-icon"><i class="fas fa-clock"></i></span><label>Tình trạng:</label><span>${data.tinh_trang || 'Đang tiến hành'}</span></div>
+    <div class="info-item"><span class="info-icon"><i class="fas fa-heart"></i></span><label>Lượt thích:</label><span class="luot-thich">${data.luot_thich || 0}</span></div>
+    <div class="info-item"><span class="info-icon"><i class="fas fa-users"></i></span><label>Lượt theo dõi:</label><span class="luot-theo-doi">${data.luot_theo_doi || 0}</span></div>
+    <div class="info-item"><span class="info-icon"><i class="fas fa-eye"></i></span><label>Lượt xem:</label><span>${data.luot_xem || 0}</span></div>
+    <div class="info-item"><span class="info-icon"><i class="fas fa-star rating-star"></i></span><label>Đánh giá:</label>
+        <span class="rating-stars" data-rating="${data.rating || 0}" data-rating-count="${data.rating_count || 0}">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </span>
+        <span class="rating-value">${data.rating ? data.rating.toFixed(1) : '0'} / 5</span>
+    </div>
+    <div class="info-item the-loai"><span class="info-icon"><i class="fas fa-tags"></i></span><label>Thể loại:</label>
+        <div class="tags">${data.theloai.length > 0 ? data.theloai.map(t => `<a href="../truyen/the-loai.html?theloai[]=${t.id_theloai}" class="tag-btn">${t.ten_theloai}</a>`).join('') : '<span>Chưa có thể loại</span>'}</div>
+    </div>
+    <div class="action-buttons" id="action-buttons"></div>
+`;
 
             const actionButtons = document.getElementById('action-buttons');
             const chapterCount = data.chapters.length;
@@ -80,54 +80,54 @@ export function initChiTiet() {
                             fetch(`/truyenviethay/api/api.php?action=like&truyen_id=${truyenId}`),
                             fetch(`/truyenviethay/api/api.php?action=follow&truyen_id=${truyenId}`)
                         ])
-                        .then(([likeRes, followRes]) => Promise.all([likeRes.json(), followRes.json()]))
-                        .then(([likeData, followData]) => {
-                            if (likeData.liked) {
-                                likeBtn.classList.add('liked');
-                                likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> Đã thích`;
-                            }
-                            if (followData.followed) {
-                                followBtn.classList.add('followed');
-                                followBtn.innerHTML = `<i class="fas fa-heart"></i> Đã theo dõi`;
-                            }
+                            .then(([likeRes, followRes]) => Promise.all([likeRes.json(), followRes.json()]))
+                            .then(([likeData, followData]) => {
+                                if (likeData.liked) {
+                                    likeBtn.classList.add('liked');
+                                    likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> Đã thích`;
+                                }
+                                if (followData.followed) {
+                                    followBtn.classList.add('followed');
+                                    followBtn.innerHTML = `<i class="fas fa-heart"></i> Đã theo dõi`;
+                                }
 
-                            likeBtn.addEventListener('click', () => {
-                                fetch('/truyenviethay/api/api.php?action=like', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                    body: `truyen_id=${truyenId}`
-                                })
-                                .then(res => res.json())
-                                .then(res => {
-                                    if (res.success) {
-                                        likeBtn.classList.toggle('liked', res.liked);
-                                        likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> ${res.liked ? 'Đã thích' : 'Thích'}`;
-                                        document.querySelector('.luot-thich').textContent = res.luot_thich;
-                                    } else {
-                                        alert(res.error || 'Lỗi khi thích');
-                                    }
+                                likeBtn.addEventListener('click', () => {
+                                    fetch('/truyenviethay/api/api.php?action=like', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                        body: `truyen_id=${truyenId}`
+                                    })
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            if (res.success) {
+                                                likeBtn.classList.toggle('liked', res.liked);
+                                                likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> ${res.liked ? 'Đã thích' : 'Thích'}`;
+                                                document.querySelector('.luot-thich').textContent = res.luot_thich;
+                                            } else {
+                                                alert(res.error || 'Lỗi khi thích');
+                                            }
+                                        });
                                 });
-                            });
 
-                            followBtn.addEventListener('click', () => {
-                                fetch('/truyenviethay/api/api.php?action=follow', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                    body: `truyen_id=${truyenId}`
-                                })
-                                .then(res => res.json())
-                                .then(res => {
-                                    if (res.success) {
-                                        followBtn.classList.toggle('followed', res.followed);
-                                        followBtn.innerHTML = `<i class="fas fa-heart"></i> ${res.followed ? 'Đã theo dõi' : 'Theo dõi'}`;
-                                        document.querySelector('.luot-theo-doi').textContent = res.luot_theo_doi;
-                                    } else {
-                                        alert(res.error || 'Lỗi khi theo dõi');
-                                    }
+                                followBtn.addEventListener('click', () => {
+                                    fetch('/truyenviethay/api/api.php?action=follow', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                        body: `truyen_id=${truyenId}`
+                                    })
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            if (res.success) {
+                                                followBtn.classList.toggle('followed', res.followed);
+                                                followBtn.innerHTML = `<i class="fas fa-heart"></i> ${res.followed ? 'Đã theo dõi' : 'Theo dõi'}`;
+                                                document.querySelector('.luot-theo-doi').textContent = res.luot_theo_doi;
+                                            } else {
+                                                alert(res.error || 'Lỗi khi theo dõi');
+                                            }
+                                        });
                                 });
-                            });
-                        })
-                        .catch(err => console.error('Lỗi khi lấy trạng thái ban đầu:', err));
+                            })
+                            .catch(err => console.error('Lỗi khi lấy trạng thái ban đầu:', err));
                     } else {
                         followBtn.addEventListener('click', () => alert('Vui lòng đăng nhập để theo dõi truyện.'));
                         likeBtn.addEventListener('click', () => alert('Vui lòng đăng nhập để thích truyện.'));
@@ -153,11 +153,11 @@ export function initChiTiet() {
                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                                 body: `truyen_id=${truyenId}&content=${encodeURIComponent(content)}`
                             })
-                            .then(res => res.json())
-                            .then(res => {
-                                if (res.success) location.reload();
-                                else alert(res.error || 'Lỗi khi gửi bình luận');
-                            });
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.success) location.reload();
+                                    else alert(res.error || 'Lỗi khi gửi bình luận');
+                                });
                         });
                     }
                 });

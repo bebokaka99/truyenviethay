@@ -19,6 +19,7 @@ function format_time_ago($timestamp) {
 }
 
 function syncChaptersToDatabase($conn, $truyen_id) {
+    // Đồng bộ từ file hệ thống (nếu có)
     $chapter_dir = __DIR__ . "/../truyen/noidung/{$truyen_id}/";
     if (is_dir($chapter_dir)) {
         for ($i = 1; $i <= 1000; $i++) {
@@ -26,15 +27,20 @@ function syncChaptersToDatabase($conn, $truyen_id) {
             if (file_exists($chapter_file)) {
                 $noi_dung = file_get_contents($chapter_file);
                 $thoi_gian_dang = date('Y-m-d H:i:s', filemtime($chapter_file));
+                $trang_thai = 'da_duyet'; // Đặt trạng thái mặc định là 'da_duyet'
+
+                // Kiểm tra xem chương đã tồn tại chưa
                 $sql_check = "SELECT id FROM chuong WHERE truyen_id = ? AND so_chuong = ?";
                 $stmt_check = mysqli_prepare($conn, $sql_check);
                 mysqli_stmt_bind_param($stmt_check, "ii", $truyen_id, $i);
                 mysqli_stmt_execute($stmt_check);
-                $result_check = mysqli_stmt_push($stmt_check);
+                $result_check = mysqli_stmt_get_result($stmt_check);
+
                 if (mysqli_num_rows($result_check) == 0) {
-                    $sql_insert = "INSERT INTO chuong (truyen_id, so_chuong, noi_dung, thoi_gian_dang) VALUES (?, ?, ?, ?)";
+                    // Thêm chương mới vào bảng chuong
+                    $sql_insert = "INSERT INTO chuong (truyen_id, so_chuong, noi_dung, thoi_gian_dang, trang_thai) VALUES (?, ?, ?, ?, ?)";
                     $stmt_insert = mysqli_prepare($conn, $sql_insert);
-                    mysqli_stmt_bind_param($stmt_insert, "iiss", $truyen_id, $i, $noi_dung, $thoi_gian_dang);
+                    mysqli_stmt_bind_param($stmt_insert, "iisss", $truyen_id, $i, $noi_dung, $thoi_gian_dang, $trang_thai);
                     mysqli_stmt_execute($stmt_insert);
                     mysqli_stmt_close($stmt_insert);
                 }
@@ -42,6 +48,35 @@ function syncChaptersToDatabase($conn, $truyen_id) {
             }
         }
     }
+
+    // Cập nhật cột chuong_moi trong bảng truyen_new dựa trên bảng chuong
+    $sql_latest_chapter = "SELECT so_chuong 
+                           FROM chuong 
+                           WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
+                           ORDER BY so_chuong DESC LIMIT 1";
+    $stmt_latest_chapter = mysqli_prepare($conn, $sql_latest_chapter);
+    mysqli_stmt_bind_param($stmt_latest_chapter, "i", $truyen_id);
+    mysqli_stmt_execute($stmt_latest_chapter);
+    $result_latest_chapter = mysqli_stmt_get_result($stmt_latest_chapter);
+    $latest_chapter = mysqli_fetch_assoc($result_latest_chapter);
+
+    if ($latest_chapter && isset($latest_chapter['so_chuong'])) {
+        $chuong_moi = $latest_chapter['so_chuong'];
+        $sql_update = "UPDATE truyen_new SET chuong_moi = ? WHERE id = ?";
+        $stmt_update = mysqli_prepare($conn, $sql_update);
+        mysqli_stmt_bind_param($stmt_update, "ii", $chuong_moi, $truyen_id);
+        mysqli_stmt_execute($stmt_update);
+        mysqli_stmt_close($stmt_update);
+    } else {
+        // Nếu không có chương, đặt chuong_moi là 0
+        $chuong_moi = 0;
+        $sql_update = "UPDATE truyen_new SET chuong_moi = ? WHERE id = ?";
+        $stmt_update = mysqli_prepare($conn, $sql_update);
+        mysqli_stmt_bind_param($stmt_update, "ii", $chuong_moi, $truyen_id);
+        mysqli_stmt_execute($stmt_update);
+        mysqli_stmt_close($stmt_update);
+    }
+    mysqli_stmt_close($stmt_latest_chapter);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -78,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Khai báo các biến mặc định
-    $selected_theloai = $_GET['theloai'] ?? []; // Lấy mảng từ $_GET['theloai']
+    $selected_theloai = $_GET['theloai'] ?? [];
     if (!is_array($selected_theloai)) $selected_theloai = [];
     $selected_trang_thai = $_GET['trang_thai'] ?? '';
     $selected_rating = isset($_GET['rating']) ? (int)$_GET['rating'] : 0;
@@ -88,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $offset = ($page - 1) * $per_page;
 
     // Xây dựng truy vấn
-    $sql_truyen = "SELECT DISTINCT t.id, t.ten_truyen, t.anh_bia, t.thoi_gian_cap_nhat, t.rating ";
+    $sql_truyen = "SELECT DISTINCT t.id, t.ten_truyen, t.anh_bia, t.thoi_gian_cap_nhat, t.rating, t.chuong_moi ";
     $sql_count = "SELECT COUNT(DISTINCT t.id) as total ";
     $from_clause = "FROM truyen_new t ";
     $where_clause = "WHERE t.trang_thai_kiem_duyet = 'duyet' ";
@@ -147,18 +182,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $truyen_id = $row['id'];
         syncChaptersToDatabase($conn, $truyen_id);
 
-        $sql_chapters = "SELECT so_chuong as latest_chapter, thoi_gian_dang as latest_time 
+        // Lấy chương mới nhất từ bảng chuong
+        $sql_chapters = "SELECT so_chuong as latest_chapter, so_chuong as chuong_so_chuong, thoi_gian_dang as latest_time 
                          FROM chuong 
                          WHERE truyen_id = ? AND trang_thai = 'da_duyet' 
                          ORDER BY so_chuong DESC LIMIT 1";
         $stmt_chapters = mysqli_prepare($conn, $sql_chapters);
         mysqli_stmt_bind_param($stmt_chapters, "i", $truyen_id);
         mysqli_stmt_execute($stmt_chapters);
-        $chapter_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_chapters)) ?: ['latest_chapter' => null, 'latest_time' => null];
+        $chapter_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_chapters)) ?: ['chuong_so_chuong' => null, 'latest_chapter' => null, 'latest_time' => null];
+        $chapter_so_chuong = $chapter_data['chuong_so_chuong'];
         $chapter_latest = $chapter_data['latest_chapter'] ? "Chương {$chapter_data['latest_chapter']}" : "Chưa có chương";
         $chapter_time = $chapter_data['latest_time'] ? strtotime($chapter_data['latest_time']) : strtotime($row['thoi_gian_cap_nhat']);
         $row['update_time'] = $chapter_time ? format_time_ago($chapter_time) : "Chưa cập nhật";
         $row['chuong_moi_nhat'] = $chapter_latest;
+        $row['chuong_moi_nhat_so_chuong'] = $chapter_so_chuong; // Trả về số chương (so_chuong)
         $row['anh_bia'] = file_exists(__DIR__ . "/../anh/{$row['anh_bia']}") ? "/truyenviethay/anh/{$row['anh_bia']}" : "/truyenviethay/anh/default.jpg";
         $truyen_list[] = $row;
         mysqli_stmt_close($stmt_chapters);

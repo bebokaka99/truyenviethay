@@ -11,7 +11,7 @@
 }
 
 .truyen-container h2 {
-    font-size: 32px; 
+    font-size: 32px;
     color: #2c3e50;
     margin-bottom: 25px;
     text-align: center;
@@ -82,13 +82,13 @@
 
 .truyen-info .info-icon {
     font-size: 16px;
-    color: #2ecc71; 
+    color: #2ecc71;
 }
 
 .truyen-info .info-item label {
-    font-weight: 400; 
-    color: #333; 
-    font-style: italic; 
+    font-weight: 400;
+    color: #333;
+    font-style: italic;
     width: 120px;
     font-size: 14px;
 }
@@ -120,8 +120,9 @@
 }
 
 .truyen-info .rating-stars .fa-star.rated-half {
-    color: #f1c40f;
-    opacity: 0.5;
+    background: linear-gradient(to right, #f1c40f 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .truyen-info .rating-value {
@@ -129,6 +130,18 @@
     font-size: 14px;
     color: #f1c40f;
     font-weight: 600;
+}
+
+.truyen-info .rating-stars {
+    position: relative;
+    width: 100px;
+    display: inline-flex;
+    gap: 2px;
+}
+
+.truyen-info .rating-stars .fa-star {
+    width: 20px;
+    height: 20px;
 }
 
 .truyen-info .tags {
@@ -155,7 +168,7 @@
 
 .truyen-info .the-loai {
     margin-top: 8px;
-    color: #333; 
+    color: #333;
     font-style: italic;
     font-size: 13px;
 }
@@ -305,6 +318,7 @@
     border-bottom: 1px solid #eee;
     transition: background 0.3s ease;
 }
+
 .chuong-item:last-child {
     border-bottom: none;
 }

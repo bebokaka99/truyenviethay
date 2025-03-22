@@ -48,7 +48,6 @@
                             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </li>
-                    <!-- Xóa cặp nút Đăng nhập/Đăng ký ở đây -->
                 </ul>
             </nav>
         </div>
@@ -81,7 +80,29 @@
         <h2 id="ten-truyen"></h2>
         <div class="truyen-header">
             <div class="truyen-image" id="truyen-image"></div>
-            <div class="truyen-info" id="truyen-info"></div>
+            <div class="truyen-info" id="truyen-info">
+                <!-- Các info-item sẽ được thêm bằng JS -->
+                <div class="info-item"><label>Tác giả:</label><span id="tac-gia"></span></div>
+                <div class="info-item"><label>Thể loại:</label><span id="the-loai"></span></div>
+                <div class="info-item"><label>Trạng thái:</label><span id="trang-thai"></span></div>
+                <div class="info-item">
+                    <label>Đánh giá:</label>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="rating-value">Chưa có đánh giá</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="#" class="read-btn"><i class="fas fa-book-open"></i> Đọc ngay</a>
+                    <a href="#" class="continue-btn"><i class="fas fa-arrow-right"></i> Tiếp tục</a>
+                    <button class="follow-btn"><i class="fas fa-heart"></i> Theo dõi</button>
+                    <button class="like-btn"><i class="fas fa-thumbs-up"></i> Thích</button>
+                </div>
+            </div>
         </div>
         <div class="truyen-description">
             <h3><i class="fas fa-info-circle"></i> Mô tả</h3>
