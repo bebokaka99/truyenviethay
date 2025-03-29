@@ -24,7 +24,7 @@ function format_time_ago($timestamp) {
 
 $subaction = $_GET['subaction'] ?? 'new';
 $page = (int)($_GET['page'] ?? 1);
-$per_page = ($subaction === 'slider') ? 10 : 18; // Sửa từ 5 thành 10 cho slider
+$per_page = ($subaction === 'slider') ? 10 : 16; 
 $offset = ($page - 1) * $per_page;
 
 // Xác định truy vấn

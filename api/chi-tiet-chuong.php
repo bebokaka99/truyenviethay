@@ -56,30 +56,28 @@ try {
         $action = $_POST['action'] ?? '';
 
         if ($action === 'update') {
-            // Cập nhật chương
-            $so_chuong = (int)($_POST['so_chuong'] ?? 0);
-            $tieu_de = trim($_POST['tieu_de'] ?? '');
             $noi_dung = $_POST['noi_dung'] ?? '';
-
-            if ($so_chuong <= 0 || empty($tieu_de) || empty($noi_dung)) {
-                echo json_encode(['success' => false, 'error' => 'Dữ liệu không hợp lệ']);
+        
+            if (empty($noi_dung)) {
+                echo json_encode(['success' => false, 'error' => 'Nội dung không được để trống']);
                 exit;
             }
-
-            $sql_update = "UPDATE chuong SET so_chuong = ?, tieu_de = ?, noi_dung = ? WHERE id = ? AND truyen_id = ?";
+        
+            $sql_update = "UPDATE chuong SET noi_dung = ? WHERE id = ? AND truyen_id = ?";
             $stmt_update = mysqli_prepare($conn, $sql_update);
             if (!$stmt_update) throw new Exception("Lỗi chuẩn bị truy vấn: " . mysqli_error($conn));
-            mysqli_stmt_bind_param($stmt_update, "issii", $so_chuong, $tieu_de, $noi_dung, $chapter_id, $truyen_id);
+            mysqli_stmt_bind_param($stmt_update, "sii", $noi_dung, $chapter_id, $truyen_id);
             $success = mysqli_stmt_execute($stmt_update);
             mysqli_stmt_close($stmt_update);
-
+        
             if ($success) {
                 echo json_encode(['success' => true, 'message' => 'Cập nhật chương thành công']);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Lỗi khi cập nhật chương']);
             }
             exit;
-        } elseif ($action === 'delete') {
+        }
+         elseif ($action === 'delete') {
             // Xóa chương
             $sql_delete = "DELETE FROM chuong WHERE id = ? AND truyen_id = ?";
             $stmt_delete = mysqli_prepare($conn, $sql_delete);

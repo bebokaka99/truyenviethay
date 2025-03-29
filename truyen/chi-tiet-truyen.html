@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title id="truyen-title">Truyenviethay</title>
     <link rel="icon" href="../anh/logo.png">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/user.css">
     <link rel="stylesheet" href="../css/truyen.css">
+    <link rel="stylesheet" href="../css/index.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -22,7 +27,8 @@
                 <ul class="danh-sach-menu">
                     <li><a href="../index.html">Trang chủ</a></li>
                     <li class="dropdown">
-                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i class="fa-solid fa-angle-down"></i></a>
+                        <a href="#" class="nut-dropdown" id="theloai-toggle">Thể loại <i
+                                class="fa-solid fa-angle-down"></i></a>
                         <div class="noi-dung-dropdown" id="theloai-dropdown">
                             <div class="theloai-grid" id="theloai-container"></div>
                         </div>
@@ -68,8 +74,10 @@
                     </div>
                 </div>
                 <div class="login-buttons" id="login-buttons">
-                    <button class="nut-dang-nhap" id="login-btn" onclick="window.location.href='../users/login.html'">Đăng nhập</button>
-                    <button class="nut-dang-ky" id="register-btn" onclick="window.location.href='../users/register.html'">Đăng ký</button>
+                    <button class="nut-dang-nhap" id="login-btn"
+                        onclick="window.location.href='../users/login.html'">Đăng nhập</button>
+                    <button class="nut-dang-ky" id="register-btn"
+                        onclick="window.location.href='../users/register.html'">Đăng ký</button>
                 </div>
             </div>
         </div>
@@ -119,7 +127,11 @@
             <div class="comment-list" id="comment-list"></div>
         </div>
     </div>
-
+    <!-- Truyện tương tự -->
+    <a href="#" class="nut_dan_trang nut_de_xuat">TRUYỆN TƯƠNG TỰ <i class="fa-solid fa-angle-right"></i></a>
+    <div class="hien-thi-truyen">
+        <div class="luoi-truyen" id="detail-recommend-container"></div>
+    </div>
     <!-- Footer -->
     <footer class="footer">
         <div class="noi-dung-footer">
@@ -154,4 +166,5 @@
     <button id="back-to-top" title="Lên đầu trang"><i class="fas fa-arrow-up"></i></button>
     <script type="module" src="../script/script.js"></script>
 </body>
+
 </html>

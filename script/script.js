@@ -25,10 +25,12 @@ import { initSearch } from "./search.js";
 import { initTruyenTheoDoi } from "./truyen-theo-doi.js";
 import { initLichSuDoc } from "./lich-su-doc.js";
 import { initManageUsers } from "./manage-users.js";
+import { initRecommend } from "./recommend.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname === "/truyenviethay/" || window.location.pathname.includes("index.html")) {
     initSlider();
+    initRecommend(); 
   }
   initTruyen();
   initHeader();
@@ -39,8 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   debugTextarea();
 
   if (window.location.pathname.includes("chi-tiet-truyen.html")) {
-    initChiTiet(); // Render HTML trước
-    initRating();  // Gắn event sau
+    initChiTiet(); 
+    initRating();  
+    initRecommend();
   }
   if (window.location.pathname.includes("chuong.html")) initChuong();
   if (window.location.pathname.includes("login.html")) initLogin();

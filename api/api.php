@@ -35,6 +35,7 @@ switch ($action) {
     case 'manage_users': require 'manage-users.php'; break;
     case 'rating': require 'rating.php'; break;
     case 'get_user_rating': require 'get_user_rating.php'; break;
+    case 'recommend': require 'recommend.php'; break;
 
     default: echo json_encode(['error' => 'Invalid action']);
 }

@@ -1,10 +1,16 @@
 <?php
-header('Content-Type: application/json');
+ob_start(); // Bật buffer
 session_start();
+header('Content-Type: application/json');
 require_once '../config.php';
 
+$data = ['success' => false];
+
+// Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['error' => 'Chưa đăng nhập', 'redirect' => '/truyenviethay/users/login.html']);
+    $data['error'] = 'Chưa đăng nhập';
+    $data['redirect'] = '/truyenviethay/users/login.html';
+    echo json_encode($data);
     exit;
 }
 
@@ -17,7 +23,8 @@ $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_user)) ?: null;
 mysqli_stmt_close($stmt_user);
 
 if (!$user || !in_array($user['role'], ['admin', 'author'])) {
-    echo json_encode(['error' => 'Không có quyền truy cập']);
+    $data['error'] = 'Không có quyền truy cập';
+    echo json_encode($data);
     exit;
 }
 
@@ -41,6 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if (empty($errors)) {
         $sql_check = "SELECT id FROM truyen_new WHERE ten_truyen = ?";
         $stmt_check = mysqli_prepare($conn, $sql_check);
+        if (!$stmt_check) {
+            $data['error'] = 'Lỗi chuẩn bị truy vấn kiểm tra: ' . mysqli_error($conn);
+            echo json_encode($data);
+            exit;
+        }
         mysqli_stmt_bind_param($stmt_check, "s", $ten_truyen);
         mysqli_stmt_execute($stmt_check);
         if (mysqli_stmt_num_rows(mysqli_stmt_get_result($stmt_check)) > 0) {
@@ -59,10 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         if (!in_array($file_ext, $allowed_exts)) {
             $errors['anh_bia'] = 'Chỉ chấp nhận jpg, jpeg, png, gif';
         } else {
-            $upload_dir = '../anh/';
+            $upload_dir = $base_path . 'anh/';
             if (!file_exists($upload_dir)) mkdir($upload_dir, 0755, true);
-            if (!is_writable($upload_dir)) $errors['anh_bia'] = 'Thư mục upload không có quyền ghi';
-            else {
+            if (!is_writable($upload_dir)) {
+                $errors['anh_bia'] = 'Thư mục upload không có quyền ghi';
+            } else {
                 $sanitized_ten_truyen = preg_replace("/[^a-zA-Z0-9]/", "_", $ten_truyen);
                 $new_file_name = $sanitized_ten_truyen . '_' . time() . '.' . $file_ext;
                 $upload_path = $upload_dir . $new_file_name;
@@ -79,6 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $sql = "INSERT INTO truyen_new (ten_truyen, tac_gia, mo_ta, trang_thai, trang_thai_kiem_duyet, thoi_gian_cap_nhat, anh_bia, user_id) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            $data['error'] = 'Lỗi chuẩn bị truy vấn insert: ' . mysqli_error($conn);
+            echo json_encode($data);
+            exit;
+        }
         mysqli_stmt_bind_param($stmt, "sssssssi", $ten_truyen, $tac_gia, $mo_ta, $tinh_trang, $trang_thai_kiem_duyet, $thoi_gian_cap_nhat, $anh_bia, $user_id);
         if (mysqli_stmt_execute($stmt)) {
             $new_truyen_id = mysqli_insert_id($conn);
@@ -87,6 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 foreach ($the_loai_list as $ten_theloai) {
                     $sql_theloai = "SELECT id_theloai FROM theloai_new WHERE ten_theloai = ?";
                     $stmt_theloai = mysqli_prepare($conn, $sql_theloai);
+                    if (!$stmt_theloai) {
+                        $data['error'] = 'Lỗi chuẩn bị truy vấn thể loại: ' . mysqli_error($conn);
+                        echo json_encode($data);
+                        exit;
+                    }
                     mysqli_stmt_bind_param($stmt_theloai, "s", $ten_theloai);
                     mysqli_stmt_execute($stmt_theloai);
                     $result = mysqli_stmt_get_result($stmt_theloai);
@@ -95,6 +118,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     } else {
                         $sql_insert_theloai = "INSERT INTO theloai_new (ten_theloai) VALUES (?)";
                         $stmt_insert_theloai = mysqli_prepare($conn, $sql_insert_theloai);
+                        if (!$stmt_insert_theloai) {
+                            $data['error'] = 'Lỗi insert thể loại mới: ' . mysqli_error($conn);
+                            echo json_encode($data);
+                            exit;
+                        }
                         mysqli_stmt_bind_param($stmt_insert_theloai, "s", $ten_theloai);
                         mysqli_stmt_execute($stmt_insert_theloai);
                         $theloai_id = mysqli_insert_id($conn);
@@ -104,23 +132,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
                     $sql_truyen_theloai = "INSERT INTO truyen_theloai (truyen_id, theloai_id) VALUES (?, ?)";
                     $stmt_truyen_theloai = mysqli_prepare($conn, $sql_truyen_theloai);
+                    if (!$stmt_truyen_theloai) {
+                        $data['error'] = 'Lỗi insert truyen_theloai: ' . mysqli_error($conn);
+                        echo json_encode($data);
+                        exit;
+                    }
                     mysqli_stmt_bind_param($stmt_truyen_theloai, "ii", $new_truyen_id, $theloai_id);
                     mysqli_stmt_execute($stmt_truyen_theloai);
                     mysqli_stmt_close($stmt_truyen_theloai);
                 }
             }
-            echo json_encode(['success' => true, 'message' => "Thêm truyện thành công! ID: $new_truyen_id"]);
+            $data['success'] = true;
+            $data['message'] = "Thêm truyện thành công! ID: $new_truyen_id";
         } else {
-            $errors['database'] = 'Lỗi khi thêm truyện: ' . mysqli_error($conn);
-            echo json_encode(['errors' => $errors]);
+            $data['error'] = 'Lỗi khi thêm truyện: ' . mysqli_error($conn);
         }
         mysqli_stmt_close($stmt);
     } else {
-        echo json_encode(['errors' => $errors]);
+        $data['errors'] = $errors;
     }
+    echo json_encode($data);
     exit;
 }
 
+// Xử lý DELETE và GET giữ nguyên (copy từ code cũ của mày)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
     $truyen_id = (int)($_POST['id'] ?? 0);
     $sql_check = "SELECT user_id FROM truyen_new WHERE id = ?";
@@ -131,9 +166,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     mysqli_stmt_close($stmt_check);
 
     if (!$truyen) {
-        echo json_encode(['error' => 'Truyện không tồn tại']);
+        $data['error'] = 'Truyện không tồn tại';
     } elseif ($user['role'] !== 'admin' && $truyen['user_id'] != $user_id) {
-        echo json_encode(['error' => 'Không có quyền xóa truyện này']);
+        $data['error'] = 'Không có quyền xóa truyện này';
     } else {
         mysqli_begin_transaction($conn);
         try {
@@ -152,12 +187,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             mysqli_stmt_close($stmt);
 
             mysqli_commit($conn);
-            echo json_encode(['success' => true, 'message' => 'Xóa truyện thành công']);
+            $data['success'] = true;
+            $data['message'] = 'Xóa truyện thành công';
         } catch (Exception $e) {
             mysqli_rollback($conn);
-            echo json_encode(['error' => $e->getMessage()]);
+            $data['error'] = $e->getMessage();
         }
     }
+    echo json_encode($data);
     exit;
 }
 
@@ -252,13 +289,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $total_truyen = mysqli_fetch_assoc($result_count)['total'];
     $total_pages = ceil($total_truyen / $per_page);
 
-    echo json_encode([
-        'success' => true,
-        'data' => $truyen_list,
-        'pagination' => ['total' => $total_truyen, 'per_page' => $per_page, 'current_page' => $page, 'total_pages' => $total_pages]
-    ]);
+    $data['success'] = true;
+    $data['data'] = $truyen_list;
+    $data['pagination'] = ['total' => $total_truyen, 'per_page' => $per_page, 'current_page' => $page, 'total_pages' => $total_pages];
+    echo json_encode($data);
     exit;
 }
 
-echo json_encode(['error' => 'Phương thức không hợp lệ']);
+$data['error'] = 'Phương thức không hợp lệ';
+echo json_encode($data);
+
 mysqli_close($conn);
+ob_end_flush();
+?>
